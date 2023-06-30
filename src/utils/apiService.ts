@@ -1,45 +1,209 @@
 import axios from 'axios';
+import {usersEndpoint, productsEndpoint, dishesEndpoint, mealsEndpoint, statsEndpoint} from "./endpoints";
 
-const endPointStub = '../assets/stub/';
-const randomFaceUrl = 'thisPersondoesnotexist.com/image';
-const chuckNorrisJokeUrl = 'https://api.chucknorris.io/jokes/random';
-const dishLoggerApiUrl = 'https://dish-logger.onrender.com/api/users/get_all';
-const dishLoggerApiUrlAuth = 'https://dish-logger.onrender.com/api/users/login';
-const dishLoggerProducts = 'https://dish-logger.onrender.com/api/products/get_all';
+axios.defaults.withCredentials = true;
 
 const apiGetRequest = (url: string) => {
-    return axios.get(url);
-};
+    return axios.get(url).then((data: any) => {
+        Promise.resolve(data.data);
+    }).catch(error => {
+        return {
+            message: 'Database error',
+            stack: error.message
+        }
 
-const getRandomFace = () => {
-    return axios({
-        method: 'GET',
-        url: randomFaceUrl,
-        responseType: 'stream'
-    }).then(stream => {
-//fs does not work on client-side
+    });
+};
+const apiPostRequest = (url: string, data: any) => {
+    return axios.post(url, data).then((data: any) => {
+        Promise.resolve(data.data);
+    }).catch(error => {
+        return {
+            message: 'Database error',
+            stack: error.message
+        }
+
+    })
+};
+const apiPutRequest = (url: string, data: any) => {
+    return axios.put(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
+        return {
+            message: 'Database error',
+            stack: error.message
+        }
+
+    })
+};
+const apiDeleteRequest = (url: string, data?: any) => {
+    return axios.delete(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
+        return {
+            message: 'Database error',
+            stack: error.message
+        }
+
     })
 };
 
-const getRandomJoke = () => {
-    return axios.get(chuckNorrisJokeUrl).then((data: any) => Promise.resolve(data.data.value));
-};
 
-const getUsers = () => {
-    return axios.get(dishLoggerApiUrl).then((data: any) => Promise.resolve(data.data));
+// users
+const getUserData = () => {
+    const url = usersEndpoint + 'get';
+    return apiGetRequest(url);
 };
-
+const getAllUsers = () => {
+    const url = usersEndpoint + 'get_all';
+    return apiGetRequest(url);
+};
 const authorization = (data: any) => {
-    // const body = JSON.stringify(data);
-    const body = data;
-    return axios.post(dishLoggerApiUrlAuth, body).then((data: any) => Promise.resolve(data.data));
+    const url = usersEndpoint + 'auth';
+    return apiPostRequest(url, data);
 };
-const getProducts = () => {
-    // const body = JSON.stringify(data);
-    const body = data;
-    return axios.get(dishLoggerProducts).then((data: any) => Promise.resolve(data.data));
+const login = (data: any) => {
+    const url = usersEndpoint + 'login';
+    return apiPostRequest(url, data);
+};
+const logout = () => {
+    const url = usersEndpoint + 'logout';
+    return apiPostRequest(url, {});
+};
+const updateUserData = (data: any) => {
+    const url = usersEndpoint + 'update';
+    return apiPutRequest(url, data);
+};
+const deleteAllUsers = () => {
+    const url = usersEndpoint + 'delete_all';
+    return apiDeleteRequest(url);
+};
+
+// products
+const addProduct = (data: any) => {
+    const url = productsEndpoint + 'add';
+    return apiPostRequest(url, data);
+};
+const getProduct = (productId: string) => {
+    const url = productsEndpoint + 'product/' + productId;
+    return apiGetRequest(url);
+};
+const getAllProducts = () => {
+    const url = productsEndpoint + 'get_all';
+    return apiGetRequest(url);
+};
+const updateProduct = (data: any) => {
+    const url = productsEndpoint + 'update';
+    return apiPutRequest(url, data);
+};
+const removeProduct = (data: any) => {
+    const url = productsEndpoint + 'remove';
+    return apiDeleteRequest(url, data);
+};
+const removeAllProducts = () => {
+    const url = productsEndpoint + 'remove_all';
+    return apiDeleteRequest(url);
+};
+
+// dishes
+const addDish = (data: any) => {
+    const url = dishesEndpoint + 'add';
+    return apiPostRequest(url, data);
+};
+const getDish = (dishId: string) => {
+    const url = dishesEndpoint + 'dish/' + dishId;
+    return apiGetRequest(url);
+};
+const getAllDishes = () => {
+    const url = dishesEndpoint + 'get_all';
+    return apiGetRequest(url);
+};
+const updateDish = (data: any) => {
+    const url = dishesEndpoint + 'update';
+    return apiPutRequest(url, data);
+};
+const removeDish = (data: any) => {
+    const url = dishesEndpoint + 'remove';
+    return apiDeleteRequest(url, data);
+};
+const removeAllDishes = () => {
+    const url = dishesEndpoint + 'remove_all';
+    return apiDeleteRequest(url);
+};
+
+// meals
+const addMeal = (data: any) => {
+    const url = mealsEndpoint + 'add';
+    return apiPostRequest(url, data);
+};
+const getMeal = (mealId: string) => {
+    const url = mealsEndpoint + 'meal/' + mealId;
+    return apiGetRequest(url);
+};
+const getAllMeals = () => {
+    const url = mealsEndpoint + 'get_all';
+    return apiGetRequest(url);
+};
+const updateMeal = (data: any) => {
+    const url = mealsEndpoint + 'update';
+    return apiPutRequest(url, data);
+};
+const removeMeal = (data: any) => {
+    const url = mealsEndpoint + 'remove';
+    return apiDeleteRequest(url, data);
+};
+const removeAllMeals = () => {
+    const url = mealsEndpoint + 'remove_all';
+    return apiDeleteRequest(url);
+};
+
+// stats
+const getAllStats = () => {
+    const url = statsEndpoint + 'get_all';
+    return apiGetRequest(url);
+};
+const getStatsForInterval = (data: any) => {
+    const url = statsEndpoint + 'get_stat_for_interval';
+    return apiPostRequest(url, data);
+};
+const getStatsForOneDay = (data: any) => {
+    const url = statsEndpoint + 'get_stat_for_day';
+    return apiPostRequest(url, data);
 };
 
 export default {
-    getRandomJoke, getUsers, authorization
+
+    // users
+    getUserData,
+    getAllUsers,
+    authorization,
+    login,
+    logout,
+    updateUserData,
+    deleteAllUsers,
+
+    // products
+    addProduct,
+    getProduct,
+    getAllProducts,
+    updateProduct,
+    removeProduct,
+    removeAllProducts,
+
+    // dishes
+    addDish,
+    getDish,
+    getAllDishes,
+    updateDish,
+    removeDish,
+    removeAllDishes,
+
+    // meals
+    addMeal,
+    getMeal,
+    getAllMeals,
+    updateMeal,
+    removeMeal,
+    removeAllMeals,
+
+    // stats
+    getAllStats,
+    getStatsForInterval,
+    getStatsForOneDay,
 };
