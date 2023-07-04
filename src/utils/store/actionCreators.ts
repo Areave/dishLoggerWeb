@@ -1,26 +1,26 @@
 import {Types} from '../types'
 
-export const setWelcomeAction: (name: string) => Types.Action = (name) => {
+export const setUserAction: (user: any) => Types.Action = (user) => {
     return {
-        type: 'SET_WELCOME',
-        payload: name
+        type: 'SET_USER',
+        payload: user
     }
 };
-export const setJokeAction: (joke: string) => Types.Action = (joke) => {
+export const setUserStatAction: (stat: any) => Types.Action = (stat) => {
     return {
-        type: 'SET_JOKE',
-        payload: joke
+        type: 'SET_USER_STAT',
+        payload: stat
     }
 };
-export const setError = (isError: boolean, errorMessage?: string): Types.Action => {
+export const createSetItemAction: (itemType: string, item: any) => Types.Action = (itemType, item) => {
     return {
-        type: 'SET_ERROR',
-        payload: {isError, errorMessage}
+        type: `SET_${itemType}`,
+        payload: item
     }
 };
-export const setImageSrc: (imageSrc: string) => Types.Action = (imageSrc) => {
+export const createSetItemsArrayAction: (itemType: string, items: any[]) => Types.Action = (itemType, items) => {
     return {
-        type: 'SET_IMAGE_SRC',
-        payload: imageSrc
+        type: `SET_${itemType}_ARRAY`,
+        payload: items
     }
 };
