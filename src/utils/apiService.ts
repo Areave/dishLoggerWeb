@@ -4,20 +4,15 @@ import {usersEndpoint, productsEndpoint, dishesEndpoint, mealsEndpoint, statsEnd
 axios.defaults.withCredentials = true;
 
 const apiGetRequest = (url: string) => {
-    return axios.get(url).then((data: any) => {
-        Promise.resolve(data.data);
-    }).catch(error => {
+    return axios.get(url).then((data: any) => Promise.resolve(data.data)).catch(error => {
         return {
             message: 'Database error',
             stack: error.message
         }
-
     });
 };
 const apiPostRequest = (url: string, data: any) => {
-    return axios.post(url, data).then((data: any) => {
-        Promise.resolve(data.data);
-    }).catch(error => {
+    return axios.post(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
         return {
             message: 'Database error',
             stack: error.message
@@ -43,7 +38,6 @@ const apiDeleteRequest = (url: string, data?: any) => {
 
     })
 };
-
 
 // users
 const getUserData = () => {
