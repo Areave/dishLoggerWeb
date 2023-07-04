@@ -1,16 +1,11 @@
 import React, {ReactElement} from "react";
-import {setError} from "./store/actionCreators";
 
 export namespace Types {
 
     export interface State {
         readonly isAuthorized: boolean,
-        readonly isLoading: boolean,
-        readonly name: string,
-        readonly joke: string,
-        readonly isError: boolean,
-        readonly imageSrc: string,
-        readonly errorMessage: string
+        readonly user: any;
+        readonly items: any;
     }
 
     export interface Action {
@@ -30,12 +25,6 @@ export namespace Types {
     export interface PageTitleProps {
         readonly title: string
     }
-    export interface ImageCompProps {
-        readonly imageSrc: string,
-        readonly setImageSrc: (imageSrc: string) => void,
-        readonly setError: (isError: boolean, errorMessage?: string) => void
-    }
-
     export interface ComponentTitleCompProps {
         title: string
     }
@@ -48,8 +37,8 @@ export namespace Types {
         label: string
     }
     export interface JokeCompProps {
-        loadJokeUsingRedux: (joke: string) => void,
-        loadJokeUsingHook: (joke: string) => void,
+        // loadJokeUsingRedux: (joke: string) => void,
+        loadJokeUsingHook?: (joke: string) => void,
         joke: string
     }
     export interface ComponentProps {
