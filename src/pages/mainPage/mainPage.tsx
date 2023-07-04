@@ -7,7 +7,7 @@ import apiService from "../../utils/apiService";
 import {getPortPromise} from "portfinder";
 import {createSetItemAction, createSetItemsArrayAction, setUserAction} from "../../utils/store/actionCreators";
 import {RootState} from "../../utils/store";
-import {PRODUCT, DISH, MEAL} from "../../utils/store/itemTypes";
+import {PRODUCT, DISH, MEAL} from "../../utils/itemTypes";
 
 
 
