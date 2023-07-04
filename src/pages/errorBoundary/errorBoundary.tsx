@@ -1,7 +1,6 @@
 import React from 'react';
 import ErrorPage from './errorPage';
 import {Types} from '../../utils/types'
-import {setError} from "../../utils/store/actionCreators";
 import {connect} from "react-redux";
 import {cli} from "webpack";
 
@@ -39,8 +38,8 @@ const ErrorBoundary: React.FC<Types.ErrorPageProps> = ({isError, errorMessage, c
 
 
 const mapStateToProps = (state: Types.State) => {
-    return {isError: state.isError, errorMessage: state.errorMessage}
+    // return {isError: state.isError, errorMessage: state.errorMessage}
 };
-const mapDispatchToProps = {setError};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorBoundary);

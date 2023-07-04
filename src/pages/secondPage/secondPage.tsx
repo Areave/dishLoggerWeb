@@ -3,7 +3,6 @@ import React from 'react';
 import PageTitleComp from "../../comps/headerTitleComp/headerTitleComp";
 import NavigationButton from "../../comps/navigationButton/navigationButton";
 import ErrorBoundary from "../errorBoundary/errorBoundary";
-import ImageComp from "../../comps/imageComp/imageComp";
 
 const SecondPage = () => {
     return <div className="secondPage">
@@ -11,9 +10,6 @@ const SecondPage = () => {
             <PageTitleComp title={'SecondPage'}/>
         </div>
         <div className="content">
-            <ErrorBoundary>
-                <ImageComp/>
-            </ErrorBoundary>
         </div>
         <div className="footer">
             <NavigationButton title={'go to main page'} route={'/'}/>
