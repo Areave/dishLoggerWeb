@@ -12,16 +12,9 @@ import {setIsAuthorizedAction} from "../utils/store/actionCreators";
 import {Types} from "../utils/types";
 
 
-
-
-
-
 const App: React.FC<any> = () => {
 
     const dispatch = useDispatch();
-    const isAuthorized = useSelector((state: Types.State) => {
-        return state.user.isAuthorized;
-    });
 
     useEffect(() => {
         apiService.getUserData().then(response => {
@@ -34,22 +27,9 @@ const App: React.FC<any> = () => {
     }, []);
 
     return <React.StrictMode>
-        {/*<ErrorBoundary>*/}
-
-                <BrowserRouter>
-                    <div className="page">
-                        <div className="header">
-                            <HeaderComp isAuthorized={isAuthorized}/>
-                        </div>
-                        <div className="content">
-                            <MyRouter isAuthorized={isAuthorized}/>
-                        </div>
-                        <div className="footer">
-                            <FooterComp/>
-                        </div>
-                    </div>
-                </BrowserRouter>
-        {/*</ErrorBoundary>*/}
+        <HeaderComp/>
+        <MyRouter/>
+        <FooterComp/>
     </React.StrictMode>
 };
 
