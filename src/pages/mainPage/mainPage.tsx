@@ -5,9 +5,10 @@ import {connect, useDispatch, useSelector} from 'react-redux'
 import ActionButton from "../../comps/actionButton/actionButton";
 import apiService from "../../utils/apiService";
 import {getPortPromise} from "portfinder";
-import {createSetItemAction, createSetItemsArrayAction, setUserAction} from "../../utils/store/actionCreators";
+import {createSetItemAction, createSetItemsArrayAction, setIsAuthorizedAction, setUserAction} from "../../utils/store/actionCreators";
 import {RootState} from "../../utils/store";
 import {PRODUCT, DISH, MEAL} from "../../utils/itemTypes";
+import {useNavigate} from "react-router";
 
 
 
@@ -20,6 +21,8 @@ const MainPage: React.FC<any> = ({setUserAction}) => {
     // const [products, setProducts] = useState();
 
     const dispatch = useDispatch();
+
+    const navigate = useNavigate();
 
     // @ts-ignore
     const user: {name: string} = useSelector((state: RootState) => {
@@ -78,7 +81,10 @@ const MainPage: React.FC<any> = ({setUserAction}) => {
         }).then(data => console.log(data));
     };
     const logout = () => {
-        apiService.logout();
+        apiService.logout().then(res => {
+            dispatch(setIsAuthorizedAction(false));
+            navigate('/auth');
+        });
     };
     const getProducts = () => {
         apiService.getAllProducts().then((products: any) => {

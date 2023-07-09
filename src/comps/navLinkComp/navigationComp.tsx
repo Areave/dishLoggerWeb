@@ -11,7 +11,7 @@ const NavigationHOC = (Comp: React.FC<any>): Types.HOC => {
 };
 
 const mapStateToProps = (state: Types.State) => {
-    return {}
+    return {isAuthorized: state.user.isAuthorized}
 };
 const mapDispatchToProps = {};
 

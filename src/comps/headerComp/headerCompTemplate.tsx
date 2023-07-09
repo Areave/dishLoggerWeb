@@ -6,7 +6,7 @@ import {NavigationComp} from "../navLinkComp/navigationComp";
 
 export const HeaderCompTemplate: React.FC<Types.ComponentProps> = (props) => {
     return <div className='headerComp'>
-        <PageTitleComp title={'React Webpack Template'}/>
+        <PageTitleComp title={'DishLogger App'}/>
         <NavigationComp/>
     </div>
 };

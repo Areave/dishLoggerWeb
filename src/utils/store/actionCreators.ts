@@ -12,6 +12,12 @@ export const setUserStatAction: (stat: any) => Types.Action = (stat) => {
         payload: stat
     }
 };
+export const setIsAuthorizedAction: (isAuthorized: boolean) => Types.Action = (isAuthorized) => {
+    return {
+        type: 'SET_ISAUTHORIZED',
+        payload: isAuthorized
+    }
+};
 export const createSetItemAction: (itemType: string, item: any) => Types.Action = (itemType, item) => {
     return {
         type: `SET_${itemType}`,

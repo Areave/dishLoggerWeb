@@ -3,7 +3,6 @@ import React, {ReactElement} from "react";
 export namespace Types {
 
     export interface State {
-        readonly isAuthorized: boolean,
         readonly user: any;
         readonly items: any;
     }
