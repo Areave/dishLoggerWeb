@@ -1,7 +1,0 @@
-@use '../../style/style' as styles;
-
-.headerComp {
-  @include styles.forHeader;
-  display: flex;
-  justify-content: space-between;
-}

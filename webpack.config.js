@@ -89,11 +89,12 @@ module.exports = function (_, webpackEnv) {
 
     const imgRule = {
         test: /\.(jpg|jpeg|png|gif|svg)$/,
+        // type: 'asset/resource',
         exclude: [/node_modules/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
         use: [{
             loader: 'file-loader',
             options: {
-                outputPath: 'assets/imgs/',
+                outputPath: 'assets/images/',
                 name: '[name]_[contenthash:8].[ext]'
             }
         }]

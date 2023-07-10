@@ -5,7 +5,7 @@ import {Provider, useDispatch, useSelector} from 'react-redux'
 import store from "../utils/store";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {MyRouter} from "../comps/myRouter";
-import {HeaderComp} from "../comps/headerComp/headerComp";
+import {Header} from "../comps/header/header";
 import {FooterComp} from "../comps/footerComp/footerComp";
 import apiService from "../utils/apiService";
 import {setIsAuthorizedAction} from "../utils/store/actionCreators";
@@ -27,7 +27,7 @@ const App: React.FC<any> = () => {
     }, []);
 
     return <React.StrictMode>
-        <HeaderComp/>
+        <Header/>
         <MyRouter/>
         <FooterComp/>
     </React.StrictMode>

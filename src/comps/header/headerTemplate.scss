@@ -1,0 +1,9 @@
+@use '../../style/style' as styles;
+
+.header {
+  background-color: styles.$primary;
+
+  & .img_container {
+    width: 200px;
+  }
+}
