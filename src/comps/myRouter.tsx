@@ -1,7 +1,7 @@
 import React from "react";
 import MainPage from "../pages/mainPage/mainPage";
 import SecondPage from "../pages/secondPage/secondPage";
-import {Routes, Route, useNavigate, BrowserRouter} from 'react-router-dom';
+import {Routes, Route, useNavigate, BrowserRouter, Navigate} from 'react-router-dom';
 import AuthPage from "../pages/authPage/authPage";
 import {useSelector} from "react-redux";
 import {Types} from "../utils/types";
@@ -15,7 +15,8 @@ export const MyRouter = () => {
     if (!isAuthorized) {
         return <>
             <Routes>
-                <Route path='/*' element={<AuthPage/>}/>
+                <Route path='/auth' element={<AuthPage/>}/>
+                <Route path='/*' element={<Navigate to={'/auth'}/>}/>
             </Routes>
         </>
     } else {

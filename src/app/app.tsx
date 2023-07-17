@@ -3,7 +3,7 @@ import './app.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Provider, useDispatch, useSelector} from 'react-redux'
 import store from "../utils/store";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 import {MyRouter} from "../comps/myRouter";
 import {Header} from "../comps/header/header";
 import {FooterComp} from "../comps/footerComp/footerComp";
@@ -15,15 +15,25 @@ import {Types} from "../utils/types";
 const App: React.FC<any> = () => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const isAuthorized = useSelector((state: Types.State) => {
+        return state.user.isAuthorized;
+    });
+    const user = useSelector((state: Types.State) => {
+        return state.user.currentUser;
+    });
 
     useEffect(() => {
-        apiService.getUserData().then(response => {
-            if (response.message) {
-                dispatch(setIsAuthorizedAction(false));
-            } else {
-                dispatch(setIsAuthorizedAction(true));
-            }
-        })
+        if (!isAuthorized) {
+            apiService.getUserData().then(response => {
+                if (response._id) {
+                    dispatch(setIsAuthorizedAction(true));
+                    navigate('/');
+                } else {
+                    dispatch(setIsAuthorizedAction(false));
+                }
+            })
+        }
     }, []);
 
     return <React.StrictMode>
