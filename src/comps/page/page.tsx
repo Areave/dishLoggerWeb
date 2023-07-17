@@ -1,6 +1,6 @@
 import React from 'react'
 import './page.scss';
-import {HeaderComp} from "../headerComp/headerComp";
+import {Header} from "../header/header";
 import NavigationButton from "../navigationButton/navigationButton";
 import {MyRouter} from "../myRouter";
 import {FooterComp} from "../footerComp/footerComp";
@@ -8,7 +8,7 @@ import {FooterComp} from "../footerComp/footerComp";
 const Page = () => {
     return <div className="page">
         <div className="header">
-            <HeaderComp/>
+            <Header/>
         </div>
         <div className="content">
         </div>
