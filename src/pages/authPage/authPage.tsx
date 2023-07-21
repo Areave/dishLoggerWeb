@@ -11,36 +11,15 @@ import {LoginForm} from "../../comps/LoginForm/loginForm";
 
 const AuthPage = () => {
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+
     const {Group, Label, Text, Control, Check} = Form;
 
-    const login = async () => {
-        apiService.login({
-            login: 'joe',
-            password: '1234'
-        }).then(response => {
-            if (response.user) {
-                console.log(response);
-                dispatch(setIsAuthorizedAction(true));
-                dispatch(setUserAction(response.user));
-                navigate('/');
-            } else {
-                dispatch(setIsAuthorizedAction(false));
-            }
-        });
-    };
 
-    const logout = () => {
-        apiService.logout().then(res => {
-            dispatch(setIsAuthorizedAction(false));
-        });
-    };
 
-    return <div className="page">
-        <LoginForm/>
-        <ActionButton onClick={login} label={'login'}/>
-        <ActionButton onClick={logout} label={'logout'}/>
+    return <div className="auth_page">
+        <div className="login-form__wrapper">
+            <LoginForm/>
+        </div>
     </div>
 };
 export default AuthPage;

@@ -1,5 +1,12 @@
 @use '../../style/style' as styles;
 
-.page {
-  //@include styles.forRootElements;
+.auth_page {
+  @include styles.flexColumnCenterElements;
+  & .login-form__wrapper {
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
