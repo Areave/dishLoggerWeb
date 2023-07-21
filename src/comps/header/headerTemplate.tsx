@@ -9,16 +9,18 @@ import {Nav, NavDropdown} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Logo from '../../assets/images/logo.png';
+import {useNavigate} from "react-router";
 
 export const HeaderTemplate: React.FC<Types.ComponentProps> = (props) => {
     // return <div className='header'>
     //     <PageTitleComp title={'DishLogger App'}/>
     //     <Navigation/>
     // </div>
+    const navigate = useNavigate();
     return <div>
-        <Navbar className="header m-10" expand="sm">
+        <Navbar className="header p-3" expand="sm">
             <Container>
-                <div className='img_container'>
+                <div className='img_container' onClick={() => {navigate('/')}}>
                     <img src={Logo}/>
                 </div>
                 {/*<Row>*/}
