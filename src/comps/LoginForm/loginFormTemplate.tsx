@@ -2,8 +2,6 @@ import React from 'react'
 import './loginFormTemplate.scss'
 import Form from "react-bootstrap/Form";
 import ActionButton from "../actionButton/actionButton";
-import {useCookies} from "react-cookie";
-import apiService from "../../utils/apiService";
 
 export const LoginFormTemplate: React.FC<any> = ({login, register, onEmailChange, onPasswordChange}) => {
 

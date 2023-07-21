@@ -6,7 +6,6 @@ import {setIsAuthorizedAction, setUserAction} from "../../utils/store/actionCrea
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
 import {useState} from "react";
-import {useCookies} from "react-cookie";
 
 const LoginFormHOC = (Comp: React.FC<any>, props?: any) => {
 
