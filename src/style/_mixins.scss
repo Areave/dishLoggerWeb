@@ -3,13 +3,16 @@
 // size mixins
 
 @mixin forRootElements {
-  @include stretch;
-  background-color: vars.$primary;
-  text-align: center;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
-  justify-content: space-between;
   align-content: stretch;
+}
+
+@mixin flexColumnCenterElements {
+  @include forRootElements;
+  justify-content: center;
+  align-items: center;
 }
 
 @mixin square($val) {
@@ -25,13 +28,15 @@
 
 // components mixins
 
-@mixin purpleButton {
+@mixin actionButton {
   padding: 5px 20px;
-  background-color: vars.$danger;
-  @include shadow;
+  background-color: vars.$primary;
+  margin: 10px;
+  border-radius: 5px;
+  //@include shadow;
 
   &:hover {
-    background-color: vars.$dangerHover;
+    background-color: vars.$primaryHover;
     cursor: pointer;
   }
 }
@@ -62,7 +67,7 @@
 }
 
 @mixin forFooter {
-  background-color: vars.$secondary;
+  background-color: vars.$primary;
   @include yellowBorder;
   border-bottom:none;
   width: 100%;
