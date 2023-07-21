@@ -1,4 +1,16 @@
 @use '../../style/style' as styles;
 
-.componentName {
+.loginForm {
+  background-color: ghostwhite;
+  max-width: 100%;
+  padding: 10px;
+  border: styles.$primary solid 3px;
+  border-radius: 5px;
+
+  @include styles.shadow;
+
+  & .button_wrapper {
+    display: flex;
+    justify-content: space-evenly;
+  }
 }
