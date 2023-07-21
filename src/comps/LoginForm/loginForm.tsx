@@ -14,15 +14,18 @@ const LoginFormHOC = (Comp: React.FC<any>, props?: any) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({login: '', password: ''});
+    const [isLoading, setIsLoading] = useState(false);
     // const [cookies, setCookie, removeCookie] = useCookies();
 
     const login = (event: any) => {
         event.preventDefault();
         console.log(formData);
+        setIsLoading(true);
         apiService.login({
             login: 'joe',
             password: '1234'
         }).then(response => {
+            setIsLoading(false);
             // const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
             if (response.user) {
                 dispatch(setIsAuthorizedAction(true));
@@ -58,7 +61,7 @@ const LoginFormHOC = (Comp: React.FC<any>, props?: any) => {
     };
 
 
-    props = {...props, login, register, onEmailChange, onPasswordChange};
+    props = {...props, login, register, onEmailChange, onPasswordChange, isLoading};
 
     return <Comp {...props}/>
 };
