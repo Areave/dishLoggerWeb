@@ -1,31 +1,34 @@
 import React from 'react'
 import './loginFormTemplate.scss'
-import {Types} from '../../utils/types'
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import ActionButton from "../actionButton/actionButton";
+import {useCookies} from "react-cookie";
+import apiService from "../../utils/apiService";
 
-export const LoginFormTemplate: React.FC<Types.ComponentProps> = (props) => {
+export const LoginFormTemplate: React.FC<any> = ({login, register, onEmailChange, onPasswordChange}) => {
+
     return <div className='loginForm'>
-        <Form className='container mt-3 mb-3'>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-                <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                </Form.Text>
+        <Form className='container'>
+            <Form.Label>Authorization form</Form.Label>
+            <Form.Group className="mb-3" controlId="formLogin">
+                <Form.Label>Login</Form.Label>
+                <Form.Control type="text" placeholder="Enter login" onChange={onEmailChange}/>
+                {/*<Form.Text className="text-muted">*/}
+                {/*    We'll never share your email with anyone else.*/}
+                {/*</Form.Text>*/}
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3" controlId="formPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control type="password" placeholder="Password" onChange={onPasswordChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
+                <Form.Check type="checkbox" label="Remember me"/>
             </Form.Group>
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
+            <div className="button_wrapper">
+                <ActionButton onClick={login} label={'login'}/>
+                <ActionButton onClick={register} label={'register'}/>
+            </div>
         </Form>
     </div>
 };
