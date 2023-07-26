@@ -115,7 +115,7 @@ const MainPage: React.FC<any> = ({setUserAction, removeCookie, cookies}) => {
 
 
     // @ts-ignore
-    return <div className="main_page">
+    return <div className="page main_page">
         <div className="">{getContent()}</div>
         <div className="">{Object.keys(user).length > 0 ? user.name : 'no user'}</div>
         <div className="">{Object.keys(product).length > 0 ? product.name : 'no product'}</div>

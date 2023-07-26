@@ -1,7 +1,6 @@
 @use '../../style/style' as styles;
 
 .auth_page {
-  @include styles.flexColumnCenterElements;
   & .login-form__wrapper {
     padding: 20px;
     height: 100%;

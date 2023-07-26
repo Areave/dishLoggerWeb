@@ -16,7 +16,7 @@ const AuthPage = () => {
 
 
 
-    return <div className="auth_page">
+    return <div className="page auth_page">
         <div className="login-form__wrapper">
             <LoginForm/>
         </div>
