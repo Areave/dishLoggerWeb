@@ -2,7 +2,7 @@ import * as React from "react";
 import {Types} from "../../utils/types";
 import {LoginFormTemplate} from "./loginFormTemplate";
 import apiService from "../../utils/apiService";
-import {setIsAuthorizedAction, setUserAction} from "../../utils/store/actionCreators";
+import {createAddMessageAction, setIsAuthorizedAction, setUserAction} from "../../utils/store/actionCreators";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
 import {useState} from "react";
@@ -27,6 +27,9 @@ const LoginFormHOC = (Comp: React.FC<any>, props?: any) => {
         }).then(response => {
             setIsLoading(false);
             // const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
+            if(response.message) {
+                dispatch(createAddMessageAction(response.message));
+            }
             if (response.user) {
                 dispatch(setIsAuthorizedAction(true));
                 dispatch(setUserAction(response.user));

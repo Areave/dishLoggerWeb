@@ -3,7 +3,7 @@ import './page.scss';
 import {Header} from "../header/header";
 import NavigationButton from "../navigationButton/navigationButton";
 import {MyRouter} from "../myRouter";
-import {FooterComp} from "../footerComp/footerComp";
+import {Footer} from "../footer/footer";
 
 const Page = () => {
     return <div className="page">
@@ -13,7 +13,7 @@ const Page = () => {
         <div className="content">
         </div>
         <div className="footer">
-            <FooterComp/>
+            <Footer/>
         </div>
     </div>
 };

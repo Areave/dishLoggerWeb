@@ -1,26 +1,35 @@
 import React, {useEffect, useState} from "react";
 import './app.scss';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Provider, useDispatch, useSelector} from 'react-redux'
 import store from "../utils/store";
 import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 import {MyRouter} from "../comps/myRouter";
 import {Header} from "../comps/header/header";
-import {FooterComp} from "../comps/footerComp/footerComp";
+import {Footer} from "../comps/footer/footer";
 import apiService from "../utils/apiService";
-import {setIsAuthorizedAction, setUserAction} from "../utils/store/actionCreators";
+import {createAddMessageAction, setIsAuthorizedAction, setUserAction} from "../utils/store/actionCreators";
 import {Types} from "../utils/types";
+import {useError} from "../utils/hooks/useError";
 import Loader from "../comps/loader/loader";
 import LoadingPage from "../pages/loadingPage/loadingPage";
-
+import {Toast} from '../comps/Toast/toast'
+import {ToastContainer} from "../comps/ToastContainer/toastContainer";
+import ActionButton from "../comps/actionButton/actionButton";
 
 const App: React.FC<any> = () => {
 
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const message = useError();
     const [isUserLoading, setIsUserLoading] = useState(true);
     const isAuthorized = useSelector((state: Types.State) => {
         return state.user.isAuthorized;
+    });
+    const messages = useSelector((state: Types.State) => {
+        return state.messages.messages;
     });
 
     useEffect(() => {
@@ -28,25 +37,43 @@ const App: React.FC<any> = () => {
             apiService.getUserData().then(response => {
                 setIsUserLoading(false);
                 // @ts-ignore
+                if(response.message) {
+                    // @ts-ignore
+                    // message(response.name);
+                    dispatch(createAddMessageAction(response.message));
+
+                }
+                // @ts-ignore
                 if (response._id) {
                     dispatch(setIsAuthorizedAction(true));
+                    // @ts-ignore
                     dispatch(setUserAction(response));
                     navigate('/');
                 } else {
                     dispatch(setIsAuthorizedAction(false));
                 }
+            }).catch(error => {
+                console.log('error from app.jsx', error)
+                // dispatch(createAddMessageAction(error.message));
             })
         }
     }, []);
 
     return <React.StrictMode>
         <Header/>
+        <ToastContainer messages={messages}/>
         {isUserLoading ? (
             <LoadingPage/>
-        ) : (
+        ) : (<>
+             {/*<ActionButton onClick={()=>{dispatch(createAddMessageAction({*/}
+             {/*    message: 'message message message message message message message message ',*/}
+             {/*    type: 'error'*/}
+             {/*}))}} label={'add message'}/>*/}
+            {/*<Toast text={userName}/>*/}
             <MyRouter isAuthorized={isAuthorized}/>
+            </>
         )}
-        <FooterComp/>
+        <Footer/>
     </React.StrictMode>
 };
 

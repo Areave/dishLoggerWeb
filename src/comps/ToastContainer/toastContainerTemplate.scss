@@ -1,0 +1,10 @@
+@use '../../style/style' as styles;
+
+.toast_container {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 300px;
+}

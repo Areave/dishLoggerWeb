@@ -1,0 +1,15 @@
+@use '../../style/style' as styles;
+
+.footer {
+  background-color: styles.$primary;
+  @include styles.yellowBorder;
+  border-bottom:none;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & .copyright {
+    margin: auto;
+  }
+}

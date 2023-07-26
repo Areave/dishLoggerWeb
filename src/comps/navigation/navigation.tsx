@@ -3,20 +3,19 @@ import {Types} from "../../utils/types";
 import {NavigationTemplate} from "./navigationTemplate";
 import {connect, useSelector} from 'react-redux'
 
-const NavigationHOC = (Comp: React.FC<any>): Types.HOC => {
+const NavigationHOC = (Comp: React.FC<any>, props: any) => {
 
-    return () => {
-        const isAuthorized = useSelector((state: Types.State) => {
-            return state.user.isAuthorized;
-        });
-        const user = useSelector((state: Types.State) => {
-            return state.user.currentUser;
-        });
+    const isAuthorized = useSelector((state: Types.State) => {
+        return state.user.isAuthorized;
+    });
+    const user = useSelector((state: Types.State) => {
+        return state.user.currentUser;
+    });
 
-        const props = {isAuthorized, user};
+    const newProps = {...props, isAuthorized, user};
 
-      return <Comp {...props}/>
-  }
+    return <Comp {...newProps}/>
+
 };
 
-export const Navigation = NavigationHOC(NavigationTemplate);
+export const Navigation = (props: any) => NavigationHOC(NavigationTemplate, props);

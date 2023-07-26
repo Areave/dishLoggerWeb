@@ -3,6 +3,7 @@ import MainPage from "../pages/mainPage/mainPage";
 import SecondPage from "../pages/secondPage/secondPage";
 import {Routes, Route, useNavigate, BrowserRouter, Navigate} from 'react-router-dom';
 import AuthPage from "../pages/authPage/authPage";
+import 'materialize-css'
 import {useDispatch, useSelector} from "react-redux";
 import {Types} from "../utils/types";
 import apiService from "../utils/apiService";

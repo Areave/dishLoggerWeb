@@ -30,3 +30,9 @@ export const createSetItemsArrayAction: (itemType: string, items: any[]) => Type
         payload: items
     }
 };
+export const createAddMessageAction: (message: any) => Types.Action = (message) => {
+    return {
+        type: `ADD_MESSAGE`,
+        payload: message
+    }
+};

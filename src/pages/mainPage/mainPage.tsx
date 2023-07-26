@@ -12,7 +12,7 @@ import {useNavigate} from "react-router";
 
 
 
-const MainPage: React.FC<any> = ({setUserAction}) => {
+const MainPage: React.FC<any> = ({setUserAction, removeCookie, cookies}) => {
 
     // console.log(user);
 
@@ -23,6 +23,13 @@ const MainPage: React.FC<any> = ({setUserAction}) => {
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
+
+
+
+    const showCookie = (e: any) => {
+        e.preventDefault();
+        console.log('jwt', cookies['jwt']);
+    };
 
     // @ts-ignore
     const user: {name: string} = useSelector((state: RootState) => {
@@ -83,6 +90,7 @@ const MainPage: React.FC<any> = ({setUserAction}) => {
     const logout = () => {
         apiService.logout().then(res => {
             dispatch(setIsAuthorizedAction(false));
+            // removeCookie('jwt');
             navigate('/auth');
         });
     };
@@ -107,20 +115,21 @@ const MainPage: React.FC<any> = ({setUserAction}) => {
 
 
     // @ts-ignore
-    return <div className="mainPage">
+    return <div className="main_page">
         <div className="">{getContent()}</div>
         <div className="">{Object.keys(user).length > 0 ? user.name : 'no user'}</div>
         <div className="">{Object.keys(product).length > 0 ? product.name : 'no product'}</div>
         <div className="">{products.length > 0 ? products[0].name : 'no products'}</div>
-        <ActionButton onClick={getUsers} label={'getUsers'}/>
-        <ActionButton onClick={getUser} label={'getUser'}/>
+        {/*<ActionButton onClick={getUsers} label={'getUsers'}/>*/}
+        {/*<ActionButton onClick={getUser} label={'getUser'}/>*/}
         {/*<ActionButton onClick={() => dispatch(setUserActionSaga())} label={'getUser by Saga'}/>*/}
-        <ActionButton onClick={login} label={'login'}/>
+        {/*<ActionButton onClick={login} label={'login'}/>*/}
         <ActionButton onClick={logout} label={'logout'}/>
-        <ActionButton onClick={getAllProducts} label={'getAllProducts'}/>
-        <ActionButton onClick={getOneProduct} label={'getOneProduct'}/>
-        <ActionButton onClick={getAllUsers} label={'getAllUsers'}/>
-        <ActionButton onClick={auth} label={'auth'}/>
+        {/*<ActionButton onClick={getAllProducts} label={'getAllProducts'}/>*/}
+        {/*<ActionButton onClick={getOneProduct} label={'getOneProduct'}/>*/}
+        {/*<ActionButton onClick={getAllUsers} label={'getAllUsers'}/>*/}
+        {/*<ActionButton onClick={auth} label={'auth'}/>*/}
+        <ActionButton onClick={showCookie} label={'showCookie'}/>
             {/*<JokeComp/>*/}
     </div>
 };

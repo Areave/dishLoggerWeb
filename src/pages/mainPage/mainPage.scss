@@ -1,7 +1,5 @@
 @use '../../style/style' as styles;
 
-.mainPage {
-
-
-
+.main_page {
+  @include styles.flexColumnCenterElements;
 }

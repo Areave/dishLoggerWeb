@@ -1,18 +1,41 @@
 import axios from 'axios';
 import {usersEndpoint, productsEndpoint, dishesEndpoint, mealsEndpoint, statsEndpoint} from "./endpoints";
+import {useDispatch} from "react-redux";
+import {createAddMessageAction} from "./store/actionCreators";
 
 axios.defaults.withCredentials = true;
 
+// const dispatch = useDispatch();
+
 const apiGetRequest = (url: string) => {
-    return axios.get(url).then((data: any) => Promise.resolve(data.data)).catch(error => {
-        return {
-            message: 'Database error',
-            stack: error.message
-        }
+    // return axios.get(url).then((data: any) => Promise.resolve(data.data)).catch(error => {
+    //     return {
+    //         message: 'Database error',
+    //         stack: error.message
+    //     }
+    // });
+    return new Promise((res, rej)=>{
+        setTimeout(() => {
+            return res(axios.get(url).then((data: any) => {
+                if (data.data.message) {
+                    // dispatch(createAddMessageAction(data.data.message));
+                }
+                return Promise.resolve(data.data)}).catch(error => {
+                console.log(error);
+                if (error.message) {
+                    // dispatch(createAddMessageAction(error.message));
+                }
+                return error.response.data;
+            }))
+        }, 1000)
     });
 };
 const apiPostRequest = (url: string, data: any) => {
-    return axios.post(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
+    return axios.post(url, data).then((data: any) => {
+        console.log(data);
+
+        return Promise.resolve(data.data)}).catch(error => {
+            console.log('error from apiservice', error);
         return {
             message: 'Database error',
             stack: error.message
@@ -21,12 +44,16 @@ const apiPostRequest = (url: string, data: any) => {
     })
 };
 const apiPutRequest = (url: string, data: any) => {
-    return axios.put(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
-        return {
-            message: 'Database error',
-            stack: error.message
-        }
+    return new Promise((res, rej) => {
+        return res(setTimeout(() => {
+            return axios.put(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
+                return {
+                    message: 'Database error',
+                    stack: error.message
+                }
 
+            })
+        }, 1000));
     })
 };
 const apiDeleteRequest = (url: string, data?: any) => {

@@ -15,3 +15,8 @@ declare module "*.jpg" {
 declare module "*.png" {
     export default "" as string;
 }
+declare global {
+    interface Window {
+        M: any;
+    }
+}

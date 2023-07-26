@@ -5,6 +5,7 @@ export namespace Types {
     export interface State {
         readonly user: any;
         readonly items: any;
+        readonly messages: any;
     }
 
     export interface Action {
@@ -12,7 +13,7 @@ export namespace Types {
         payload?: any
     }
 
-    export type HOC = (props: any) => ReactElement<any>
+    export type HOC = (Comp: ReactElement<any>, props: any) => ReactElement<any>
 
     export interface ErrorPageProps {
         isError: boolean,

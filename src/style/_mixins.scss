@@ -67,11 +67,7 @@
 }
 
 @mixin forFooter {
-  background-color: vars.$primary;
-  @include yellowBorder;
-  border-bottom:none;
-  width: 100%;
-  padding: 20px;
+
 }
 
 
