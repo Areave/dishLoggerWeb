@@ -1,13 +1,18 @@
 import {useCallback} from "react";
-import Toast from 'react-bootstrap/Toast';
+import {useDispatch} from "react-redux";
+import {createAddMessageAction} from "../store/actionCreators";
 
 export const useError = () => {
-    return useCallback( text => {
-        // @ts-ignore
-        if(window.M && text) {
-            // @ts-ignore
-            window.M.toast({
-                html: text
+    const dispatch = useDispatch();
+    return useCallback( message => {
+        dispatch(createAddMessageAction(message));
+        if (message.errors) {
+            message.errors.forEach((error: any) => {
+                const messageObject = {
+                    type: 'error',
+                    text: error.msg
+                };
+                dispatch(createAddMessageAction(messageObject));
             })
         }
     }, []);

@@ -23,8 +23,9 @@ const App: React.FC<any> = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const message = useError();
+    const showToast = useError();
     const [isUserLoading, setIsUserLoading] = useState(true);
+
     const isAuthorized = useSelector((state: Types.State) => {
         return state.user.isAuthorized;
     });
@@ -34,27 +35,19 @@ const App: React.FC<any> = () => {
 
     useEffect(() => {
         if (!isAuthorized) {
-            apiService.getUserData().then(response => {
+            apiService.getUserData().then((response: any) => {
+                console.log('response', response);
                 setIsUserLoading(false);
-                // @ts-ignore
                 if(response.message) {
-                    // @ts-ignore
-                    // message(response.name);
-                    dispatch(createAddMessageAction(response.message));
-
+                    showToast(response.message);
                 }
-                // @ts-ignore
                 if (response._id) {
                     dispatch(setIsAuthorizedAction(true));
-                    // @ts-ignore
                     dispatch(setUserAction(response));
                     navigate('/');
                 } else {
                     dispatch(setIsAuthorizedAction(false));
                 }
-            }).catch(error => {
-                console.log('error from app.jsx', error)
-                // dispatch(createAddMessageAction(error.message));
             })
         }
     }, []);
