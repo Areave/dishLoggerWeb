@@ -7,10 +7,13 @@
     flex-direction: row;
   }
 
-  &_greeting_link {
-    cursor: pointer;
-    color: styles.$primaryLink;
-    font-weight: bold;
+  &_greeting {
+
+    &_link {
+      cursor: pointer;
+      color: styles.$primaryLink;
+      font-weight: bold;
+    }
   }
 
   &_link {
