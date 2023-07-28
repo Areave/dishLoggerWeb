@@ -1,0 +1,28 @@
+@use '../../style/style' as styles;
+
+.navigation {
+  width: 40%;
+
+  & .navbar-nav {
+    flex-direction: row;
+  }
+
+  &_greeting_link {
+    cursor: pointer;
+    color: styles.$primaryLink;
+    font-weight: bold;
+  }
+
+  &_link {
+    cursor: pointer;
+    &:hover {
+      color: styles.$primaryLink;
+      font-weight: bold;
+    }
+  }
+
+  &_menu {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
