@@ -1,3 +1,5 @@
-export const PRODUCT = 'PRODUCT';
-export const DISH = 'DISH';
-export const MEAL = 'MEAL';
+export enum itemTypes {
+    PRODUCT = 'PRODUCT',
+    DISH = 'DISH',
+    MEAL = 'MEAL'
+}
