@@ -2,10 +2,11 @@ import React from "react";
 import {Types} from "../../utils/types";
 import {LoginFormTemplate} from "./loginFormTemplate";
 import apiService from "../../utils/apiService";
-import {createAddMessageAction, setIsAuthorizedAction, setUserAction} from "../../utils/store/actionCreators";
+import {createAddMessageAction, createSetItemsArrayAction, setIsAuthorizedAction, setUserAction} from "../../utils/store/actionCreators";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
 import {useState} from "react";
+import {itemTypes} from "../../utils/itemTypes";
 
 const LoginFormHOC = (Comp: React.FC<any>, props?: any) => {
 
@@ -33,6 +34,7 @@ const LoginFormHOC = (Comp: React.FC<any>, props?: any) => {
             if (response.user) {
                 dispatch(setIsAuthorizedAction(true));
                 dispatch(setUserAction(response.user));
+                dispatch(createSetItemsArrayAction(itemTypes.MEAL, response.user.meals));
 
                 // @ts-ignore
                 // setCookie("jwt", '23423432', { path: "/" });
