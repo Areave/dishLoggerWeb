@@ -25,6 +25,7 @@ export const createSetItemAction: (itemType: string, item: any) => Types.Action 
     }
 };
 export const createSetItemsArrayAction: (itemType: string, items: any[]) => Types.Action = (itemType, items) => {
+    console.log(itemType, items);
     return {
         type: `SET_${itemType}_ARRAY`,
         payload: items

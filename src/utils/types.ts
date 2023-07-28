@@ -13,7 +13,7 @@ export namespace Types {
         payload?: any
     }
 
-    export type HOC = (Comp: ReactElement<any>, props: any) => ReactElement<any>
+    export type HOC = (Comp: React.JSXElementConstructor<any>, props: any) => React.JSXElementConstructor<any>
 
     export interface ErrorPageProps {
         isError: boolean,

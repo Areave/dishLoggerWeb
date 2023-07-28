@@ -1,11 +1,12 @@
-import React from "react";
+import React, {JSXElementConstructor} from "react";
 import {CompTemplate} from "./compTemplate";
+import {Types} from "../../utils/types";
 
-const CompHOC = (Comp: React.FC<any>, props?: any) => {
+const CompHOC = (WrappedComp: JSXElementConstructor<any>, props?: any) => {
 
     props = {...props};
 
-    return <Comp {...props}/>
+    return <WrappedComp {...props}/>
 };
 
 export const Comp = (props: any) => CompHOC(CompTemplate, props);

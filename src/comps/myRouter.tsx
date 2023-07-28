@@ -1,28 +1,32 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import MainPage from "../pages/mainPage/mainPage";
-import SecondPage from "../pages/secondPage/secondPage";
-import {Routes, Route, useNavigate, BrowserRouter, Navigate} from 'react-router-dom';
+import {Routes, Route, Navigate} from 'react-router-dom';
 import AuthPage from "../pages/authPage/authPage";
 import 'materialize-css'
-import {useDispatch, useSelector} from "react-redux";
-import {Types} from "../utils/types";
-import apiService from "../utils/apiService";
-import {setIsAuthorizedAction, setUserAction} from "../utils/store/actionCreators";
-import Loader from "./loader/loader";
+// import {DropdownMenu} from "./Navigation/dropdownMenu";
+import ActionButton from "./actionButton/actionButton";
+import {Navigation} from "./Navigation/navigation";
 
-// @ts-ignore
-export const MyRouter = ({isAuthorized}) => {
-    return <Routes>
-        {isAuthorized ? (
-            <>
-                <Route path='/' element={<MainPage/>}/>
-                <Route path='/*' element={<Navigate to={'/'}/>}/>
-            </>
-        ) : (
-            <>
-                <Route path='/auth' element={<AuthPage/>}/>
-                <Route path='/*' element={<Navigate to={'/auth'}/>}/>
-            </>
-        )}
-    </Routes>
+
+export const MyRouter = ({isAuthorized}: any) => {
+    return <>
+        {/*{isAuthorized && <div className="action-buttons">*/}
+
+        {/*    <ActionButton onClick={() => {*/}
+        {/*    }} label={'Add'}/>*/}
+        {/*</div>}*/}
+        <Routes>
+            {isAuthorized ? (
+                <>
+                    <Route path='/' element={<MainPage/>}/>
+                    <Route path='/*' element={<Navigate to={'/'}/>}/>
+                </>
+            ) : (
+                <>
+                    <Route path='/auth' element={<AuthPage/>}/>
+                    <Route path='/*' element={<Navigate to={'/auth'}/>}/>
+                </>
+            )}
+        </Routes>
+    </>
 };

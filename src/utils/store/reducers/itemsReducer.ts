@@ -25,6 +25,7 @@ const itemsReducer = (state: Types.State, action: Types.Action) => {
         case 'SET_MEAL':
             return {...state, currentMeal: action.payload};
         case 'SET_MEAL_ARRAY':
+            console.log(action.payload);
             return {...state, allMeals: action.payload};
     }
     return state || initialproductState;
