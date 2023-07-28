@@ -9,7 +9,13 @@ import {MyRouter} from "../comps/myRouter";
 import {Header} from "../comps/header/header";
 import {Footer} from "../comps/footer/footer";
 import apiService from "../utils/apiService";
-import {createAddMessageAction, setIsAuthorizedAction, setUserAction} from "../utils/store/actionCreators";
+import {
+    createAddMessageAction,
+    createSetItemsArrayAction,
+    setIsAuthorizedAction,
+    setUserAction,
+    setUserStatAction
+} from "../utils/store/actionCreators";
 import {Types} from "../utils/types";
 import {useError} from "../utils/hooks/useError";
 import Loader from "../comps/loader/loader";
@@ -17,6 +23,7 @@ import LoadingPage from "../pages/loadingPage/loadingPage";
 import {Toast} from '../comps/Toast/toast'
 import {ToastContainer} from "../comps/ToastContainer/toastContainer";
 import ActionButton from "../comps/actionButton/actionButton";
+import {itemTypes} from "../utils/itemTypes";
 
 const App: React.FC<any> = () => {
 
@@ -38,12 +45,14 @@ const App: React.FC<any> = () => {
             apiService.getUserData().then((response: any) => {
                 console.log('response', response);
                 setIsUserLoading(false);
+                console.log('response', response);
                 if(response.message) {
                     showToast(response.message);
                 }
-                if (response._id) {
+                if (response.user) {
                     dispatch(setIsAuthorizedAction(true));
-                    dispatch(setUserAction(response));
+                    dispatch(setUserAction(response.user));
+                    dispatch(createSetItemsArrayAction(itemTypes.MEAL, response.user.meals));
                     navigate('/');
                 } else {
                     dispatch(setIsAuthorizedAction(false));
