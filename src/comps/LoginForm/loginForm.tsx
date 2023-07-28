@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {Types} from "../../utils/types";
 import {LoginFormTemplate} from "./loginFormTemplate";
 import apiService from "../../utils/apiService";

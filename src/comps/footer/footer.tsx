@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {Types} from "../../utils/types";
 import {FooterTemplate} from "./footerTemplate";
 import {connect} from 'react-redux'

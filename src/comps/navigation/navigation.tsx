@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {Types} from "../../utils/types";
 import {NavigationTemplate} from "./navigationTemplate";
 import {connect, useSelector} from 'react-redux'

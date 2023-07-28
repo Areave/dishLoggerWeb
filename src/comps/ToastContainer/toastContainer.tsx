@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {ToastContainerTemplate} from "./toastContainerTemplate";
 
 const ToastContainerHOC = (Comp: React.FC<any>, props?: any) => {

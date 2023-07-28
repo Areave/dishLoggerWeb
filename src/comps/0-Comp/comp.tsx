@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {CompTemplate} from "./compTemplate";
 
 const CompHOC = (Comp: React.FC<any>, props?: any) => {
