@@ -1,39 +1,42 @@
 import {Types} from '../types'
+import {createAction} from "@reduxjs/toolkit";
 
-export const setUserAction: (user: any) => Types.Action = (user) => {
-    return {
-        type: 'SET_USER',
-        payload: user
-    }
-};
-export const setUserStatAction: (stat: any) => Types.Action = (stat) => {
-    return {
-        type: 'SET_USER_STAT',
-        payload: stat
-    }
-};
-export const setIsAuthorizedAction: (isAuthorized: boolean) => Types.Action = (isAuthorized) => {
-    return {
-        type: 'SET_ISAUTHORIZED',
-        payload: isAuthorized
-    }
-};
-export const createSetItemAction: (itemType: string, item: any) => Types.Action = (itemType, item) => {
-    return {
-        type: `SET_${itemType}`,
-        payload: item
-    }
-};
-export const createSetItemsArrayAction: (itemType: string, items: any[]) => Types.Action = (itemType, items) => {
-    console.log(itemType, items);
-    return {
-        type: `SET_${itemType}_ARRAY`,
-        payload: items
-    }
-};
-export const createAddMessageAction: (message: any) => Types.Action = (message) => {
-    return {
-        type: `ADD_MESSAGE`,
-        payload: message
-    }
-};
+// user
+export const setUserAction = createAction('SET_USER', (user) => {
+    return {payload: user}
+});
+export const setUserStatAction = createAction('SET_USER_STAT', (stat) => {
+    return {payload: stat}
+});
+export const setIsAuthorizedAction = createAction('SET_ISAUTHORIZED', (isAuthorized: boolean) => {
+    return {payload: isAuthorized}
+});
+
+// product
+export const createSetProductAction = createAction('SET_PRODUCT', (product: any) => {
+    return {payload: product}
+});
+export const createSetProductsAction = createAction('SET_PRODUCTS', (products: any) => {
+    return {payload: products}
+});
+
+// dish
+export const createSetDishAction = createAction('SET_DISH', (dish: any) => {
+    return {payload: dish}
+});
+export const createSetDishesAction = createAction('SET_DISHES', (dishes: any) => {
+    return {payload: dishes}
+});
+
+// meal
+export const createSetMealAction = createAction('SET_MEAL', (meal: any) => {
+    return {payload: meal}
+});
+export const createSetMealsAction = createAction('SET_MEALS', (meals: any) => {
+    return {payload: meals}
+});
+
+// message
+export const createAddMessageAction = createAction('ADD_MESSAGE', (message: any) => {
+    return {payload: message}
+});

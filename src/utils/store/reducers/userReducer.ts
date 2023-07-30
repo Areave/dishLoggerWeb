@@ -1,4 +1,6 @@
 import {Types} from '../../types'
+import {createReducer} from "@reduxjs/toolkit";
+import {setIsAuthorizedAction, setUserAction, setUserStatAction} from "../actionCreators";
 
 const initialUserState = {
     isAuthorized: false,
@@ -6,16 +8,8 @@ const initialUserState = {
     userStat: {}
 };
 
-const userReducer = (state: Types.State, action: Types.Action) => {
-    switch (action.type) {
-        case 'SET_USER':
-    return {...state, currentUser: action.payload};
-        case 'SET_USER_STAT':
-    return {...state, userStat: action.payload};
-        case 'SET_ISAUTHORIZED':
-    return {...state, isAuthorized: action.payload};
-}
-    return state || initialUserState;
-};
-
-export default userReducer
+export default createReducer(initialUserState, (builder) => {
+    builder.addCase(setUserAction, (state, action) => {state.currentUser = action.payload});
+    builder.addCase(setUserStatAction, (state, action) => {state.userStat = action.payload});
+    builder.addCase(setIsAuthorizedAction, (state, action) => {state.isAuthorized = action.payload});
+});

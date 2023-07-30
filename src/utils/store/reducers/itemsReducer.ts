@@ -1,34 +1,31 @@
 import {Types} from '../../types'
+import {createReducer} from "@reduxjs/toolkit";
+import {
+    createSetDishAction,
+    createSetDishesAction,
+    createSetMealAction,
+    createSetMealsAction,
+    createSetProductAction,
+    createSetProductsAction,
+} from "../actionCreators";
 
-const initialproductState = {
-    currentProduct: {},
+const initialItemState = {
+    product: {},
     // @ts-ignore
-    allProducts: [],
-    currentDish: {},
+    products: [],
+    dish: {},
     // @ts-ignore
-    allDishes: [],
-    currentMeal: {},
+    dishes: [],
+    meal: {},
     // @ts-ignore
-    allMeals: [],
+    meals: [],
 };
 
-const itemsReducer = (state: Types.State, action: Types.Action) => {
-    switch (action.type) {
-        case 'SET_PRODUCT':
-            return {...state, currentProduct: action.payload};
-        case 'SET_PRODUCT_ARRAY':
-            return {...state, allProducts: action.payload};
-        case 'SET_DISH':
-            return {...state, currentDish: action.payload};
-        case 'SET_DISH_ARRAY':
-            return {...state, allDishes: action.payload};
-        case 'SET_MEAL':
-            return {...state, currentMeal: action.payload};
-        case 'SET_MEAL_ARRAY':
-            console.log(action.payload);
-            return {...state, allMeals: action.payload};
-    }
-    return state || initialproductState;
-};
-
-export default itemsReducer
+export default createReducer(initialItemState, (builder) => {
+    builder.addCase(createSetProductAction, (state, action) => {state.product = action.payload});
+    builder.addCase(createSetProductsAction, (state, action) => {state.products = action.payload});
+    builder.addCase(createSetDishAction, (state, action) => {state.dish = action.payload});
+    builder.addCase(createSetDishesAction, (state, action) => {state.dishes = action.payload});
+    builder.addCase(createSetMealAction, (state, action) => {state.meal = action.payload});
+    builder.addCase(createSetMealsAction, (state, action) => {state.meals = action.payload});
+});

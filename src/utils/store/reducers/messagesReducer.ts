@@ -1,17 +1,12 @@
 import {Types} from '../../types'
-
+import {createReducer} from "@reduxjs/toolkit";
+import {createAddMessageAction} from "../actionCreators";
 
 const initialMessagesState = {
     // @ts-ignore
     messages: []
 };
 
-const messagesReducer = (state: Types.State, action: Types.Action) => {
-    switch (action.type) {
-        case 'ADD_MESSAGE':
-            return {...state, messages: [...state.messages, action.payload]};
-    }
-    return state || initialMessagesState;
-};
-
-export default messagesReducer
+export default createReducer(initialMessagesState, (builder) => {
+    builder.addCase(createAddMessageAction, (state, action) => {state.messages = [...state.messages, action.payload]});
+});
