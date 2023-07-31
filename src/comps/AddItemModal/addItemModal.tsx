@@ -1,35 +1,26 @@
-import React from 'react'
-import {Modal} from 'react-bootstrap';
-import './addItemModal.scss'
-import ActionButton from "../actionButton/actionButton";
-import {useSelector} from "react-redux";
-import Loader from "../loader/loader";
+import React, {useState} from "react";
+import {useDispatch} from "react-redux";
+import {AddItemModalTemplate} from "./addItemModalTemplate";
+import {Types} from "../../utils/types";
+import {itemTypes} from "../../utils/itemTypes";
+import {
+    createAddDishAction,
+    createAddMealAction, createAddProductAction,
+    createSetDishAction, createSetDishesAction,
+    createSetMealAction,
+    createSetMealsAction,
+    createSetProductAction, createSetProductsAction
+} from "../../utils/store/actionCreators";
+import {addNewItem} from "../../utils/store/asyncThunks";
+import apiService from "../../utils/apiService";
 
-export const AddItemModal: React.FC<any> = ({showModal, setShowModal, addMeal}) => {
+const AddItemModalHOC = (Comp: React.FC<any>, props: any) => {
 
-    const isItemLoading = useSelector((state: { items: any }) => {
-        return state.items.isItemLoading;
-    });
 
-    if (isItemLoading) return <Loader/>
 
-    return <div className='addItemModal'
-                style={{display: 'block', position: 'initial'}}>
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
-            {/*<Modal.Dialog>*/}
-            <Modal.Header closeButton>
-                <Modal.Title>Modal title</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <p>Modal body text goes here.</p>
-            </Modal.Body>
-            <Modal.Footer>
-                <ActionButton onClick={() => {
-                }} label={'label1'}/>
-                <ActionButton onClick={() => {
-                }} label={'label2'}/>
-            </Modal.Footer>
-            {/*</Modal.Dialog>*/}
-        </Modal>
-    </div>
+    props = {...props};
+
+    return <Comp {...props}/>
 };
+
+export const AddItemModal = (props: any) => AddItemModalHOC(AddItemModalTemplate, props);
