@@ -2,14 +2,11 @@
 
 .footer {
   background-color: styles.$primary;
-  @include styles.yellowBorder;
+  @include styles.flexColumnCenterElements;
   border-bottom:none;
   width: 100%;
   padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   & .copyright {
-    margin: auto;
+    //margin: auto;
   }
 }
