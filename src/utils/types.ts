@@ -19,11 +19,11 @@ export namespace Types {
     }
 
     export interface ItemsState {
-        readonly product: Product,
+        readonly product: Product | {},
         readonly products: Product[],
-        readonly dish: Dish,
+        readonly dish: Dish | {},
         readonly dishes: Dish[],
-        readonly meal: Meal,
+        readonly meal: Meal | {},
         readonly meals: Meal[],
         readonly isItemLoading: boolean,
         readonly isItemsLoading: boolean,
