@@ -12,8 +12,8 @@ export namespace Types {
 
     export interface UserState {
         readonly isAuthorized: boolean,
-        readonly currentUser: User,
-        readonly userStat: UserStat,
+        readonly currentUser?: User,
+        readonly userStat?: UserStat,
         readonly isUserLoading: boolean,
         readonly isUserStatLoading: boolean
     }
@@ -37,7 +37,7 @@ export namespace Types {
     export interface User {
         name: string,
         login: string,
-        intakeData: {
+        intakeData?: {
             energyValue: {
                 calories: number,
                 proteines: number,
@@ -45,9 +45,9 @@ export namespace Types {
                 carbohydrates: number
             },
         },
-        products: Product[],
-        dishes: Dish[],
-        meals: Meal[],
+        products?: Product[],
+        dishes?: Dish[],
+        meals?: Meal[],
     }
 
     export interface UserStat {
@@ -91,7 +91,7 @@ export namespace Types {
     export interface Product {
         name: string,
         type: string,
-        description: string,
+        description?: string,
         amountOfItems: number,
         weightTotal: number,
         price: {
@@ -165,13 +165,6 @@ export namespace Types {
             carbohydrates: number
         }
     }
-
-    export interface Action {
-        type: string,
-        payload?: any
-    }
-
-    export type HOC = (Comp: React.JSXElementConstructor<any>, props: any) => React.JSXElementConstructor<any>
 
     export interface ActionButtonProps {
         onClick: (arg?: any) => void,
