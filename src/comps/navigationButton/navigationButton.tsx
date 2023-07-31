@@ -1,6 +1,5 @@
 import React from 'react'
 import './navigationButton.scss'
-import {Types} from '../../utils/types'
 import {useNavigate} from 'react-router'
 
 const NavigationButton: React.FC<{title: string, route: string}> = ({title, route}) => {

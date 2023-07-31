@@ -1,7 +1,5 @@
 import React from 'react'
 import './footerTemplate.scss'
-import {Types} from '../../utils/types'
-import NavigationButton from "../navigationButton/navigationButton";
 import {Nav} from "react-bootstrap";
 
 export const FooterTemplate: React.FC = () => {

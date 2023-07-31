@@ -1,5 +1,4 @@
 import React from "react";
-import {Types} from "../../utils/types";
 import {HeaderTemplate} from "./headerTemplate";
 
 const HeaderHOC = (Comp: React.FC<any>, props: any) => {

@@ -8,7 +8,6 @@ import Loader from "../loader/loader";
 export const AddItemModal: React.FC<any> = ({showModal, setShowModal, addMeal}) => {
 
     const isItemLoading = useSelector((state: { items: any }) => {
-        // @ts-ignore
         return state.items.isItemLoading;
     });
 

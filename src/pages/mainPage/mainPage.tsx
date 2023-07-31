@@ -2,19 +2,10 @@ import React, {useEffect, useState} from "react";
 import './mainPage.scss';
 import {useDispatch, useSelector} from 'react-redux'
 import ActionButton from "../../comps/actionButton/actionButton";
-import apiService from "../../utils/apiService";
-import {
-    createSetMealsAction,
-    setIsAuthorizedAction,
-    setUserStatAction
-} from "../../utils/store/actionCreators";
-import {RootState} from "../../utils/store";
-import {useNavigate} from "react-router";
 import {Stat} from "../../comps/Stat/stat";
 import {Meals} from "../../comps/Meals/meals";
 import {fetchUserStatForToday} from "../../utils/store/asyncThunks";
 import {Search} from "../../comps/Search/search";
-import Modal from 'react-bootstrap/Modal';
 import {AddItemModal} from "../../comps/AddItemModal/addItemModal";
 import {Types} from "../../utils/types";
 
@@ -22,24 +13,18 @@ import {Types} from "../../utils/types";
 const MainPage: React.FC<any> = () => {
 
     const [filteredMeals, setFilteredMeals] = useState();
-
-    const dispatch = useDispatch();
-
-    const navigate = useNavigate();
-
     const [showModal, setShowModal] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchUserStatForToday());
     }, []);
 
-    // @ts-ignore
     const userStat: Types.UserStat = useSelector((state: Types.MainState) => {
         console.log('userFromUseSelect', state.user);
         return state.user.userStat;
     });
     const meals = useSelector((state: { items: any }) => {
-        // @ts-ignore
         return state.items.meals;
     });
 
