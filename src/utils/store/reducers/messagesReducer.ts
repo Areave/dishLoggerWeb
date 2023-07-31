@@ -2,8 +2,7 @@ import {Types} from '../../types'
 import {createReducer} from "@reduxjs/toolkit";
 import {createAddMessageAction} from "../actionCreators";
 
-const initialMessagesState = {
-    // @ts-ignore
+const initialMessagesState: Types.MessagesState = {
     messages: []
 };
 

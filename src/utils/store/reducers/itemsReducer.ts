@@ -9,15 +9,12 @@ import {
     createSetProductsAction,
 } from "../actionCreators";
 
-const initialItemState = {
+const initialItemState: Types.ItemsState = {
     product: {},
-    // @ts-ignore
     products: [],
     dish: {},
-    // @ts-ignore
     dishes: [],
     meal: {},
-    // @ts-ignore
     meals: [],
     isItemLoading: false,
     isItemsLoading: false,
