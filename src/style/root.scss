@@ -9,7 +9,7 @@
 }
 
 .page {
-  @include styles.flexColumnCenterElements;
+  @include styles.forRootElements;
 }
 
 .action-buttons {

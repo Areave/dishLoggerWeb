@@ -7,10 +7,11 @@
   flex-grow: 1;
   flex-direction: column;
   align-content: stretch;
+  flex-wrap: wrap;
 }
 
 @mixin flexColumnCenterElements {
-  @include forRootElements;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
