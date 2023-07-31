@@ -4,9 +4,12 @@ import ActionButton from "../actionButton/actionButton";
 import Navbar from "react-bootstrap/Navbar";
 import {Nav, NavDropdown} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Types} from "../../utils/types";
 import {useNavigate} from "react-router";
+import Logout from "../../assets/images/logout.png";
+import apiService from "../../utils/apiService";
+import {setIsAuthorizedAction} from "../../utils/store/actionCreators";
 
 export const Navigation: React.FC<any> = () => {
 
@@ -23,7 +26,17 @@ export const Navigation: React.FC<any> = () => {
         <Nav.Link className='navigation_link ps-3' href="/products">Products</Nav.Link>
         <Nav.Link className='navigation_link ps-3' href="/dishes">Dishes</Nav.Link>
         <Nav.Link className='navigation_link ps-3' href="/stats">Stats</Nav.Link>
-    </>
+    </>;
+
+    const dispatch = useDispatch();
+
+    const logout = () => {
+        apiService.logout().then(res => {
+            dispatch(setIsAuthorizedAction(false));
+            // removeCookie('jwt');
+            navigate('/auth');
+        });
+    };
 
 
 
@@ -32,6 +45,10 @@ export const Navigation: React.FC<any> = () => {
                 <div className='navigation d-flex flex-column align-items-end'>
                     <div className="navigation_greeting pb-1 d-flex">welcome,
                         <div className='navigation_greeting_link ps-3' onClick={() => navigate("/user")}>{user.name || ' stay fit'}</div>
+                        <div className="navigation_greeting_img_container" onClick={logout}>
+                            <img src={Logout}/>
+                        </div>
+
                     </div>
                     <div className="navigation_menu">
                         <Nav className='justify-content-between'>
