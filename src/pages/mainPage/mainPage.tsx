@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import ActionButton from "../../comps/actionButton/actionButton";
 import {Stat} from "../../comps/Stat/stat";
 import {Meals} from "../../comps/Meals/meals";
-import {addNewItem, fetchUserStatForToday} from "../../utils/store/asyncThunks";
+import {addNewItem, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
 import {Search} from "../../comps/Search/search";
 import {AddItemModal} from "../../comps/AddItemModal/addItemModal";
 import {Types} from "../../utils/types";
@@ -113,13 +113,18 @@ const MainPage: React.FC<any> = () => {
         dispatch(addNewItem(apiService.addMeal, createSetMealsAction, {meal: mockData.meal}))
     };
 
+    const removeMeal = (id: string) => {
+        dispatch(createSetMealsAction(meals.filter((meal: Types.Meal) => meal._id !== id)));
+        dispatch(removeNewItem(apiService.removeMeal, createSetMealsAction, id));
+    };
+
     return <div className="page main_page">
         <div className="main_page__content">
             <AddItemModal targetItem={itemTypes.MEAL} setNewItemData={setNewItemData} addItem={addItem} showModal={showModal} closeModal={() => setShowModal(false)}/>
             <Stat mainStat={userStat.mainStat} statArray={userStat.statArray}/>
             <Search onSearchChange={onSearchChange}/>
             <ActionButton customClassName='add_item__button' onClick={openModalToAddMeal} label={'add meal'}/>
-            <Meals meals={filteredMeals || meals}/>
+            <Meals meals={filteredMeals || meals} removeMeal={removeMeal}/>
         </div>
 
     </div>
