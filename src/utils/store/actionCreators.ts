@@ -11,6 +11,12 @@ export const setUserStatAction = createAction('SET_USER_STAT', (stat) => {
 export const setIsAuthorizedAction = createAction('SET_ISAUTHORIZED', (isAuthorized: boolean) => {
     return {payload: isAuthorized}
 });
+export const setIsUserLoading = createAction('SET_USER_LOADING', (isUserLoading: boolean) => {
+    return {payload: isUserLoading}
+});
+export const setIsUserStatLoading = createAction('SET_USER_STAT_LOADING', (isUserStatLoading: boolean) => {
+    return {payload: isUserStatLoading}
+});
 
 // product
 export const createSetProductAction = createAction('SET_PRODUCT', (product: any) => {
@@ -34,6 +40,15 @@ export const createSetMealAction = createAction('SET_MEAL', (meal: any) => {
 });
 export const createSetMealsAction = createAction('SET_MEALS', (meals: any) => {
     return {payload: meals}
+});
+
+// item loading
+export const createSetItemLoadingAction = createAction('SET_ITEM_LOADING', (isItemLoading: boolean) => {
+    return {payload: isItemLoading}
+});
+// items loading
+export const createSetItemsLoadingAction = createAction('SET_ITEMS_LOADING', (isItemsLoading: boolean) => {
+    return {payload: isItemsLoading}
 });
 
 // message

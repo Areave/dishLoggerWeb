@@ -17,5 +17,6 @@ export type RootState = ReturnType<typeof mainReducer>
 
 export default configureStore({
     reducer: mainReducer,
-    middleware: [thunk]
+    middleware: [thunk],
+    devTools: process.env.NODE_ENV !== 'production',
 });

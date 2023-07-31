@@ -2,7 +2,7 @@ import {Types} from '../../types'
 import {createReducer} from "@reduxjs/toolkit";
 import {
     createSetDishAction,
-    createSetDishesAction,
+    createSetDishesAction, createSetItemLoadingAction, createSetItemsLoadingAction,
     createSetMealAction,
     createSetMealsAction,
     createSetProductAction,
@@ -19,6 +19,8 @@ const initialItemState = {
     meal: {},
     // @ts-ignore
     meals: [],
+    isItemLoading: false,
+    isItemsLoading: false,
 };
 
 export default createReducer(initialItemState, (builder) => {
@@ -28,4 +30,6 @@ export default createReducer(initialItemState, (builder) => {
     builder.addCase(createSetDishesAction, (state, action) => {state.dishes = action.payload});
     builder.addCase(createSetMealAction, (state, action) => {state.meal = action.payload});
     builder.addCase(createSetMealsAction, (state, action) => {state.meals = action.payload});
+    builder.addCase(createSetItemLoadingAction, (state, action) => {state.isItemLoading = action.payload});
+    builder.addCase(createSetItemsLoadingAction, (state, action) => {state.isItemsLoading = action.payload});
 });
