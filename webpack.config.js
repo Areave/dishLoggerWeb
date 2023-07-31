@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCss = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -123,7 +124,12 @@ module.exports = function (_, webpackEnv) {
             minimize: isProduction,
             minimizer: [terserPlugin],
         },
-        plugins: [htmlWebpackPlugin, miniCss, copyPlugin],
+        plugins: [htmlWebpackPlugin, miniCss, copyPlugin, new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(webpackEnv.mode),
+            },
+            // ...
+        })],
         devServer: {
             historyApiFallback: true,
             port: 3000
