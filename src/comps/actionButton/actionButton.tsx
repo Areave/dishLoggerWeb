@@ -2,8 +2,12 @@ import React from 'react'
 import './actionButton.scss'
 import {Types} from '../../utils/types'
 
-const ActionButton: React.FC<Types.ActionButtonProps> = ({label, onClick}) => {
-    return <button className='actionButton'
+const ActionButton: React.FC<Types.ActionButtonProps> = ({customClassName, label, onClick}) => {
+    let buttonClassName = 'actionButton';
+    if (customClassName) {
+        buttonClassName += ' ' + customClassName;
+    }
+    return <button className={buttonClassName}
                    onClick={onClick}>
         {label}
     </button>

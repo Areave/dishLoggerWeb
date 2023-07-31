@@ -168,6 +168,7 @@ export namespace Types {
 
     export interface ActionButtonProps {
         onClick: (arg?: any) => void,
-        label: string
+        label: string,
+        customClassName?: string
     }
 }

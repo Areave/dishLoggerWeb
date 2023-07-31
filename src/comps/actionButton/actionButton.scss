@@ -1,6 +1,16 @@
 @use '../../style/style' as styles;
 
 .actionButton {
-  @include styles.actionButton;
+  padding: 5px 20px;
+  background-color: styles.$primary;
+  //margin: 10px;
+  //flex-grow: 1;
+  border-radius: 5px;
+  //@include shadow;
+
+  &:hover {
+    background-color: styles.$primaryHover;
+    cursor: pointer;
+  }
 
 }
