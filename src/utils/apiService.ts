@@ -68,8 +68,8 @@ const apiPutRequest = (url: string, data: any) => {
         }, 1000));
     })
 };
-const apiDeleteRequest = (url: string, data?: any) => {
-    return axios.delete(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
+const apiDeleteRequest = (url: string, id: string = '') => {
+    return axios.delete(url + '/' + id).then((data: any) => Promise.resolve(data.data)).catch(error => {
         console.log('error from axios', error);
         errorHandler(error);
     })
@@ -122,9 +122,9 @@ const updateProduct = (data: any) => {
     const url = productsEndpoint + 'update';
     return apiPutRequest(url, data);
 };
-const removeProduct = (data: any) => {
+const removeProduct = (id: string) => {
     const url = productsEndpoint + 'remove';
-    return apiDeleteRequest(url, data);
+    return apiDeleteRequest(url, id);
 };
 const removeAllProducts = () => {
     const url = productsEndpoint + 'remove_all';
@@ -148,9 +148,9 @@ const updateDish = (data: any) => {
     const url = dishesEndpoint + 'update';
     return apiPutRequest(url, data);
 };
-const removeDish = (data: any) => {
+const removeDish = (id: string) => {
     const url = dishesEndpoint + 'remove';
-    return apiDeleteRequest(url, data);
+    return apiDeleteRequest(url, id);
 };
 const removeAllDishes = () => {
     const url = dishesEndpoint + 'remove_all';
@@ -174,9 +174,9 @@ const updateMeal = (data: any) => {
     const url = mealsEndpoint + 'update';
     return apiPutRequest(url, data);
 };
-const removeMeal = (data: any) => {
+const removeMeal = (id: string) => {
     const url = mealsEndpoint + 'remove';
-    return apiDeleteRequest(url, data);
+    return apiDeleteRequest(url, id);
 };
 const removeAllMeals = () => {
     const url = mealsEndpoint + 'remove_all';
