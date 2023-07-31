@@ -2,9 +2,9 @@ import React from 'react'
 import './search.scss'
 import Form from "react-bootstrap/Form";
 
-export const Search: React.FC<any> = ({onSearchChange}) => {
+export const Search: React.FC<any> = ({setSearchString}) => {
 
     return <div className='search'>
-        <Form.Control type="text" placeholder="search" onChange={onSearchChange}/>
+        <Form.Control type="text" placeholder="search" onChange={(e: any) => setSearchString(e.target.value)}/>
     </div>
 };

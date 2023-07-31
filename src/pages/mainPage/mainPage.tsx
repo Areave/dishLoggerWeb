@@ -10,19 +10,14 @@ import {AddItemModal} from "../../comps/AddItemModal/addItemModal";
 import {Types} from "../../utils/types";
 import {itemTypes} from "../../utils/itemTypes";
 import apiService from "../../utils/apiService";
-import {
-    createAddDishAction,
-    createAddMealAction,
-    createAddProductAction,
-    createSetDishesAction,
-    createSetMealsAction, createSetProductsAction
-} from "../../utils/store/actionCreators";
+import {createSetMealsAction} from "../../utils/store/actionCreators";
 
 
 const MainPage: React.FC<any> = () => {
 
     const [filteredMeals, setFilteredMeals] = useState();
     const [showModal, setShowModal] = useState(false);
+    const [searchString, setSearchString] = useState('');
     const dispatch = useDispatch();
 
     const userStat: Types.UserStat = useSelector((state: Types.MainState) => {
@@ -41,10 +36,12 @@ const MainPage: React.FC<any> = () => {
         // fetchStat();
         dispatch(fetchUserStatForToday());
     }, []);
+    useEffect(() => {
+        // @ts-ignore
+        setFilteredMeals(filterMeals(searchString));
+    }, [searchString, meals]);
 
-
-    const onSearchChange = (event: any) => {
-        const searchString = event.target.value;
+    const filterMeals = (searchString: string): Types.Meal[] => {
         if (!searchString) {
             setFilteredMeals(meals);
             return;
@@ -53,8 +50,7 @@ const MainPage: React.FC<any> = () => {
             return meal.name.includes(searchString)
                 || meal.description.includes(searchString);
         };
-        const filteredMeals = meals.filter(filterFunc);
-        setFilteredMeals(filteredMeals);
+        return meals.filter(filterFunc);
     };
 
     const openModalToAddMeal = () => {
@@ -122,7 +118,7 @@ const MainPage: React.FC<any> = () => {
         <div className="main_page__content">
             <AddItemModal targetItem={itemTypes.MEAL} setNewItemData={setNewItemData} addItem={addItem} showModal={showModal} closeModal={() => setShowModal(false)}/>
             <Stat mainStat={userStat.mainStat} statArray={userStat.statArray}/>
-            <Search onSearchChange={onSearchChange}/>
+            <Search setSearchString={setSearchString}/>
             <ActionButton customClassName='add_item__button' onClick={openModalToAddMeal} label={'add meal'}/>
             <Meals meals={filteredMeals || meals} removeMeal={removeMeal}/>
         </div>
