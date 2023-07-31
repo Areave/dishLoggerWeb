@@ -1,13 +1,25 @@
 import axios from 'axios';
-import {usersEndpoint, productsEndpoint, dishesEndpoint, mealsEndpoint, statsEndpoint} from "./endpoints";
-import {useDispatch} from "react-redux";
-import {createAddMessageAction} from "./store/actionCreators";
-import {useError} from "./hooks/useError";
+import {dishesEndpoint, mealsEndpoint, productsEndpoint, statsEndpoint, usersEndpoint} from "./endpoints";
 
 axios.defaults.withCredentials = true;
 
 // const dispatch = useDispatch();
 
+// axios.interceptors.response.use(function (response) {
+//     console.log('response interseptor!', response.data);
+//     return response;
+// }, function (error) {
+//     console.log('error interseptor!', error);
+//     return Promise.reject(error);
+// });
+
+const errorHandler = (error: any) => {
+    error.message = error.response.data || {
+        type: 'error',
+        text: error.message || 'Error'
+    };
+    throw error;
+};
 
 const apiGetRequest = (url: string) => {
     // const showToast = useError();
@@ -20,16 +32,13 @@ const apiGetRequest = (url: string) => {
     return new Promise((res, rej) => {
         setTimeout(() => {
             return res(axios.get(url).then((data: any) => {
-                return Promise.resolve(data.data)
-            }).catch(error => {
-                return error.response.data || {
-                    message: {
-                        type: 'error',
-                        text: error.message
-                    }
-                };
-            }))
-        }, 1000)
+                    return Promise.resolve(data.data)
+                }).catch(error => {
+                    console.log('error from axios', error);
+                    errorHandler(error);
+                })
+            )
+        }, 1000);
     });
 };
 const apiPostRequest = (url: string, data: any) => {
@@ -38,12 +47,8 @@ const apiPostRequest = (url: string, data: any) => {
 
         return Promise.resolve(data.data)
     }).catch(error => {
-        return error.response.data || {
-            message: {
-                type: 'error',
-                text: error.message
-            }
-        };
+        console.log('error from axios', error);
+        errorHandler(error);
     })
 };
 const apiPutRequest = (url: string, data: any) => {
@@ -56,18 +61,17 @@ const apiPutRequest = (url: string, data: any) => {
                         text: error.message
                     }
                 };
+            }).catch((error)=>{
+                console.log('error from axios', error);
+                errorHandler(error);
             })
         }, 1000));
     })
 };
 const apiDeleteRequest = (url: string, data?: any) => {
     return axios.delete(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
-        return error.response.data || {
-            message: {
-                type: 'error',
-                text: error.message
-            }
-        };
+        console.log('error from axios', error);
+        errorHandler(error);
     })
 };
 
