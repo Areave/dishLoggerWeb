@@ -1,4 +1,6 @@
-import React from "react";
+import React, {Dispatch, SetStateAction} from "react";
+import {itemTypes} from "./itemTypes";
+import {AddItemModal} from "../comps/AddItemModal/addItemModal";
 
 export namespace Types {
 
@@ -89,6 +91,7 @@ export namespace Types {
     }
 
     export interface Product {
+        _id: string,
         name: string,
         type: string,
         description?: string,
@@ -114,6 +117,7 @@ export namespace Types {
     }
 
     export interface Dish {
+        _id: string,
         name: string,
         type: string,
         description: string,
@@ -140,6 +144,7 @@ export namespace Types {
     }
 
     export interface Meal {
+        _id: string,
         name: string,
         type: string,
         description: string,
@@ -166,9 +171,17 @@ export namespace Types {
         }
     }
 
+    // props
     export interface ActionButtonProps {
         onClick: (arg?: any) => void,
         label: string,
         customClassName?: string
+    }
+    export interface AddItemModalProps {
+        targetItem: string,
+        showModal: boolean,
+        closeModal: () => void,
+        addItem: () => void,
+        setNewItemData: Dispatch<SetStateAction<{}>>
     }
 }

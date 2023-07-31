@@ -1,12 +1,14 @@
 import {
-    createAddMessageAction,
-    createSetMealsAction,
+    createAddDishAction, createAddMealAction,
+    createAddMessageAction, createAddProductAction, createSetDishAction, createSetDishesAction, createSetItemsLoadingAction, createSetMealAction,
+    createSetMealsAction, createSetProductAction, createSetProductsAction,
     setIsAuthorizedAction,
     setIsUserLoading, setIsUserStatLoading,
     setUserAction,
     setUserStatAction
 } from "./actionCreators";
 import apiService from "../apiService";
+import {itemTypes} from "../itemTypes";
 
 const checkResponseForMessage = (response: any, dispatch: any) => {
     if (response.message) {
@@ -64,6 +66,36 @@ export const fetchUserStatForToday = () => {
             checkResponseForMessage(error, dispatch);
         }).finally(() => {
             dispatch(setIsUserStatLoading(false));
+        })
+    }
+};
+export const addNewItem = (fetchFunction: any, setItemsAction: any, data: any) => {
+
+    return (dispatch: any) => {
+        dispatch(createSetItemsLoadingAction(true));
+        fetchFunction(data).then((response: any) => {
+            checkResponseForMessage(response, dispatch);
+            dispatch(setItemsAction(response));
+        }).catch((error: any) => {
+            checkResponseForMessage(error, dispatch);
+        }).finally(() => {
+            dispatch(fetchUserStatForToday());
+            dispatch(createSetItemsLoadingAction(false));
+        })
+    }
+};
+export const removeNewItem = (removeFunction: any, setItemsAction: any, id: string) => {
+
+    return (dispatch: any) => {
+        dispatch(createSetItemsLoadingAction(true));
+        removeFunction(id).then((response: any) => {
+            checkResponseForMessage(response, dispatch);
+            dispatch(setItemsAction(response));
+        }).catch((error: any) => {
+            checkResponseForMessage(error, dispatch);
+        }).finally(() => {
+            dispatch(fetchUserStatForToday());
+            dispatch(createSetItemsLoadingAction(false));
         })
     }
 };
