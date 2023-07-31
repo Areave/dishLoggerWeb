@@ -51,7 +51,7 @@ const MainPage: React.FC<any> = () => {
             <AddItemModal showModal={showModal} setShowModal={setShowModal}/>
             <Stat mainStat={userStat.mainStat} statArray={userStat.statArray}/>
             <Search onSearchChange={onSearchChange}/>
-            <ActionButton onClick={openModalToAddMeal} label={'add meal'}/>
+            <ActionButton customClassName='add_item__button' onClick={openModalToAddMeal} label={'add meal'}/>
             <Meals meals={filteredMeals || meals}/>
         </div>
 
