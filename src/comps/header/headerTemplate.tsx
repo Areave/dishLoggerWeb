@@ -11,7 +11,7 @@ import Col from "react-bootstrap/Col";
 import Logo from '../../assets/images/logo.png';
 import {useNavigate} from "react-router";
 
-export const HeaderTemplate: React.FC<Types.ComponentProps> = (props) => {
+export const HeaderTemplate: React.FC = (props) => {
     // return <div className='header'>
     //     <PageTitleComp title={'DishLogger App'}/>
     //     <Navigation/>

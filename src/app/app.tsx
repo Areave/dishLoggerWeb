@@ -14,13 +14,13 @@ const App: React.FC<any> = () => {
 
     const dispatch = useDispatch();
 
-    const isAuthorized = useSelector((state: Types.State) => {
+    const isAuthorized: boolean = useSelector((state: Types.MainState) => {
         return state.user.isAuthorized;
     });
-    const isUserLoading = useSelector((state: Types.State) => {
+    const isUserLoading: boolean = useSelector((state: Types.MainState) => {
         return state.user.isUserLoading;
     });
-    const messages = useSelector((state: Types.State) => {
+    const messages: Types.Message[] = useSelector((state: Types.MainState) => {
         return state.messages.messages;
     });
 
@@ -38,7 +38,7 @@ const App: React.FC<any> = () => {
         {isUserLoading ? (
             <LoadingPage/>
         ) : (<>
-            <MyRouter isAuthorized={isAuthorized}/>
+                <MyRouter isAuthorized={isAuthorized}/>
             </>
         )}
         <Footer/>

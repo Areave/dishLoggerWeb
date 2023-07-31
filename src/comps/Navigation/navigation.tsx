@@ -15,10 +15,10 @@ export const Navigation: React.FC<any> = () => {
 
     const navigate = useNavigate();
 
-    const isAuthorized = useSelector((state: Types.State) => {
+    const isAuthorized: boolean = useSelector((state: Types.MainState) => {
         return state.user.isAuthorized;
     });
-    const user = useSelector((state: Types.State) => {
+    const user: Types.User = useSelector((state: Types.MainState) => {
         return state.user.currentUser;
     });
 

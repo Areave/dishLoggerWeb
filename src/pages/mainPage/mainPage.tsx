@@ -16,6 +16,7 @@ import {fetchUserStatForToday} from "../../utils/store/asyncThunks";
 import {Search} from "../../comps/Search/search";
 import Modal from 'react-bootstrap/Modal';
 import {AddItemModal} from "../../comps/AddItemModal/addItemModal";
+import {Types} from "../../utils/types";
 
 
 const MainPage: React.FC<any> = () => {
@@ -33,10 +34,7 @@ const MainPage: React.FC<any> = () => {
     }, []);
 
     // @ts-ignore
-    const userStat: {
-        mainStat: any,
-        statArray: any
-    } = useSelector((state: RootState) => {
+    const userStat: Types.UserStat = useSelector((state: Types.MainState) => {
         console.log('userFromUseSelect', state.user);
         return state.user.userStat;
     });

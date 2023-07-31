@@ -6,9 +6,9 @@ import Loader from "../loader/loader";
 
 export const Stat: React.FC<any> = ({mainStat, statArray}) => {
 
-    console.log(statArray);
+    console.log(statArray, mainStat);
 
-    const isUserStatLoading = useSelector((state: Types.State) => {
+    const isUserStatLoading: boolean = useSelector((state: Types.MainState) => {
         return state.user.isUserStatLoading;
     });
 

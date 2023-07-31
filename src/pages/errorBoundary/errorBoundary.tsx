@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {cli} from "webpack";
 
 
-const ErrorBoundary: React.FC<Types.ErrorPageProps> = ({isError, errorMessage, children, setError}) =>  {
+const ErrorBoundary: React.FC<any> = ({isError, errorMessage, children, setError}) =>  {
     // constructor(props: any) {
     //     super(props);
     //     this.state = {
@@ -37,7 +37,7 @@ const ErrorBoundary: React.FC<Types.ErrorPageProps> = ({isError, errorMessage, c
 };
 
 
-const mapStateToProps = (state: Types.State) => {
+const mapStateToProps = (state: Types.MainState) => {
     // return {isError: state.isError, errorMessage: state.errorMessage}
 };
 const mapDispatchToProps = {};
