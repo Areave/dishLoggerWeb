@@ -14,7 +14,7 @@ export const AddItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showMod
 
     if (isItemLoading) return <Loader/>;
 
-    return <div className='addItemModal'
+    return <div className='add-item__modal'
                 style={{display: 'block', position: 'initial'}}>
         <Modal show={showModal} onHide={closeModal}>
             <Modal.Header closeButton>

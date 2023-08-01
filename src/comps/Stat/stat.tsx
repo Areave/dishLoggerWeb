@@ -12,7 +12,7 @@ export const Stat: React.FC<any> = ({mainStat, statArray}) => {
         return state.user.isUserStatLoading;
     });
 
-    return <div className='stat'>
+    return <div className='main-page__stat'>
         {isUserStatLoading && <Loader/>}
         {!isUserStatLoading && statArray && statArray.length && statArray[0].dateString}
     </div>

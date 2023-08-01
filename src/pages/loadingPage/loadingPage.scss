@@ -1,5 +1,5 @@
 @use '../../style/style' as styles;
 
-.loading_page {
+.loading-page {
   @include styles.flexColumnCenterElements;
 }

@@ -1,17 +1,23 @@
 @use '../../style/style' as styles;
 
-.loginForm {
-  @include styles.shadow;
-  background-color: ghostwhite;
-  max-width: 100%;
-  //height: 200px;
-  padding: 10px;
-  border: styles.$primary solid 3px;
-  border-radius: 5px;
-
-  & .button_wrapper {
+.login-form {
+  &__button-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
   }
+}
+
+.login-form__container {
+  @include styles.shadow;
+  background-color: ghostwhite;
+  max-width: 100%;
+  border: styles.$primary solid 3px;
+  border-radius: 5px;
+
+  padding: 30px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

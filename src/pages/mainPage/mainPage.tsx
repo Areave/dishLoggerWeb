@@ -114,15 +114,14 @@ const MainPage: React.FC<any> = () => {
         dispatch(removeNewItem(apiService.removeMeal, createSetMealsAction, id));
     };
 
-    return <div className="page main_page">
-        <div className="main_page__content">
+    return <div className="page main-page">
+        <div className="main-page__content">
             <AddItemModal targetItem={itemTypes.MEAL} setNewItemData={setNewItemData} addItem={addItem} showModal={showModal} closeModal={() => setShowModal(false)}/>
             <Stat mainStat={userStat.mainStat} statArray={userStat.statArray}/>
             <Search setSearchString={setSearchString}/>
-            <ActionButton customClassName='add_item__button' onClick={openModalToAddMeal} label={'add meal'}/>
+            <ActionButton customClassName='add-item__button' onClick={openModalToAddMeal} label={'add meal'}/>
             <Meals meals={filteredMeals || meals} removeMeal={removeMeal}/>
         </div>
-
     </div>
 };
 
