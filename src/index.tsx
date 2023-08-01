@@ -8,8 +8,6 @@ import {Provider} from "react-redux";
 import store from "./utils/store";
 import {BrowserRouter} from "react-router-dom";
 
-console.log('index');
-
 renderApp(
     <Provider store={store}>
         <BrowserRouter>

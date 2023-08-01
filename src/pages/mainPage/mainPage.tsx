@@ -21,7 +21,6 @@ const MainPage: React.FC<any> = () => {
     const dispatch = useDispatch();
 
     const userStat: Types.UserStat = useSelector((state: Types.MainState) => {
-        console.log('userFromUseSelect', state.user);
         return state.user.userStat;
     });
     const meals = useSelector((state: { items: any }) => {

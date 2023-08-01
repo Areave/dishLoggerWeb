@@ -25,8 +25,6 @@ const App: React.FC<any> = () => {
     });
 
     useEffect(() => {
-
-        console.log(process.env.NODE_ENV);
         if (!isAuthorized) {
             dispatch(fetchUser());
         }

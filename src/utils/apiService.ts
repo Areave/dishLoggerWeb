@@ -34,7 +34,6 @@ const apiGetRequest = (url: string) => {
             return res(axios.get(url).then((data: any) => {
                     return Promise.resolve(data.data)
                 }).catch(error => {
-                    console.log('error from axios', error);
                     errorHandler(error);
                 })
             )
@@ -43,11 +42,8 @@ const apiGetRequest = (url: string) => {
 };
 const apiPostRequest = (url: string, data: any) => {
     return axios.post(url, data).then((data: any) => {
-        console.log(data);
-
         return Promise.resolve(data.data)
     }).catch(error => {
-        console.log('error from axios', error);
         errorHandler(error);
     })
 };
@@ -62,7 +58,6 @@ const apiPutRequest = (url: string, data: any) => {
                     }
                 };
             }).catch((error)=>{
-                console.log('error from axios', error);
                 errorHandler(error);
             })
         }, 1000));
@@ -70,7 +65,6 @@ const apiPutRequest = (url: string, data: any) => {
 };
 const apiDeleteRequest = (url: string, id: string = '') => {
     return axios.delete(url + '/' + id).then((data: any) => Promise.resolve(data.data)).catch(error => {
-        console.log('error from axios', error);
         errorHandler(error);
     })
 };

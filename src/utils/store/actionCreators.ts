@@ -42,7 +42,6 @@ export const createAddDishAction = createAction('ADD_DISH', (dish: Types.Dish) =
 
 // meal
 export const createSetMealAction = createAction('SET_MEAL', (meal: Types.Meal) => {
-    console.log('action!', meal)
     return {payload: meal}
 });
 export const createSetMealsAction = createAction('SET_MEALS', (meals: Types.Meal[]) => {
