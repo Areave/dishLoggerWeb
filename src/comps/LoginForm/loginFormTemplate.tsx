@@ -17,7 +17,7 @@ export const LoginFormTemplate: React.FC<any> = ({login, register, onEmailChange
                     <Form.Control type="password" placeholder="password" onChange={onPasswordChange}/>
                 </Form.Group>
                 <div className="login-form__button-wrapper">
-                    <ActionButton onClick={login} label={'login'}/>
+                    <ActionButton className='mb-3' onClick={login} label={'login'}/>
                     <ActionButton onClick={register} label={'register'}/>
                 </div>
             </Form>

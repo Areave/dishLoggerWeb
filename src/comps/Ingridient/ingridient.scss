@@ -2,7 +2,6 @@
 
 .ingridient {
   &-name {
-    font-size: 1em;
     flex-shrink: 1;
     font-size: 1.2em;
     white-space: nowrap;
@@ -14,8 +13,9 @@
   }
   &-info {
     &__item {
-      width: 50px;
+      width: 55px;
       margin: 0 5px;
+      pading: 0 3px;
       text-align: center;
       font-weight: bold;
       border: black solid 1px;

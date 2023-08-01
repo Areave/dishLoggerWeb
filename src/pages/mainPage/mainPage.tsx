@@ -118,8 +118,8 @@ const MainPage: React.FC<any> = () => {
         <div className="main-page__content">
             <AddItemModal targetItem={itemTypes.MEAL} setNewItemData={setNewItemData} addItem={addItem} showModal={showModal} closeModal={() => setShowModal(false)}/>
             <Stat mainStat={userStat.mainStat} statArray={userStat.statArray}/>
-            <Search setSearchString={setSearchString}/>
-            <ActionButton customClassName='add-item__button' onClick={openModalToAddMeal} label={'add meal'}/>
+            {(filteredMeals || meals.length) ? <Search setSearchString={setSearchString}/> : <div className="text-center fw-bold py-1">No meals yet</div>}
+            <ActionButton className='add-item__button my-3' onClick={openModalToAddMeal} label={'add meal'}/>
             <Meals meals={filteredMeals || meals} removeMeal={removeMeal}/>
         </div>
     </div>

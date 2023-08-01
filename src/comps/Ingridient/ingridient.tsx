@@ -4,7 +4,7 @@ import {ItemType} from "../ItemType/itemType";
 
 export const Ingridient: React.FC<any> = ({ingridient}) => {
     return <div className='ingridient d-flex flex-wrap align-items-center mb-4'>
-        <div className="ingridient-header d-flex flex-grow-1 justify-content-between  align-items-center mb-3 mb-sm-0 me-sm-5">
+        <div className="ingridient-header d-flex flex-grow-1 justify-content-between  align-items-center mb-3 mb-sm-0 me-sm-2">
             <ItemType itemType={ingridient.ingridient.type}/>
             <div className="ingridient-name ms-2">{ingridient.ingridient.name}</div>
             {ingridient.amountOfItems && <div className="ingridient-info__item ingridient-amount">{ingridient.amountOfItems + 'p'}</div>}
