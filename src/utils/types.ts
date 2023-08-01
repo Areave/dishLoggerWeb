@@ -149,7 +149,7 @@ export namespace Types {
         type: string,
         description: string,
         dateString: string,
-        ingridients: [{
+        ingridients: {
             ingridient: Product | Dish,
             weight: number,
             amountOfItems: number,
@@ -160,7 +160,7 @@ export namespace Types {
                 fats: number,
                 carbohydrates: number
             }
-        }],
+        }[],
         weight: number,
         price: number,
         energyValue: {

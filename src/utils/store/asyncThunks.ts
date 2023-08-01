@@ -59,7 +59,7 @@ export const fetchUserStatForToday = () => {
         const date = new Date();
         const dateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
         dispatch(setIsUserStatLoading(true));
-        apiService.getStatsForOneDay({dateString: '31.7.2023'}).then((dailyStat) => {
+        apiService.getStatsForOneDay({dateString: '1.8.2023'}).then((dailyStat) => {
             checkResponseForMessage(dailyStat, dispatch);
             dispatch(setUserStatAction(dailyStat));
         }).catch((error) => {
