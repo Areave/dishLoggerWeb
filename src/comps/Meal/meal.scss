@@ -1,5 +1,44 @@
 @use '../../style/style' as styles;
 
 .meal {
+  @include styles.shadow;
+  //width: 100%;
+  max-width: 100%;
+  background-color: ghostwhite;
+  border: black solid 1px;
+  border-radius: 5px;
+  padding: 15px;
+  padding-bottom: 5px;
 
+  &__header {
+
+  }
+  &__name {
+    flex-shrink: 1;
+    font-size: 1.5em;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__delete-icon-container {
+    width: 25px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__info {
+    background-color: #eaeaf1;
+    border-radius: 5px;
+    margin: 7px 0;
+    padding: 11px;
+  }
+  &__ingridients {
+
+  }
 }

@@ -59,9 +59,10 @@ const MainPage: React.FC<any> = () => {
     const [newItemData, setNewItemData] = useState({});
     const mockData = {
         meal: {
-            "name": Math.random() + '',
+            "name": Math.random() + '' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random(),
             "type": "meal",
-            "description": "my meal",
+            "description": "my mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy " +
+                "mealmy mealmy mealmy mealmy mealmy mealmy mealmy meal",
             "ingridients": [{
                 "ingridient": {
                     "_id": "64990c370fe5d33b76d0cdb7",
@@ -92,13 +93,13 @@ const MainPage: React.FC<any> = () => {
                 }
             }
             ],
-            "weight": 1,
-            "price": 1,
+            "weight": 1666,
+            "price": 16666,
             "energyValue": {
-                "calories": "1",
-                "proteines": "1",
-                "fats": "1",
-                "carbohydrates": "1"
+                "calories": "12333",
+                "proteines": "12333",
+                "fats": "45677",
+                "carbohydrates": "65432"
             }
         }
     };

@@ -1,0 +1,20 @@
+@use '../../style/style' as styles;
+
+.item-info {
+  //width: 60px;
+  //border: black solid 2px;
+  //border-radius: 3px;
+  //text-align: center;
+
+  &__image-container {
+    //font-size: 0.8em;
+    height: 25px;
+  }
+  &__amount {
+    max-width: 60px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

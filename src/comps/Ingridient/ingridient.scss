@@ -1,0 +1,41 @@
+@use '../../style/style' as styles;
+
+.ingridient {
+  &-name {
+    font-size: 1em;
+    flex-shrink: 1;
+    font-size: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100px;
+  }
+  &-header {
+  }
+  &-info {
+    &__item {
+      width: 50px;
+      margin: 0 5px;
+      text-align: center;
+      font-weight: bold;
+      border: black solid 1px;
+      border-radius: 3px;
+    }
+  }
+  &-calories, &-weight, &-amount, &-price {
+    //font-weight: bold;
+    color: styles.$amountGreen;
+    border: none;
+
+  }
+  &-proteines {
+    background-color: styles.$proteins;
+  }
+  &-fats {
+    background-color: styles.$fats;
+  }
+  &-carbohydrates {
+    background-color: styles.$carbs;
+  }
+
+}
