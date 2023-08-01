@@ -175,7 +175,7 @@ export namespace Types {
     export interface ActionButtonProps {
         onClick: (arg?: any) => void,
         label: string,
-        customClassName?: string
+        className?: string
     }
     export interface AddItemModalProps {
         targetItem: string,
