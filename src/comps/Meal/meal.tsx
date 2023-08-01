@@ -10,6 +10,7 @@ import Money from '../../assets/images/money.png';
 import Weight from '../../assets/images/weight.png';
 import {ItemEnergyInfo} from "../ItemEnergyInfo/itemEnergyInfo";
 import {Ingridient} from "../Ingridient/ingridient";
+import {AmountInfo} from "../AmountInfo/amountInfo";
 
 export interface Meal {
     _id: string,
@@ -50,22 +51,16 @@ export const Meal: React.FC<any> = ({meal, removeMeal}) => {
             </div>
         </div>
         <div title={meal.description} className="meal__description">{meal.description}</div>
-        <div className="meal__info d-flex flex-column flex-sm-row justify-content-between">
-            <div className="meal__amount-info d-flex justify-content-evenly flex-grow-1 mb-4 mb-sm-0">
-                <ItemInfo imgSrc={Money} amount={meal.price}/>
-                <ItemInfo imgSrc={Kcal} amount={meal.energyValue.calories}/>
-                <ItemInfo imgSrc={Weight} amount={meal.weight}/>
-            </div>
-            <div className="meal__energy-info d-flex d-flex justify-content-evenly flex-grow-1">
-                <ItemEnergyInfo label={'fats'} amount={meal.energyValue.fats}/>
-                <ItemEnergyInfo label={'carb'} amount={meal.energyValue.carbohydrates}/>
-                <ItemEnergyInfo label={'prot'} amount={meal.energyValue.proteines}/>
-            </div>
-        </div>
+        <AmountInfo price={meal.price}
+                    calories={meal.energyValue.calories}
+                    weight={meal.weight}
+                    fats={meal.energyValue.fats}
+                    carbohydrates={meal.energyValue.carbohydrates}
+                    proteines={meal.energyValue.proteines}/>
         <div className="meal__ingridients">
             <div className="text-center fw-bold py-3">Ingridients</div>
-            {meal.ingridients.map((ingridient: any) => {
-                return <Ingridient ingridient={ingridient}/>
+            {meal.ingridients.map((ingridient: any, index: number) => {
+                return <Ingridient key={index + "" + ingridient.name} ingridient={ingridient}/>
             })}
 
         </div>
