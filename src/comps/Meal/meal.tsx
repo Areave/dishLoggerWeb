@@ -40,7 +40,7 @@ export interface Meal {
 }
 
 export const Meal: React.FC<any> = ({meal, removeMeal}) => {
-    return <div className='meal d-flex flex-column mb-3'>
+    return <div className='meal d-flex flex-column mb-4'>
         <div className="meal__header d-flex justify-content-between align-items-center">
             {/*<div title={meal.type} className='meal__type'>{meal.type}</div>*/}
             <ItemType itemType={meal.type}/>
