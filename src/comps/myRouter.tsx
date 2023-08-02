@@ -6,6 +6,8 @@ import 'materialize-css'
 // import {DropdownMenu} from "./Navigation/dropdownMenu";
 import ActionButton from "./actionButton/actionButton";
 import {Navigation} from "./Navigation/navigation";
+import {ItemsPage} from "../pages/ItemsPage/itemsPage";
+import {itemTypes} from "../utils/itemTypes";
 
 
 export const MyRouter = ({isAuthorized}: any) => {
@@ -18,7 +20,9 @@ export const MyRouter = ({isAuthorized}: any) => {
         <Routes>
             {isAuthorized ? (
                 <>
-                    <Route path='/' element={<MainPage/>}/>
+                    {/*<Route path='/' element={<MainPage/>}/>*/}
+                    <Route path='/' element={<ItemsPage itemType={itemTypes.MEAL}/>}/>
+                    <Route path='/dishes' element={<ItemsPage itemType={itemTypes.DISH}/>}/>
                     <Route path='/*' element={<Navigate to={'/'}/>}/>
                 </>
             ) : (

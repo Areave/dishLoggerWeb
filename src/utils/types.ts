@@ -91,7 +91,7 @@ export namespace Types {
     }
 
     export interface Product {
-        _id: string,
+        _id?: string,
         name: string,
         type: string,
         description?: string,
@@ -117,7 +117,7 @@ export namespace Types {
     }
 
     export interface Dish {
-        _id: string,
+        _id?: string,
         name: string,
         type: string,
         description: string,
@@ -144,7 +144,7 @@ export namespace Types {
     }
 
     export interface Meal {
-        _id: string,
+        _id?: string,
         name: string,
         type: string,
         description: string,
@@ -171,6 +171,9 @@ export namespace Types {
         }
     }
 
+    // common entities type
+    export type CommonEntitiesType = Product | Dish | Meal;
+
     // props
     export interface ActionButtonProps {
         onClick: (arg?: any) => void,
@@ -178,7 +181,7 @@ export namespace Types {
         className?: string
     }
     export interface AddItemModalProps {
-        targetItem: string,
+        itemType: string,
         showModal: boolean,
         closeModal: () => void,
         addItem: () => void,

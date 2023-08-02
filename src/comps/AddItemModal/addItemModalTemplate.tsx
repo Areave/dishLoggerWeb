@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 import Loader from "../loader/loader";
 import {Types} from "../../utils/types";
 
-export const AddItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, targetItem, addItem, setNewItemData}) => {
+export const AddItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, itemType, addItem, setNewItemData}) => {
 
     const isItemLoading = useSelector((state: { items: any }) => {
         return state.items.isItemLoading;
@@ -18,7 +18,7 @@ export const AddItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showMod
                 style={{display: 'block', position: 'initial'}}>
         <Modal show={showModal} onHide={closeModal}>
             <Modal.Header closeButton>
-                <Modal.Title>{'Add new ' + targetItem.toLowerCase()}</Modal.Title>
+                <Modal.Title>{'Add new ' + itemType.toLowerCase()}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <p>Modal body text goes here.</p>
@@ -27,7 +27,7 @@ export const AddItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showMod
                 <ActionButton onClick={() => {
                     addItem();
                     closeModal();
-                }} label={'Add new ' + targetItem.toLocaleLowerCase()}/>
+                }} label={'Add new ' + itemType.toLocaleLowerCase()}/>
             </Modal.Footer>
         </Modal>
     </div>
