@@ -1,5 +1,38 @@
 import {Types} from '../types'
 import {createAction} from "@reduxjs/toolkit";
+import {itemTypes} from "../itemTypes";
+
+// common getters
+export const getCreateSetItemActionByType = (itemType: string) => {
+    switch (itemType) {
+        case(itemTypes.MEAL):
+            return createSetMealAction;
+        case(itemTypes.PRODUCT):
+            return createSetProductAction;
+        case(itemTypes.DISH):
+            return createSetDishAction;
+    }
+};
+export const getCreateSetItemsActionByType = (itemType: string) => {
+    switch (itemType) {
+        case(itemTypes.MEAL):
+            return createSetMealsAction;
+        case(itemTypes.PRODUCT):
+            return createSetProductsAction;
+        case(itemTypes.DISH):
+            return createSetDishesAction;
+    }
+};
+export const getCreateAddItemActionByType = (itemType: string) => {
+    switch (itemType) {
+        case(itemTypes.MEAL):
+            return createAddMealAction;
+        case(itemTypes.PRODUCT):
+            return createAddProductAction;
+        case(itemTypes.DISH):
+            return createAddDishAction;
+    }
+};
 
 // user
 export const setUserAction = createAction('SET_USER', (user: Types.User) => {

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {dishesEndpoint, mealsEndpoint, productsEndpoint, statsEndpoint, usersEndpoint} from "./endpoints";
+import {itemTypes} from "./itemTypes";
 
 axios.defaults.withCredentials = true;
 
@@ -191,6 +192,38 @@ const getStatsForOneDay = (data: any) => {
     return apiPostRequest(url, data);
 };
 
+const getApiMethodsObject = (itemType: string) => {
+    switch (itemType) {
+        case itemTypes.PRODUCT: return {
+            addItem: addProduct,
+            getItem: getProduct,
+            getAllItems: getAllProducts,
+            updateItem: updateProduct,
+            removeItem: removeProduct,
+            removeAllItems: removeAllProducts,
+
+        };
+        case itemTypes.DISH: return {
+            addItem: addDish,
+            getItem: getDish,
+            getAllItems: getAllDishes,
+            updateItem: updateDish,
+            removeItem: removeDish,
+            removeAllItems: removeAllDishes,
+
+        };
+        case itemTypes.MEAL: return {
+            addItem: addMeal,
+            getItem: getMeal,
+            getAllItems: getAllMeals,
+            updateItem: updateMeal,
+            removeItem: removeMeal,
+            removeAllItems: removeAllMeals,
+
+        };
+    }
+};
+
 export default {
 
     // users
@@ -202,22 +235,25 @@ export default {
     updateUserData,
     deleteAllUsers,
 
-    // products
-    addProduct,
-    getProduct,
-    getAllProducts,
-    updateProduct,
-    removeProduct,
-    removeAllProducts,
+    // common methods getter
+    getApiMethodsObject,
 
-    // dishes
-    addDish,
-    getDish,
-    getAllDishes,
-    updateDish,
-    removeDish,
-    removeAllDishes,
-
+    // // products
+    // addProduct,
+    // getProduct,
+    // getAllProducts,
+    // updateProduct,
+    // removeProduct,
+    // removeAllProducts,
+    //
+    // // dishes
+    // addDish,
+    // getDish,
+    // getAllDishes,
+    // updateDish,
+    // removeDish,
+    // removeAllDishes,
+    //
     // meals
     addMeal,
     getMeal,
