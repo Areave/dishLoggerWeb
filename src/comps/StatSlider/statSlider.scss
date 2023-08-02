@@ -1,0 +1,15 @@
+@use '../../style/style' as styles;
+
+.stat-slider {
+  height: 200px;
+
+  @include styles.shadow;
+  //width: 100%;
+  max-width: 100%;
+  background-color: ghostwhite;
+  border: black solid 1px;
+  border-radius: 5px;
+  padding: 15px;
+  padding-bottom: 5px;
+
+}

@@ -1,0 +1,30 @@
+@use '../../style/style' as styles;
+
+.item-energy-info {
+  min-width: 55px;
+  border: black solid 2px;
+  border-radius: 5px;
+  text-align: center;
+
+  &.prot {
+    background-color: styles.$proteins;
+  }
+  &.fats {
+    background-color: styles.$fats;
+  }
+  &.carb {
+    background-color: styles.$carbs;
+  }
+
+  &__label {
+    font-size: 0.8em;
+    //height: 25px;
+  }
+  &__amount {
+    max-width: 50px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
