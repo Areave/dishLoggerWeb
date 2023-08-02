@@ -1,6 +1,9 @@
 import React, {useEffect} from "react";
 import './app.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import {useDispatch, useSelector} from 'react-redux'
 import {MyRouter} from "../comps/myRouter";
 import {Header} from "../comps/header/header";
