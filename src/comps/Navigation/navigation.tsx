@@ -7,6 +7,7 @@ import {useNavigate} from "react-router";
 import Logout from "../../assets/images/logout.png";
 import apiService from "../../utils/apiService";
 import {setIsAuthorizedAction} from "../../utils/store/actionCreators";
+import {Link} from "react-router-dom";
 
 export const Navigation: React.FC<any> = () => {
 
@@ -20,9 +21,9 @@ export const Navigation: React.FC<any> = () => {
     });
 
     const links = <>
-        <Nav.Link className='navigation_link ps-3' href="/products">Products</Nav.Link>
-        <Nav.Link className='navigation_link ps-3' href="/dishes">Dishes</Nav.Link>
-        <Nav.Link className='navigation_link ps-3' href="/stats">Stats</Nav.Link>
+        <Link className='navigation_link ps-3' to="/products">Products</Link>
+        <Link className='navigation_link ps-3' to="/dishes">Dishes</Link>
+        <Link className='navigation_link ps-3' to="/stats">Stats</Link>
     </>;
 
     const dispatch = useDispatch();

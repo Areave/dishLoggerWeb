@@ -25,6 +25,9 @@
 
   &_link {
     cursor: pointer;
+    text-decoration: none;
+    color:black;
+    font-weight: bolder;
     &:hover {
       color: styles.$primaryLink;
       font-weight: bold;

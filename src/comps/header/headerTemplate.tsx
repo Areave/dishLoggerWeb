@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Logo from '../../assets/images/logo.png';
 import {useNavigate} from "react-router";
+import {Link} from "react-router-dom";
 
 export const HeaderTemplate: React.FC = (props) => {
     const navigate = useNavigate();

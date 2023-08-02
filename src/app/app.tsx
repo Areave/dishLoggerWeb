@@ -20,28 +20,29 @@ const App: React.FC<any> = () => {
     const isAuthorized: boolean = useSelector((state: Types.MainState) => {
         return state.user.isAuthorized;
     });
-    const isUserLoading: boolean = useSelector((state: Types.MainState) => {
-        return state.user.isUserLoading;
-    });
+    // const isUserLoading: boolean = useSelector((state: Types.MainState) => {
+    //     return state.user.isUserLoading;
+    // });
     const messages: Types.Message[] = useSelector((state: Types.MainState) => {
         return state.messages.messages;
     });
 
     useEffect(() => {
-        if (!isAuthorized) {
+        // if (!isAuthorized) {
+        //     console.log('app - not authorized');
             dispatch(fetchUser());
-        }
+        // }
     }, []);
 
     return <React.StrictMode>
         <Header/>
         <ToastContainer messages={messages}/>
-        {isUserLoading ? (
-            <LoadingPage/>
-        ) : (<>
+        {/*{isUserLoading ? (*/}
+        {/*    <LoadingPage/>*/}
+        {/*) : (<>*/}
                 <MyRouter isAuthorized={isAuthorized}/>
-            </>
-        )}
+        {/*    </>*/}
+        {/*)}*/}
         <Footer/>
     </React.StrictMode>
 };
