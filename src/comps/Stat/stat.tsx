@@ -4,10 +4,12 @@ import {useSelector} from "react-redux";
 import {Types} from "../../utils/types";
 import Loader from "../loader/loader";
 import {AmountInfo} from "../AmountInfo/amountInfo";
+import {StatSlider} from "../StatSlider/statSlider";
+import {DailyStat} from "../DailyStat/dailyStat";
 
-export const Stat: React.FC<any> = ({mainStat, dailyStat}) => {
+export const Stat: React.FC<any> = ({mainStat, statArray}) => {
 
-    console.log(mainStat, dailyStat);
+    // console.log(mainStat, statArray);
 
     const isUserStatLoading: boolean = useSelector((state: Types.MainState) => {
         return state.user.isUserStatLoading;
@@ -46,15 +48,19 @@ export const Stat: React.FC<any> = ({mainStat, dailyStat}) => {
         weight: number
     }
 
+    const dailyStat = statArray ? statArray[0] : undefined;
+
     const getStatContent = () => {
         return <div className='d-flex flex-column w-100'>
+            <StatSlider items={[<div>1</div>, <div>2</div>]}/>
+            <DailyStat dailyStat={dailyStat}/>
             <div className="text-center fw-bold py-3">Daily statistic</div>
-            <AmountInfo price={dailyStat.price}
-                        calories={dailyStat.energyValue.calories}
-                        weight={dailyStat.weight}
-                        fats={dailyStat.energyValue.fats}
-                        carbohydrates={dailyStat.energyValue.carbohydrates}
-                        proteines={dailyStat.energyValue.proteines}/>
+            <AmountInfo price={mainStat.price}
+                        calories={mainStat.energyValue.calories}
+                        weight={mainStat.weight}
+                        fats={mainStat.energyValue.fats}
+                        carbohydrates={mainStat.energyValue.carbohydrates}
+                        proteines={mainStat.energyValue.proteines}/>
         </div>
     };
 
