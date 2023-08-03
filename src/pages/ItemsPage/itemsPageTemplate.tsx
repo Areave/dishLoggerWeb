@@ -31,7 +31,7 @@ const ItemsPageTemplate: React.FC<any> = ({
             <div className='mb-5'>
                 {items.length ? items.map((item: any, index: number) =>
                         <ItemCard key={index} itemType={itemType} item={item} removeItem={removeItem}/>)
-                    : <div>`no ${getPluralItemType(itemType)} yet`</div>}
+                    : <div className="text-center fw-bold py-3 mt-3">{'no '+ getPluralItemType(itemType) + ' yet'}</div>}
             </div>
         </div>
     </div>

@@ -2,15 +2,15 @@ import React, {useEffect, useState} from "react";
 import ItemsPageTemplate from "./itemsPageTemplate";
 import {useDispatch, useSelector} from "react-redux";
 import {Types} from "../../utils/types";
-import {addNewItem, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
+import {addNewItem, removeNewItem} from "../../utils/store/asyncThunks";
 import {getCreateSetItemsActionByType} from "../../utils/store/actionCreators";
 import apiService from "../../utils/apiService";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
-import mockItems from "../../assets/stub/mockItemsForAdding.json";
+import mockItems from '../../assets/stub/mockItemsForAdding.json'
 
 const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
 
-    const itemType = itemTypes.DISH;
+    const itemType = itemTypes.PRODUCT;
 
     const [filteredItems, setFilteredItems] = useState();
     const [showModal, setShowModal] = useState(false);
@@ -18,7 +18,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     const [newItemData, setNewItemData] = useState({});
     const dispatch = useDispatch();
 
-    type ObjectKey = keyof typeof mockItems;
+    type ObjectKey = keyof typeof mockData;
     const key = itemType.toLowerCase() as ObjectKey;
 
     const userStat: Types.UserStat = useSelector((state: Types.MainState) => {
@@ -51,12 +51,28 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
         setShowModal(true);
     };
 
+    const mockData = {
+        product: {
+            "name": Math.random() + '' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random(),
+            "type": "product",
+            "description": "my product product product product product product product product product product product product product product product product product product product product " +
+                "product product product product product product product meal",
+            "weight": 1666,
+            "price": 16666,
+            "energyValue": {
+                "calories": "500",
+                "proteines": "100",
+                "fats": "40",
+                "carbohydrates": "10"
+            }
+        }
+    };
+
     const addItem = () => {
-        const newDish = mockItems.dish;
-        newDish.name = Math.random() + '' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random();
+        const newProduct = mockItems.productPieceAndAmount;
         // @ts-ignore
-        dispatch(createAction([...itemsArray, newDish]));
-        dispatch(addNewItem(apiMethodsObject.addItem, createAction, {[key]: mockItems[key]}))
+        dispatch(createAction([...itemsArray, newProduct]));
+        dispatch(addNewItem(apiMethodsObject.addItem, createAction, {product: newProduct}))
     };
 
     const removeItem = (id: string) => {
@@ -84,4 +100,4 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     return <Comp {...wrappedProps}/>
 };
 
-export const DishesPage = () => ItemsPageHOC(ItemsPageTemplate);
+export const ProductsPage = () => ItemsPageHOC(ItemsPageTemplate);

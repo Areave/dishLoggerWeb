@@ -13,6 +13,7 @@ import {useSelector} from "react-redux";
 import {Types} from "../utils/types";
 import LoadingPage from "../pages/loadingPage/loadingPage";
 import {setIsUserLoading} from "../utils/store/actionCreators";
+import {ProductsPage} from "../pages/ItemsPage/productsPage";
 
 
 export const MyRouter = ({isAuthorized}: any) => {
@@ -33,6 +34,7 @@ export const MyRouter = ({isAuthorized}: any) => {
                 <>
                     <Route path='/' element={<MealsPage/>}/>
                     <Route path='/dishes' element={<DishesPage/>}/>
+                    <Route path='/products' element={<ProductsPage/>}/>
                     <Route path='/*' element={<Navigate to={'/'}/>}/>
                 </>
             ) : (

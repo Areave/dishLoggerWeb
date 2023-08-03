@@ -95,25 +95,23 @@ export namespace Types {
         name: string,
         type: string,
         description?: string,
-        amountOfItems: number,
-        weightTotal: number,
-        price: {
-            priceForOnePiece: number,
-            priceTotal: number,
-            priceFor100g: number
-        },
-        energyValueFor100g: {
+        weight?: number,
+        price?: number,
+        energyValue?: {
             calories: number,
             proteines: number,
             fats: number,
             carbohydrates: number
         },
-        energyValueForOneItem: {
+        isThatPieceProduct: boolean,
+        amountOfPieces?: number,
+        priceForAllPieces?: number,
+        energyValueForOnePiece?: {
             calories: number,
             proteines: number,
             fats: number,
             carbohydrates: number
-        },
+        }
     }
 
     export interface Dish {

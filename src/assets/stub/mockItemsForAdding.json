@@ -98,7 +98,7 @@
     "isThatPieceProduct": false
   },
   "productPiece": {
-    "name": "black bread",
+    "name": "eggs",
     "type": "product",
     "description": "String String String String String String String String String String String String String String String String String",
     "isThatPieceProduct": true,
@@ -112,7 +112,7 @@
     }
   },
   "productPieceAndAmount": {
-    "name": "black bread",
+    "name": "blue breadeggs",
     "type": "product",
     "description": "String String String String String String String String String String String String String String String String String",
     "weight": 460,

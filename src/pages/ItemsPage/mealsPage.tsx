@@ -1,11 +1,12 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ItemsPageTemplate from "./itemsPageTemplate";
 import {useDispatch, useSelector} from "react-redux";
 import {Types} from "../../utils/types";
-import {addNewItem, fetchItems, fetchUser, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
-import {createSetDishesAction, createSetMealsAction, getCreateSetItemsActionByType} from "../../utils/store/actionCreators";
+import {addNewItem, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
+import {getCreateSetItemsActionByType} from "../../utils/store/actionCreators";
 import apiService from "../../utils/apiService";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
+import mockItems from '../../assets/stub/mockItemsForAdding.json'
 
 const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
 
@@ -17,7 +18,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     const [newItemData, setNewItemData] = useState({});
     const dispatch = useDispatch();
 
-    type ObjectKey = keyof typeof mockData;
+    type ObjectKey = keyof typeof mockItems;
     const key = itemType.toLowerCase() as ObjectKey;
 
     const userStat: Types.UserStat = useSelector((state: Types.MainState) => {
@@ -31,30 +32,21 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     const apiMethodsObject = apiService.getApiMethodsObject(itemType);
 
     useEffect(() => {
-        // if (!userStat.statArray.length) {
-        //     useCallback(() => {
+        if (!userStat.statArray.length) {
                 dispatch(fetchUserStatForToday());
-            // }, [itemsArray])
-        // }
+        }
     }, []);
-
-    // const fetchStat = useCallback(() => {
-    //     dispatch(fetchUserStatForToday());
-    // },[itemsArray]);
-    // fetchStat();
 
     const filterItems = (searchString: string): Types.CommonEntitiesType[] => {
         const filterFunc = (item: Types.CommonEntitiesType) => {
             return item.name.includes(searchString)
-                || item.description.includes(searchString);
+                || item.description?.includes(searchString);
         };
         return itemsArray.filter(filterFunc);
     };
 
     useEffect(() => {
         if (searchString) {
-            // console.log('useeffect searchString inside if');
-            // console.log('setFilteredItems',filterItems(searchString));
             // @ts-ignore
             setFilteredItems(filterItems(searchString));
             return;
@@ -65,58 +57,12 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
         setShowModal(true);
     };
 
-    const mockData = {
-        meal: {
-            "name": Math.random() + '' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random(),
-            "type": "meal",
-            "description": "my mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy " +
-                "mealmy mealmy mealmy mealmy mealmy mealmy mealmy meal",
-            "ingridients": [{
-                "ingridient": {
-                    "_id": "64990c370fe5d33b76d0cdb7",
-                    "name": "B",
-                    "type": "product"
-                },
-                "weight": "350",
-                "price": 77,
-                "energyValue": {
-                    "calories": 100,
-                    "proteines": 100,
-                    "fats": 10,
-                    "carbohydrates": 100
-                }
-            }, {
-                "ingridient": {
-                    "_id": "64c09dd161060a8945bb1227",
-                    "name": "breakfast1",
-                    "type": "dish"
-                },
-                "weight": "350",
-                "price": 77,
-                "energyValue": {
-                    "calories": 100,
-                    "proteines": 100,
-                    "fats": 10,
-                    "carbohydrates": 100
-                }
-            }
-            ],
-            "weight": 1666,
-            "price": 16666,
-            "energyValue": {
-                "calories": "12333",
-                "proteines": "12333",
-                "fats": "45677",
-                "carbohydrates": "65432"
-            }
-        }
-    };
-
     const addItem = () => {
-        const newMeal = mockData[key];
+        const newMeal = mockItems.meal;
+        newMeal.name = Math.random() + '' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random();
         // @ts-ignore
         dispatch(createAction([...itemsArray, newMeal]));
-        dispatch(addNewItem(apiMethodsObject.addItem, createAction, {[key]: mockData[key]}))
+        dispatch(addNewItem(apiMethodsObject.addItem, createAction, {[key]: mockItems[key]}))
     };
 
     const removeItem = (id: string) => {
@@ -124,9 +70,6 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
         dispatch(createAction(itemsArray.filter((item: Types.CommonEntitiesType) => item._id !== id)));
         dispatch(removeNewItem(apiMethodsObject.removeItem, createAction, id));
     };
-
-
-    // console.log('filteredItems',filteredItems);
 
     const items = filteredItems ? filteredItems : itemsArray;
 
@@ -143,9 +86,6 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
         openModalToAddItem,
         removeItem
     };
-    // console.log('searchString',searchString);
-    console.log('render HOC');
-
 
     return <Comp {...wrappedProps}/>
 };
