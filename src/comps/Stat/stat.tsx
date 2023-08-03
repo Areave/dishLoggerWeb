@@ -7,11 +7,7 @@ import {AmountInfo} from "../AmountInfo/amountInfo";
 import {StatSlider} from "../StatSlider/statSlider";
 import {DailyStat} from "../DailyStat/dailyStat";
 
-export const Stat: React.FC<any> = ({mainStat, statArray}) => {
-
-    // console.log(mainStat, statArray);
-
-
+export const Stat: React.FC<any> = ({statArray}) => {
 
     interface UserStat {
         readonly mainStat: {
@@ -48,19 +44,6 @@ export const Stat: React.FC<any> = ({mainStat, statArray}) => {
 
     const dailyStat = statArray;
 
-    const getStatContent = () => {
-        return <div className='d-flex flex-column w-100'>
-            <DailyStat dailyStat={dailyStat}/>
-            <div className="text-center fw-bold py-3">Daily statistic</div>
-            <AmountInfo price={mainStat.price}
-                        calories={mainStat.energyValue.calories}
-                        weight={mainStat.weight}
-                        fats={mainStat.energyValue.fats}
-                        carbohydrates={mainStat.energyValue.carbohydrates}
-                        proteines={mainStat.energyValue.proteines}/>
-        </div>
-    };
-
     const getStatInterval = (statArray: any[]): string => {
         if (!statArray || statArray.length === 0) {
             return '...'
@@ -76,13 +59,13 @@ export const Stat: React.FC<any> = ({mainStat, statArray}) => {
 
     return <div className='stat d-flex flex-column w-100'>
         <DailyStat dailyStat={dailyStat}/>
-        <div className="text-center fw-bold py-3 mt-3">{'Common stat for period' + getStatInterval(statArray)}</div>
-        <AmountInfo price={mainStat.price}
-                    calories={mainStat.energyValue.calories}
-                    weight={mainStat.weight}
-                    fats={mainStat.energyValue.fats}
-                    carbohydrates={mainStat.energyValue.carbohydrates}
-                    proteines={mainStat.energyValue.proteines}/>
+        {/*<div className="text-center fw-bold py-3 mt-3">{'Common stat for period' + getStatInterval(statArray)}</div>*/}
+        {/*<AmountInfo price={mainStat.price}*/}
+        {/*            calories={mainStat.energyValue.calories}*/}
+        {/*            weight={mainStat.weight}*/}
+        {/*            fats={mainStat.energyValue.fats}*/}
+        {/*            carbohydrates={mainStat.energyValue.carbohydrates}*/}
+        {/*            proteines={mainStat.energyValue.proteines}/>*/}
         {/*{isUserStatLoading && <Loader/>}*/}
         {/*{!isUserStatLoading && dailyStat && getStatContent()}*/}
         {/*{!isUserStatLoading && (!dailyStat || Object.keys(dailyStat).length === 0)*/}

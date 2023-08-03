@@ -59,9 +59,8 @@ export const fetchLogin = (data: any) => {
 export const fetchUserStatForToday = () => {
     return (dispatch: any) => {
         const date = new Date();
-        const dateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
         dispatch(setIsUserStatLoading(true));
-        apiService.getStatsForOneDay({dateString}).then((dailyStat) => {
+        apiService.getStatsForOneDay({date}).then((dailyStat) => {
             checkResponseForMessage(dailyStat, dispatch);
             dispatch(setUserStatAction(dailyStat));
         }).catch((error) => {
@@ -108,6 +107,9 @@ export const fetchItems = (itemType: string, setItemsAction: any) => {
     return (dispatch: any) => {
         // dispatch(createSetItemsLoadingAction(true));
         fetchMethod().then((response: any) => {
+            if (response.length > 0) {
+                dispatch(fetchUserStatForToday());
+            }
             checkResponseForMessage(response, dispatch);
             dispatch(setItemsAction(response));
         }).catch((error: any) => {
