@@ -5,6 +5,7 @@ import Trash from '../../assets/images/delete-item.png'
 import {ItemType} from "../ItemType/itemType";
 import {Ingridient} from "../Ingridient/ingridient";
 import {AmountInfo} from "../AmountInfo/amountInfo";
+import Loader from "../loader/loader";
 
 export interface Meal {
     _id: string,
@@ -40,8 +41,8 @@ export const ItemCard: React.FC<any> = ({itemType, item, removeItem}) => {
             {/*<div title={item.type} className='item__type'>{item.type}</div>*/}
             <ItemType itemType={item.type}/>
             <div title={item.name} className='item__name pe-5 ps-5'>{item.name}</div>
-            <div className="item__delete-icon-container" onClick={() => removeItem(item._id)}>
-                <img src={Trash} alt="delete"/>
+            <div className="item__delete-icon-container">
+                {item._id ? <img src={Trash} alt="delete" onClick={() => removeItem(item._id)}/> : <Loader isLittle={true}/>}
             </div>
         </div>
         <div title={item.description} className="item__description">{item.description}</div>

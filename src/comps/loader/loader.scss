@@ -10,6 +10,14 @@
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
   margin: auto;
+
+  &.loader_for-item-little {
+    width: 20px;
+    height: 20px;
+    //margin: 0;
+    border: 3px solid #FA5252;
+    border-bottom-color: transparent;
+  }
 }
 
 @keyframes rotation {

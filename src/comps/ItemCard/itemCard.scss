@@ -23,6 +23,10 @@
   }
   &__delete-icon-container {
     width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     &:hover {
       cursor: pointer;
     }
