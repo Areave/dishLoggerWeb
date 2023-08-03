@@ -15,6 +15,9 @@ declare module "*.jpg" {
 declare module "*.png" {
     export default "" as string;
 }
+declare module "*.json" {
+    export default "" as any;
+}
 declare global {
     interface Window {
         M: any;
