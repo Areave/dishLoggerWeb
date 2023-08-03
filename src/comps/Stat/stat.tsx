@@ -11,9 +11,7 @@ export const Stat: React.FC<any> = ({mainStat, statArray}) => {
 
     // console.log(mainStat, statArray);
 
-    const isUserStatLoading: boolean = useSelector((state: Types.MainState) => {
-        return state.user.isUserStatLoading;
-    });
+
 
     interface UserStat {
         readonly mainStat: {
@@ -48,11 +46,10 @@ export const Stat: React.FC<any> = ({mainStat, statArray}) => {
         weight: number
     }
 
-    const dailyStat = statArray ? statArray[0] : undefined;
+    const dailyStat = statArray;
 
     const getStatContent = () => {
         return <div className='d-flex flex-column w-100'>
-            <StatSlider items={[<div>1</div>, <div>2</div>]}/>
             <DailyStat dailyStat={dailyStat}/>
             <div className="text-center fw-bold py-3">Daily statistic</div>
             <AmountInfo price={mainStat.price}
@@ -64,11 +61,32 @@ export const Stat: React.FC<any> = ({mainStat, statArray}) => {
         </div>
     };
 
-    return <div className='stat'>
-        {isUserStatLoading && <Loader/>}
-        {!isUserStatLoading && dailyStat && getStatContent()}
-        {!isUserStatLoading && (!dailyStat || Object.keys(dailyStat).length === 0)
-            && <div className="text-center fw-bold py-3 m-auto">No stat yet</div>}
+    const getStatInterval = (statArray: any[]): string => {
+        if (!statArray || statArray.length === 0) {
+            return '...'
+        }
+        if (statArray.length === 1) {
+            return ' ' + statArray[0].dateString;
+        }
+        if (statArray.length > 1) {
+            return ' ' + statArray[0].dateString + ' - ' + statArray.slice(-1)[0].dateString;
+        }
+
+    };
+
+    return <div className='stat d-flex flex-column w-100'>
+        <DailyStat dailyStat={dailyStat}/>
+        <div className="text-center fw-bold py-3 mt-3">{'Common stat for period' + getStatInterval(statArray)}</div>
+        <AmountInfo price={mainStat.price}
+                    calories={mainStat.energyValue.calories}
+                    weight={mainStat.weight}
+                    fats={mainStat.energyValue.fats}
+                    carbohydrates={mainStat.energyValue.carbohydrates}
+                    proteines={mainStat.energyValue.proteines}/>
+        {/*{isUserStatLoading && <Loader/>}*/}
+        {/*{!isUserStatLoading && dailyStat && getStatContent()}*/}
+        {/*{!isUserStatLoading && (!dailyStat || Object.keys(dailyStat).length === 0)*/}
+        {/*    && <div className="text-center fw-bold py-3 m-auto">No stat yet</div>}*/}
     </div>;
 
 

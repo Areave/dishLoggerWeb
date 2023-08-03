@@ -14,7 +14,7 @@ export const StatSlider: React.FC<any> = ({items, settings}) => {
         };
     }
 
-    return <div className='stat-slider'>
+    return <div className='stat-slider w-100'>
         <Slider {...settings}>
             {...items}
         </Slider>
