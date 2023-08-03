@@ -17,3 +17,33 @@
   display: flex;
   justify-content: space-between;
 }
+
+.difference-label {
+  min-width: 20px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-size: 10px;
+
+  position: absolute;
+  transform: translate(0px, 18px);
+  border-radius: 4px;
+  border: black solid 1px;
+  padding: 2px;
+
+  @media (min-width: 576px) {
+    transform: translate(30px, -30px);
+  }
+
+  &.less {
+    background-color: #38FF9F;
+  }
+  &.more {
+    background-color: #FF9D1F;
+  }
+  &.equal {
+    background-color: #9AA5FF;
+  }
+}
