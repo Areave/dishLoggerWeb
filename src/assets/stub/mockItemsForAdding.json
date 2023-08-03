@@ -43,6 +43,7 @@
   },
   "dish": {
     "type": "dish",
+    "name": "dish name",
     "description": "my mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy",
     "ingridients": [{
       "ingridient": {

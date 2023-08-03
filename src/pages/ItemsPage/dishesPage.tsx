@@ -40,11 +40,10 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     };
 
     useEffect(() => {
-        if (searchString) {
+
             // @ts-ignore
             setFilteredItems(filterItems(searchString));
-            return;
-        }
+
     }, [searchString]);
 
     const openModalToAddItem = () => {
@@ -53,7 +52,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
 
     const addItem = () => {
         const newDish = mockItems.dish;
-        newDish.name = Math.random() + '' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random();
+        newDish.name = newDish.name + Math.random();
         // @ts-ignore
         dispatch(createAction([...itemsArray, newDish]));
         dispatch(addNewItem(apiMethodsObject.addItem, createAction, {[key]: mockItems[key]}))
@@ -66,6 +65,9 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     };
 
     const items = filteredItems ? filteredItems : itemsArray;
+
+    console.log('filteredItems?', !!filteredItems)
+    console.log('items', items);
 
     const wrappedProps = {
         ...props,

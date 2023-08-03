@@ -20,7 +20,7 @@ const ItemsPageTemplate: React.FC<any> = ({
                                               openModalToAddItem,
                                               removeItem
                                           }) => {
-    console.log('render page');
+    // console.log('render page');
     return <div className="page items-page">
         <div className="items-page__content">
             <AddItemModal itemType={itemType} setNewItemData={setNewItemData} addItem={addItem} showModal={showModal}

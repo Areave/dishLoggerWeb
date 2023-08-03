@@ -46,11 +46,9 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     };
 
     useEffect(() => {
-        if (searchString) {
             // @ts-ignore
             setFilteredItems(filterItems(searchString));
-            return;
-        }
+
     }, [searchString]);
 
     const openModalToAddItem = () => {
