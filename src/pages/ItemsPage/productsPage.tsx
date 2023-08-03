@@ -18,7 +18,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     const [newItemData, setNewItemData] = useState({});
     const dispatch = useDispatch();
 
-    type ObjectKey = keyof typeof mockData;
+    type ObjectKey = keyof typeof mockItems;
     const key = itemType.toLowerCase() as ObjectKey;
 
     const userStat: Types.UserStat = useSelector((state: Types.MainState) => {
@@ -49,23 +49,6 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
 
     const openModalToAddItem = () => {
         setShowModal(true);
-    };
-
-    const mockData = {
-        product: {
-            "name": Math.random() + '' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random(),
-            "type": "product",
-            "description": "my product product product product product product product product product product product product product product product product product product product product " +
-                "product product product product product product product meal",
-            "weight": 1666,
-            "price": 16666,
-            "energyValue": {
-                "calories": "500",
-                "proteines": "100",
-                "fats": "40",
-                "carbohydrates": "10"
-            }
-        }
     };
 
     const addItem = () => {
