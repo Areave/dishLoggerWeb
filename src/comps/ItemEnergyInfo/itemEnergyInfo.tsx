@@ -4,6 +4,8 @@ import {itemTypes} from "../../utils/itemTypes";
 
 export const ItemEnergyInfo: React.FC<any> = ({label, amount, difference}) => {
 
+    if (!amount || !label) return <></>;
+
     const className = 'item-energy-info d-flex justify-content-center align-items-center flex-row flex-sm-column px-2';
 
     const getColorForDifference = (difference: number): string => {

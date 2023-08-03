@@ -7,27 +7,23 @@ import {Ingridient} from "../Ingridient/ingridient";
 import {AmountInfo} from "../AmountInfo/amountInfo";
 import Loader from "../loader/loader";
 
-export interface Meal {
-    _id: string,
+export interface Product {
+    _id?: string,
     name: string,
     type: string,
-    description: string,
-    dateString: string,
-    ingridients: {
-        ingridient: Types.Product | Types.Dish,
-        weight: number,
-        amountOfItems: number,
-        price: number,
-        energyValue: {
-            calories: number,
-            proteines: number,
-            fats: number,
-            carbohydrates: number
-        }
-    }[],
-    weight: number,
-    price: number,
-    energyValue: {
+    description?: string,
+    weight?: number,
+    price?: number,
+    energyValue?: {
+        calories: number,
+        proteines: number,
+        fats: number,
+        carbohydrates: number
+    },
+    isThatPieceProduct: boolean,
+    amountOfPieces?: number,
+    priceForAllPieces?: number,
+    energyValueForOnePiece?: {
         calories: number,
         proteines: number,
         fats: number,
@@ -36,6 +32,9 @@ export interface Meal {
 }
 
 export const ItemCard: React.FC<any> = ({itemType, item, removeItem}) => {
+
+    // console.log('item', item);
+
     return <div className='item d-flex flex-column mb-4'>
         <div className="item__header d-flex justify-content-between align-items-center">
             {/*<div title={item.type} className='item__type'>{item.type}</div>*/}
@@ -46,17 +45,18 @@ export const ItemCard: React.FC<any> = ({itemType, item, removeItem}) => {
             </div>
         </div>
         <div title={item.description} className="item__description">{item.description}</div>
-        <AmountInfo price={item.price}
-                    calories={item.energyValue.calories}
+        <AmountInfo price={item.price || item.priceForAllPieces}
+                    calories={item.energyValue?.calories || item.energyValueForOnePiece?.calories * item.amountOfPieces}
                     weight={item.weight}
-                    fats={item.energyValue.fats}
-                    carbohydrates={item.energyValue.carbohydrates}
-                    proteines={item.energyValue.proteines}/>
-        <div className="item__ingridients">
+                    amount={item.amountOfPieces}
+                    fats={item.energyValue?.fats || item.energyValueForOnePiece?.fats * item.amountOfPieces}
+                    carbohydrates={item.energyValue?.carbohydrates || item.energyValueForOnePiece?.carbohydrates * item.amountOfPieces}
+                    proteines={item.energyValue?.proteines || item.energyValueForOnePiece?.proteines * item.amountOfPieces}/>
+        {item.ingridients && <div className="item__ingridients">
             <div className="text-center fw-bold py-3">Ingridients</div>
             {item.ingridients.map((ingridient: any, index: number) => {
                 return <Ingridient key={index + "" + ingridient.name} ingridient={ingridient}/>
             })}
-        </div>
+        </div>}
     </div>
 };

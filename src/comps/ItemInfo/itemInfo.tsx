@@ -4,6 +4,8 @@ import {itemTypes} from "../../utils/itemTypes";
 
 export const ItemInfo: React.FC<any> = ({imgSrc, amount, difference}) => {
 
+    if (!amount || !imgSrc) return <></>;
+
     const getColorForDifference = (difference: number): string => {
         if (difference < 100) {
             return 'less'
