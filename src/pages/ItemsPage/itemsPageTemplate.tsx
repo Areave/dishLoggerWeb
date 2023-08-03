@@ -25,8 +25,6 @@ const ItemsPageTemplate: React.FC<any> = ({
             <AddItemModal itemType={itemType} setNewItemData={setNewItemData} addItem={addItem} showModal={showModal}
                           closeModal={() => setShowModal(false)}/>
             {itemType === itemTypes.MEAL && <Stat mainStat={userStat.mainStat} statArray={userStat.statArray}/>}
-            {/*{itemsArrayCurrent.length ? <Search setSearchString={setSearchString}/> :*/}
-            {/*    <div className="text-center fw-bold py-1">No meals yet</div>}*/}
             <Search setSearchString={setSearchString}/>
             <ActionButton className='add-item__button my-3' onClick={openModalToAddItem} label={'add ' + itemType.toLowerCase()}/>
             <div className='mb-5'>

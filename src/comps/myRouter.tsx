@@ -6,9 +6,9 @@ import 'materialize-css'
 // import {DropdownMenu} from "./Navigation/dropdownMenu";
 import ActionButton from "./actionButton/actionButton";
 import {Navigation} from "./Navigation/navigation";
-import {ItemsPage} from "../pages/ItemsPage/itemsPage";
+import {MealsPage} from "../pages/ItemsPage/mealsPage";
 import {itemTypes} from "../utils/itemTypes";
-import {ItemsPage2} from "../pages/ItemsPage/itemsPage2";
+import {DishesPage} from "../pages/ItemsPage/dishesPage";
 import {useSelector} from "react-redux";
 import {Types} from "../utils/types";
 import LoadingPage from "../pages/loadingPage/loadingPage";
@@ -31,8 +31,8 @@ export const MyRouter = ({isAuthorized}: any) => {
         <Routes>
             {isAuthorized ? (
                 <>
-                    <Route path='/' element={<ItemsPage itemType={itemTypes.MEAL}/>}/>
-                    <Route path='/dishes' element={<ItemsPage2 itemType={itemTypes.DISH}/>}/>
+                    <Route path='/' element={<MealsPage/>}/>
+                    <Route path='/dishes' element={<DishesPage/>}/>
                     <Route path='/*' element={<Navigate to={'/'}/>}/>
                 </>
             ) : (

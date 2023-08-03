@@ -1,15 +1,17 @@
 import React, {useCallback, useEffect, useState} from "react";
-import ItemsPageTemplate from "./itemsPageTemplate";
+import ItemsPageTemplate2 from "./itemsPageTemplate2";
 import {useDispatch, useSelector} from "react-redux";
 import {Types} from "../../utils/types";
-import {addNewItem, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
+import {addNewItem, fetchItems, fetchUser, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
 import {getCreateSetItemsActionByType} from "../../utils/store/actionCreators";
 import apiService from "../../utils/apiService";
-import {getPluralItemType} from "../../utils/itemTypes";
+import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 
 const ItemsPageHOC = (Comp: React.FC<any>, props?: { itemType: string }) => {
 
     const itemType = props.itemType;
+
+    console.log('itemType', itemType)
 
     const [filteredItems, setFilteredItems] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -27,13 +29,21 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: { itemType: string }) => {
         return state.items[getPluralItemType(itemType)];
     });
 
+    const createAction = getCreateSetItemsActionByType(itemType);
+    const apiMethodsObject = apiService.getApiMethodsObject(itemType);
+
     const fetchStat = useCallback(() => {
         dispatch(fetchUserStatForToday());
     }, [itemsArray]);
 
     useEffect(() => {
-        // fetchStat();
-        dispatch(fetchUserStatForToday());
+        console.log('useeffect, itemType', itemType)
+        if(itemType === itemTypes.MEAL) {
+            dispatch(fetchUserStatForToday());
+        } else {
+            dispatch(fetchItems(itemType, createAction));
+            // apiService.getApiMethodsObject().getAllItems()
+        }
     }, []);
 
     useEffect(() => {
@@ -103,8 +113,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: { itemType: string }) => {
         }
     };
 
-    const createAction = getCreateSetItemsActionByType(itemType);
-    const apiMethodsObject = apiService.getApiMethodsObject(itemType);
+
 
     const addItem = () => {
         // @ts-ignore
@@ -135,4 +144,4 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: { itemType: string }) => {
     return <Comp {...wrappedProps}/>
 };
 
-export const ItemsPage = (props: { itemType: string }) => ItemsPageHOC(ItemsPageTemplate, props);
+export const ItemsPage = (props: { itemType: string }) => ItemsPageHOC(ItemsPageTemplate2, props);
