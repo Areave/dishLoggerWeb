@@ -29,6 +29,8 @@ export const fetchUser = () => {
             dispatch(setIsAuthorizedAction(true));
             dispatch(setUserAction(response.user));
             dispatch(createSetMealsAction(response.user.meals));
+            dispatch(createSetDishesAction(response.user.dishes));
+            dispatch(createSetProductsAction(response.user.products));
         }).catch((error) => {
             checkResponseForMessage(error, dispatch);
             dispatch(setIsAuthorizedAction(false));
@@ -96,6 +98,23 @@ export const removeNewItem = (removeFunction: any, setItemsAction: any, id: stri
         }).finally(() => {
             dispatch(fetchUserStatForToday());
             dispatch(createSetItemsLoadingAction(false));
+        })
+    }
+};
+export const fetchItems = (itemType: string, setItemsAction: any) => {
+
+    const fetchMethod = apiService.getApiMethodsObject(itemType).getAllItems;
+
+    return (dispatch: any) => {
+        // dispatch(createSetItemsLoadingAction(true));
+        fetchMethod().then((response: any) => {
+            checkResponseForMessage(response, dispatch);
+            dispatch(setItemsAction(response));
+        }).catch((error: any) => {
+            checkResponseForMessage(error, dispatch);
+        }).finally(() => {
+            // dispatch(fetchUserStatForToday());
+            // dispatch(createSetItemsLoadingAction(false));
         })
     }
 };
