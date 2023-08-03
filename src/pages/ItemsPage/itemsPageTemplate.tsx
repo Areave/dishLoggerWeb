@@ -14,21 +14,22 @@ const ItemsPageTemplate: React.FC<any> = ({
                                               addItem,
                                               showModal,
                                               setShowModal,
-                                              filteredItems,
+                                              items,
                                               userStat,
                                               setSearchString,
                                               openModalToAddItem,
                                               removeItem
                                           }) => {
+    console.log('render page');
     return <div className="page items-page">
         <div className="items-page__content">
             <AddItemModal itemType={itemType} setNewItemData={setNewItemData} addItem={addItem} showModal={showModal}
                           closeModal={() => setShowModal(false)}/>
-            {itemType === itemTypes.MEAL && <Stat mainStat={userStat.mainStat} statArray={userStat.statArray}/>}
+            {itemType === itemTypes.MEAL && <Stat statArray={userStat.statArray}/>}
             <Search setSearchString={setSearchString}/>
             <ActionButton className='add-item__button my-3' onClick={openModalToAddItem} label={'add ' + itemType.toLowerCase()}/>
             <div className='mb-5'>
-                {filteredItems.length ? filteredItems.map((item: any, index: number) =>
+                {items.length ? items.map((item: any, index: number) =>
                         <ItemCard key={index} itemType={itemType} item={item} removeItem={removeItem}/>)
                     : <div>`no ${getPluralItemType(itemType)} yet`</div>}
             </div>

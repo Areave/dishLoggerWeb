@@ -6,13 +6,12 @@ import {addNewItem, fetchItems, fetchUser, fetchUserStatForToday, removeNewItem}
 import {createSetDishesAction, createSetMealsAction, getCreateSetItemsActionByType} from "../../utils/store/actionCreators";
 import apiService from "../../utils/apiService";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
-import ItemsPageTemplate2 from "../ItemsPage2/itemsPageTemplate2";
 
 const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
 
     const itemType = itemTypes.MEAL;
 
-    const [filteredItems, setFilteredItems] = useState([]);
+    const [filteredItems, setFilteredItems] = useState();
     const [showModal, setShowModal] = useState(false);
     const [searchString, setSearchString] = useState('');
     const [newItemData, setNewItemData] = useState({});
@@ -31,26 +30,18 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     const createAction = getCreateSetItemsActionByType(itemType);
     const apiMethodsObject = apiService.getApiMethodsObject(itemType);
 
-    // const fetchStat = useCallback(() => {
-    //     dispatch(fetchUserStatForToday());
-    // }, [itemsArray]);
-
     useEffect(() => {
-        dispatch(fetchUserStatForToday());
+        // if (!userStat.statArray.length) {
+        //     useCallback(() => {
+                dispatch(fetchUserStatForToday());
+            // }, [itemsArray])
+        // }
     }, []);
 
-    useEffect(() => {
-        if (searchString) {
-            console.log('setFilteredItems',filterItems(searchString));
-            setFilteredItems(filterItems(searchString));
-            return;
-        }
-        setFilteredItems(itemsArray);
-    }, [searchString]);
-
-    useEffect(() => {
-        setFilteredItems(itemsArray);
-    }, [itemsArray]);
+    // const fetchStat = useCallback(() => {
+    //     dispatch(fetchUserStatForToday());
+    // },[itemsArray]);
+    // fetchStat();
 
     const filterItems = (searchString: string): Types.CommonEntitiesType[] => {
         const filterFunc = (item: Types.CommonEntitiesType) => {
@@ -59,6 +50,16 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
         };
         return itemsArray.filter(filterFunc);
     };
+
+    useEffect(() => {
+        if (searchString) {
+            // console.log('useeffect searchString inside if');
+            // console.log('setFilteredItems',filterItems(searchString));
+            // @ts-ignore
+            setFilteredItems(filterItems(searchString));
+            return;
+        }
+    }, [searchString]);
 
     const openModalToAddItem = () => {
         setShowModal(true);
@@ -111,24 +112,23 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
         }
     };
 
-
-
     const addItem = () => {
         const newMeal = mockData[key];
-        console.log(newMeal);
         // @ts-ignore
-        dispatch(createSetMealsAction([...itemsArray, newMeal]));
+        dispatch(createAction([...itemsArray, newMeal]));
         dispatch(addNewItem(apiMethodsObject.addItem, createAction, {[key]: mockData[key]}))
     };
 
     const removeItem = (id: string) => {
         // @ts-ignore
-        dispatch(createSetMealsAction(itemsArray.filter((item: Types.CommonEntitiesType) => item._id !== id)));
+        dispatch(createAction(itemsArray.filter((item: Types.CommonEntitiesType) => item._id !== id)));
         dispatch(removeNewItem(apiMethodsObject.removeItem, createAction, id));
     };
 
 
-    console.log('filteredItems',filteredItems);
+    // console.log('filteredItems',filteredItems);
+
+    const items = filteredItems ? filteredItems : itemsArray;
 
     const wrappedProps = {
         ...props,
@@ -137,12 +137,15 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
         addItem,
         showModal,
         setShowModal,
-        filteredItems,
+        items,
         userStat,
         setSearchString,
         openModalToAddItem,
         removeItem
     };
+    // console.log('searchString',searchString);
+    console.log('render HOC');
+
 
     return <Comp {...wrappedProps}/>
 };
