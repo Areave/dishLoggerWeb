@@ -23,8 +23,6 @@
   &__amount {
     max-width: 50px;
     font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include styles.forTrimLongString;
   }
 }

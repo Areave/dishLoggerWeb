@@ -26,6 +26,11 @@
   width: 100%;
   min-height: 100%;
 }
+@mixin forTrimLongString {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 
 // components mixins

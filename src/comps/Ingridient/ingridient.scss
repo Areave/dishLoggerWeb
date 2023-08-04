@@ -2,11 +2,9 @@
 
 .ingridient {
   &-name {
+    @include styles.forTrimLongString;
     flex-shrink: 1;
     font-size: 1.2em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     width: 100px;
   }
   &-header {

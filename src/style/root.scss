@@ -21,9 +21,7 @@
 .difference-label {
   min-width: 20px;
   font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include styles.forTrimLongString;
 
   font-size: 10px;
 
