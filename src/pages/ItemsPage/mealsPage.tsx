@@ -29,7 +29,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     const userStat: Types.UserStat = useSelector((state: Types.MainState) => {
         return state.user.userStat;
     });
-    const itemsArray: Types.CommonEntitiesType[] = useSelector((state: {items: any}) => {
+    const itemsArray: Types.CommonEntitiesType[] = useSelector((state: { items: any }) => {
         return state.items[getPluralItemType(itemType)];
     });
 
@@ -39,7 +39,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
 
     useEffect(() => {
         if (!userStat.statArray.length) {
-                dispatch(fetchUserStatForToday());
+            dispatch(fetchUserStatForToday());
         }
     }, []);
 
@@ -54,9 +54,13 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
     };
 
     useEffect(() => {
-        if (typeof searchString === 'undefined') return;
+        if (typeof searchString === 'undefined' || searchString === '') {
             // @ts-ignore
-            setFilteredItems(filterItems(searchString));
+            setFilteredItems(itemsArray);
+            return
+        }
+        // @ts-ignore
+        setFilteredItems(filterItems(searchString));
 
     }, [searchString]);
 
@@ -83,10 +87,10 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
         dispatch(removeNewItem(apiMethodsObject.removeItem, createSetItemsAction, id));
     };
 
-    const items = filteredItems ? filteredItems : itemsArray;
+    // const items = filteredItems ? filteredItems : itemsArray;
 
-    console.log('filteredItems', !!filteredItems);
-    console.log('items', items);
+    // console.log('filteredItems', !!filteredItems);
+    // console.log('items', items);
 
     const wrappedProps = {
         ...props,
@@ -95,7 +99,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props?: any) => {
         addItem,
         showModal,
         setShowModal,
-        items,
+        items: filteredItems,
         userStat,
         setSearchString,
         openModalToAddItem,

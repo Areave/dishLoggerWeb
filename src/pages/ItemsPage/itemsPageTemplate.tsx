@@ -29,7 +29,7 @@ const ItemsPageTemplate: React.FC<any> = ({
             <Search setSearchString={setSearchString}/>
             <ActionButton className='add-item__button my-3' onClick={openModalToAddItem} label={'add ' + itemType.toLowerCase()}/>
             <div className='mb-5'>
-                {items.length ? items.map((item: any, index: number) =>
+                {items?.length ? items.map((item: any, index: number) =>
                         <ItemCard key={index} itemType={itemType} item={item} removeItem={removeItem}/>)
                     : <div className="text-center fw-bold py-3 mt-3">{'no '+ getPluralItemType(itemType) + ' yet'}</div>}
             </div>
