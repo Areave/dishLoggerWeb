@@ -31,11 +31,11 @@ export interface Product {
     }
 }
 
-export const ItemCard: React.FC<any> = ({itemType, item, removeItem}) => {
+export const ItemCard: React.FC<any> = ({itemType, item, removeItem, openModalForEdit}) => {
 
     // console.log('item', item);
 
-    return <div className='item d-flex flex-column mb-4'>
+    return <div className='item d-flex flex-column mb-4' onClick={openModalForEdit}>
         <div className="item__header d-flex justify-content-between align-items-center">
             {/*<div title={item.type} className='item__type'>{item.type}</div>*/}
             <ItemType itemType={item.type}/>

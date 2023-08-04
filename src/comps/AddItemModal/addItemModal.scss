@@ -1,5 +1,8 @@
 @use '../../style/style' as styles;
 
-.add-item__modal {
-
+.modal {
+  &__header {
+    //max-width: 80%;
+    @include styles.forTrimLongString;
+  }
 }
