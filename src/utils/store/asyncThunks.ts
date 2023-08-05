@@ -29,8 +29,8 @@ export const fetchUser = () => {
             dispatch(setIsAuthorizedAction(true));
             dispatch(setUserAction(response.user));
             dispatch(createSetMealsAction(response.user.meals));
-            dispatch(createSetDishesAction(response.user.dishes));
-            dispatch(createSetProductsAction(response.user.products));
+            // dispatch(createSetDishesAction(response.user.dishes));
+            // dispatch(createSetProductsAction(response.user.products));
         }).catch((error) => {
             checkResponseForMessage(error, dispatch);
             dispatch(setIsAuthorizedAction(false));
@@ -107,7 +107,7 @@ export const fetchItems = (itemType: string, setItemsAction: any) => {
     return (dispatch: any) => {
         // dispatch(createSetItemsLoadingAction(true));
         fetchMethod().then((response: any) => {
-            if (response.length > 0) {
+            if (itemType === itemTypes.MEAL && response.length > 0) {
                 dispatch(fetchUserStatForToday());
             }
             checkResponseForMessage(response, dispatch);

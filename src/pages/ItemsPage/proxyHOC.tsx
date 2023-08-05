@@ -2,13 +2,13 @@ import React, {useEffect, useState} from "react";
 import ItemsPageTemplate from "./itemsPageTemplate";
 import {useDispatch, useSelector} from "react-redux";
 import {Types} from "../../utils/types";
-import {addNewItem, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
+import {addNewItem, fetchItems, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
 import {
     getCreateSetItemActionByType,
     getCreateSetItemsActionByType
 } from "../../utils/store/actionCreators";
 import apiService from "../../utils/apiService";
-import {getPluralItemType} from "../../utils/itemTypes";
+import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import mockItems from '../../assets/stub/mockItemsForAdding.json'
 
 const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
@@ -30,14 +30,22 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
     const itemsArray: Types.CommonEntitiesType[] = useSelector((state: { items: any }) => {
         return state.items[getPluralItemType(itemType)];
     });
+    const isItemsLoading: boolean = useSelector((state: { items: any }) => {
+        return state.items.isItemsLoading;
+    });
 
     const createSetItemsAction = getCreateSetItemsActionByType(itemType);
     const createSetItemAction = getCreateSetItemActionByType(itemType);
     const apiMethodsObject = apiService.getApiMethodsObject(itemType);
 
     useEffect(() => {
-        if (!userStat.statArray.length) {
-            dispatch(fetchUserStatForToday());
+        console.log('itemsArray',itemsArray);
+        if (itemType !== itemTypes.MEAL && !itemsArray) {
+            dispatch(fetchItems(itemType, createSetItemsAction));
+        } else {
+            if (!userStat.statArray.length) {
+                dispatch(fetchUserStatForToday());
+            }
         }
     }, []);
 
@@ -61,12 +69,8 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
     }, [searchString, itemsArray]);
 
     const openModalToAddItem = (event: any, item?: Types.CommonEntitiesType) => {
-
-        if (item) {
-            console.log(event)
-            // @ts-ignore
-            setNewItemData(item);
-        }
+        event.stopPropagation();
+        setNewItemData(item);
         setShowModal(true);
     };
 
@@ -98,7 +102,8 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         userStat,
         setSearchString,
         openModalToAddItem,
-        removeItem
+        removeItem,
+        isItemsLoading
     };
 
     return <Comp {...wrappedProps}/>

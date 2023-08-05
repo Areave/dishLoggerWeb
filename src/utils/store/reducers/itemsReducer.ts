@@ -13,12 +13,12 @@ import {
 } from "../actionCreators";
 
 const initialItemState: Types.ItemsState = {
-    product: {},
-    products: [],
-    dish: {},
-    dishes: [],
-    meal: {},
-    meals: [],
+    product: null,
+    products: null,
+    dish: null,
+    dishes: null,
+    meal: null,
+    meals: null,
     isItemLoading: false,
     isItemsLoading: false,
 };

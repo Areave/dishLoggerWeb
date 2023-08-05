@@ -41,7 +41,7 @@ export const ItemCard: React.FC<any> = ({itemType, item, removeItem, openModalFo
             <ItemType itemType={item.type}/>
             <div title={item.name} className='item__name pe-5 ps-5'>{item.name}</div>
             <div className="item__delete-icon-container">
-                {item._id ? <img src={Trash} alt="delete" onClick={() => removeItem(item._id)}/> : <Loader isLittle={true}/>}
+                {item._id ? <img src={Trash} alt="delete" onClick={(event) => removeItem(event, item._id)}/> : <Loader isLittle={true}/>}
             </div>
         </div>
         <div title={item.description} className="item__description">{item.description}</div>
