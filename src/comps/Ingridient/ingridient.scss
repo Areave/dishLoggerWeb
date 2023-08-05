@@ -6,6 +6,10 @@
     flex-shrink: 1;
     font-size: 1.2em;
     width: 100px;
+    &.deleted {
+      color: red;
+      font-weight: bold;
+    }
   }
   &-header {
   }

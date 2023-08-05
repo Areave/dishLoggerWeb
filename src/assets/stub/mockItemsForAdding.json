@@ -2,13 +2,12 @@
   "meal": {
     "type": "meal",
     "description": "my mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy",
-    "ingridients": [{
-      "ingridient": {
-        "_id": "64990c370fe5d33b76d0cdb7",
-        "name": "B",
-        "type": "product"
-      },
-      "weight": "350",
+    "ingridientsIds": [
+      "64990c370fe5d33b76d0cdb7",
+      "64cbc3320b22c11ed9c0d1af"
+    ],
+    "ingridientsAmount": [{
+      "weight": 350,
       "price": 77,
       "energyValue": {
         "calories": 100,
@@ -17,18 +16,13 @@
         "carbohydrates": 100
       }
     }, {
-      "ingridient": {
-        "_id": "64c09dd161060a8945bb1227",
-        "name": "breakfast1",
-        "type": "dish"
-      },
-      "weight": "350",
-      "price": 77,
+      "weight": 200,
+      "price": 123,
       "energyValue": {
-        "calories": 100,
-        "proteines": 100,
-        "fats": 10,
-        "carbohydrates": 100
+        "calories": 330,
+        "proteines": 130,
+        "fats": 15,
+        "carbohydrates": 180
       }
     }
     ],
@@ -45,13 +39,12 @@
     "type": "dish",
     "name": "dish name",
     "description": "my mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy",
-    "ingridients": [{
-      "ingridient": {
-        "_id": "64990c370fe5d33b76d0cdb7",
-        "name": "B",
-        "type": "product"
-      },
-      "weight": "350",
+    "ingridientsIds": [
+      "64cbc3320b22c11ed9c0d1af",
+      "64990c370fe5d33b76d0cdb7"
+    ],
+    "ingridientsAmount": [{
+      "weight": 350,
       "price": 77,
       "energyValue": {
         "calories": 100,
@@ -60,18 +53,13 @@
         "carbohydrates": 100
       }
     }, {
-      "ingridient": {
-        "_id": "64c09dd161060a8945bb1227",
-        "name": "breakfast1",
-        "type": "dish"
-      },
-      "weight": "350",
-      "price": 77,
+      "weight": 200,
+      "price": 123,
       "energyValue": {
-        "calories": 100,
-        "proteines": 100,
-        "fats": 10,
-        "carbohydrates": 100
+        "calories": 330,
+        "proteines": 130,
+        "fats": 15,
+        "carbohydrates": 180
       }
     }
     ],
