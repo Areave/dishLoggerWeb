@@ -31,14 +31,14 @@ const apiGetRequest = (url: string) => {
     //     }
     // });
     return new Promise((res, rej) => {
-        setTimeout(() => {
+        // setTimeout(() => {
             return res(axios.get(url).then((data: any) => {
                     return Promise.resolve(data.data)
                 }).catch(error => {
                     errorHandler(error);
                 })
             )
-        }, 1000);
+        // }, 1000);
     });
 };
 const apiPostRequest = (url: string, data: any) => {

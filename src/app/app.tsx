@@ -11,7 +11,9 @@ import {Footer} from "../comps/footer/footer";
 import {Types} from "../utils/types";
 import LoadingPage from "../pages/loadingPage/loadingPage";
 import {ToastContainer} from "../comps/ToastContainer/toastContainer";
-import {fetchUser} from "../utils/store/asyncThunks";
+import {fetchItems, fetchUser} from "../utils/store/asyncThunks";
+import {getCreateSetItemsActionByType} from "../utils/store/actionCreators";
+import {itemTypes} from "../utils/itemTypes";
 
 const App: React.FC<any> = () => {
 
@@ -30,9 +32,21 @@ const App: React.FC<any> = () => {
     useEffect(() => {
         // if (!isAuthorized) {
         //     console.log('app - not authorized');
-            dispatch(fetchUser());
+        dispatch(fetchUser());
+        // dispatch(fetchItems(itemTypes.PRODUCT, getCreateSetItemsActionByType(itemTypes.PRODUCT)));
+        // dispatch(fetchItems(itemTypes.DISH, getCreateSetItemsActionByType(itemTypes.DISH)));
+
         // }
     }, []);
+
+    useEffect(() => {
+        if (!isAuthorized) {
+            dispatch(fetchItems(itemTypes.PRODUCT, getCreateSetItemsActionByType(itemTypes.PRODUCT)));
+            dispatch(fetchItems(itemTypes.DISH, getCreateSetItemsActionByType(itemTypes.DISH)));
+            dispatch(fetchItems(itemTypes.DISH, getCreateSetItemsActionByType(itemTypes.MEAL)));
+        }
+
+    }, [isAuthorized]);
 
     return <React.StrictMode>
         <Header/>
@@ -40,7 +54,7 @@ const App: React.FC<any> = () => {
         {/*{isUserLoading ? (*/}
         {/*    <LoadingPage/>*/}
         {/*) : (<>*/}
-                <MyRouter isAuthorized={isAuthorized}/>
+        <MyRouter isAuthorized={isAuthorized}/>
         {/*    </>*/}
         {/*)}*/}
         <Footer/>

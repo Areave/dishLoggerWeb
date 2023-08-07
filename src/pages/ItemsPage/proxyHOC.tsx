@@ -39,14 +39,14 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
     const apiMethodsObject = apiService.getApiMethodsObject(itemType);
 
     useEffect(() => {
-        console.log('itemsArray',itemsArray);
-        if (itemType !== itemTypes.MEAL && !itemsArray) {
-            dispatch(fetchItems(itemType, createSetItemsAction));
-        } else {
+        // console.log('itemsArray',itemsArray);
+        // if (!itemsArray) {
+            // dispatch(fetchItems(itemType, createSetItemsAction));
+        // } else {
             if (!userStat.statArray.length) {
                 dispatch(fetchUserStatForToday());
             }
-        }
+        // }
     }, []);
 
     const filterItems = (searchString: string): Types.CommonEntitiesType[] => {

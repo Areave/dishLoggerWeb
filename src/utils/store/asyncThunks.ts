@@ -28,7 +28,7 @@ export const fetchUser = () => {
             checkResponseForMessage(response, dispatch);
             dispatch(setIsAuthorizedAction(true));
             dispatch(setUserAction(response.user));
-            dispatch(createSetMealsAction(response.user.meals));
+            // dispatch(createSetMealsAction(response.user.meals));
             // dispatch(createSetDishesAction(response.user.dishes));
             // dispatch(createSetProductsAction(response.user.products));
         }).catch((error) => {
@@ -102,21 +102,28 @@ export const removeNewItem = (removeFunction: any, setItemsAction: any, id: stri
 };
 export const fetchItems = (itemType: string, setItemsAction: any) => {
 
+    console.log('from fetch', itemType);
+
     const fetchMethod = apiService.getApiMethodsObject(itemType).getAllItems;
 
     return (dispatch: any) => {
-        // dispatch(createSetItemsLoadingAction(true));
-        fetchMethod().then((response: any) => {
-            if (itemType === itemTypes.MEAL && response.length > 0) {
-                dispatch(fetchUserStatForToday());
-            }
-            checkResponseForMessage(response, dispatch);
-            dispatch(setItemsAction(response));
-        }).catch((error: any) => {
-            checkResponseForMessage(error, dispatch);
-        }).finally(() => {
-            // dispatch(fetchUserStatForToday());
-            // dispatch(createSetItemsLoadingAction(false));
-        })
+        dispatch(createSetItemsLoadingAction(true));
+
+        setTimeout(() => {
+
+            fetchMethod().then((response: any) => {
+                dispatch(createSetItemsLoadingAction(false));
+                // if (itemType === itemTypes.MEAL && response.length > 0) {
+                //     dispatch(fetchUserStatForToday());
+                // }
+                checkResponseForMessage(response, dispatch);
+                dispatch(setItemsAction(response));
+            }).catch((error: any) => {
+                checkResponseForMessage(error, dispatch);
+            }).finally(() => {
+                // dispatch(fetchUserStatForToday());
+                // dispatch(createSetItemsLoadingAction(false));
+            })
+        }, 1000)
     }
 };
