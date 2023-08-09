@@ -165,6 +165,10 @@ const getAllMeals = () => {
     const url = mealsEndpoint + 'get_all';
     return apiGetRequest(url);
 };
+// const getAllMealsForDay = (data: {date: Date}) => {
+//     const url = mealsEndpoint + 'get_all';
+//     return apiPostRequest(url);
+// };
 const updateMeal = (data: any) => {
     const url = mealsEndpoint + 'update';
     return apiPutRequest(url, data);

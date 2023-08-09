@@ -11,7 +11,7 @@ export const DailyStat: React.FC<any> = ({dailyStat}) => {
     const isUserStatLoading: boolean = useSelector((state: Types.MainState) => {
         return state.user.isUserStatLoading;
     });
-    console.log(dailyStat);
+    // console.log(dailyStat);
 
     const createSliderItemsArray = (dailyStat: any[]): any[] => {
         return dailyStat.map((statObject: any) => {

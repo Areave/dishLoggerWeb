@@ -2,29 +2,55 @@
   "meal": {
     "type": "meal",
     "description": "my mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy",
-    "ingridientsIds": [
-      "64990c370fe5d33b76d0cdb7",
-      "64cbc3320b22c11ed9c0d1af"
-    ],
-    "ingridientsAmount": [{
-      "weight": 350,
-      "price": 77,
-      "energyValue": {
-        "calories": 100,
-        "proteines": 100,
-        "fats": 10,
-        "carbohydrates": 100
+    "ingridients": [
+      {
+        "ingridient": "64cbc3320b22c11ed9c0d1af",
+        "type": "product",
+        "weight": 350,
+        "price": 77,
+        "energyValue": {
+          "calories": 100,
+          "proteines": 100,
+          "fats": 10,
+          "carbohydrates": 100
+        }
+      },
+      {
+        "ingridient": "64cbc3320b22c11ed9c0d2af",
+        "type": "product",
+        "weight": 350,
+        "price": 77,
+        "energyValue": {
+          "calories": 100,
+          "proteines": 100,
+          "fats": 10,
+          "carbohydrates": 100
+        }
+      },
+      {
+        "ingridient": "64cbb0a60b22c11ed9c0cee1",
+        "type": "dish",
+        "weight": 350,
+        "price": 77,
+        "energyValue": {
+          "calories": 100,
+          "proteines": 100,
+          "fats": 10,
+          "carbohydrates": 100
+        }
+      },
+      {
+        "ingridient": "64cbb0a60b22c11ed9c0cee2",
+        "type": "dish",
+        "weight": 350,
+        "price": 77,
+        "energyValue": {
+          "calories": 100,
+          "proteines": 100,
+          "fats": 10,
+          "carbohydrates": 100
+        }
       }
-    }, {
-      "weight": 200,
-      "price": 123,
-      "energyValue": {
-        "calories": 330,
-        "proteines": 130,
-        "fats": 15,
-        "carbohydrates": 180
-      }
-    }
     ],
     "weight": 1666,
     "price": 16666,
@@ -39,29 +65,55 @@
     "type": "dish",
     "name": "dish name",
     "description": "my mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy mealmy",
-    "ingridientsIds": [
-      "64cbc3320b22c11ed9c0d1af",
-      "64990c370fe5d33b76d0cdb7"
-    ],
-    "ingridientsAmount": [{
-      "weight": 350,
-      "price": 77,
-      "energyValue": {
-        "calories": 100,
-        "proteines": 100,
-        "fats": 10,
-        "carbohydrates": 100
+    "ingridients": [
+      {
+        "ingridient": "64cbc3320b22c11ed9c0d1af",
+        "type": "product",
+        "weight": 350,
+        "price": 77,
+        "energyValue": {
+          "calories": 100,
+          "proteines": 100,
+          "fats": 10,
+          "carbohydrates": 100
+        }
+      },
+      {
+        "ingridient": "64cbc3320b22c11ed9c0d2af",
+        "type": "product",
+        "weight": 350,
+        "price": 77,
+        "energyValue": {
+          "calories": 100,
+          "proteines": 100,
+          "fats": 10,
+          "carbohydrates": 100
+        }
+      },
+      {
+        "ingridient": "64cbb0a60b22c11ed9c0cee1",
+        "type": "dish",
+        "weight": 350,
+        "price": 77,
+        "energyValue": {
+          "calories": 100,
+          "proteines": 100,
+          "fats": 10,
+          "carbohydrates": 100
+        }
+      },
+      {
+        "ingridient": "64cbb0a60b22c11ed9c0cee2",
+        "type": "dish",
+        "weight": 350,
+        "price": 77,
+        "energyValue": {
+          "calories": 100,
+          "proteines": 100,
+          "fats": 10,
+          "carbohydrates": 100
+        }
       }
-    }, {
-      "weight": 200,
-      "price": 123,
-      "energyValue": {
-        "calories": 330,
-        "proteines": 130,
-        "fats": 15,
-        "carbohydrates": 180
-      }
-    }
     ],
     "weight": 1666,
     "price": 16666,

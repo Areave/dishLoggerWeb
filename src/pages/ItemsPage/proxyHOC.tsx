@@ -18,7 +18,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
     const [filteredItems, setFilteredItems] = useState();
     const [showModal, setShowModal] = useState(false);
     const [searchString, setSearchString] = useState();
-    const [newItemData, setNewItemData] = useState({});
+    const [editedItem, setEditedItem] = useState({});
 
     const dispatch = useDispatch();
     type ObjectKey = keyof typeof mockItems;
@@ -70,7 +70,9 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
     const openModalToAddItem = (event: any, item?: Types.CommonEntitiesType) => {
         event.stopPropagation();
-        setNewItemData(item);
+        if (item) {
+            setEditedItem(item);
+        }
         setShowModal(true);
     };
 
@@ -93,8 +95,8 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
     const wrappedProps = {
         ...props,
         itemType,
-        newItemData,
-        setNewItemData,
+        editedItem,
+        setEditedItem,
         addItem,
         showModal,
         setShowModal,

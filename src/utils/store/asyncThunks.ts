@@ -102,7 +102,7 @@ export const removeNewItem = (removeFunction: any, setItemsAction: any, id: stri
 };
 export const fetchItems = (itemType: string, setItemsAction: any) => {
 
-    console.log('from fetch', itemType);
+    // console.log('from fetch', itemType);
 
     const fetchMethod = apiService.getApiMethodsObject(itemType).getAllItems;
 

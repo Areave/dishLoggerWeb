@@ -183,7 +183,6 @@ export namespace Types {
         showModal: boolean,
         closeModal: () => void,
         addItem: () => void,
-        setNewItemData: Dispatch<SetStateAction<{}>>,
-        newItemData: Types.CommonEntitiesType;
+        editedItem: Types.CommonEntitiesType;
     }
 }

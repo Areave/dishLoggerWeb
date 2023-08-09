@@ -43,7 +43,7 @@ const App: React.FC<any> = () => {
         if (!isAuthorized) {
             dispatch(fetchItems(itemTypes.PRODUCT, getCreateSetItemsActionByType(itemTypes.PRODUCT)));
             dispatch(fetchItems(itemTypes.DISH, getCreateSetItemsActionByType(itemTypes.DISH)));
-            dispatch(fetchItems(itemTypes.DISH, getCreateSetItemsActionByType(itemTypes.MEAL)));
+            dispatch(fetchItems(itemTypes.MEAL, getCreateSetItemsActionByType(itemTypes.MEAL)));
         }
 
     }, [isAuthorized]);

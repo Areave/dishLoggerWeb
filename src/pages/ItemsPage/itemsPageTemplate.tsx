@@ -7,12 +7,13 @@ import {AddItemModal} from "../../comps/AddItemModal/addItemModal";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import {ItemCard} from "../../comps/ItemCard/itemCard";
 import LoadingPage from "../loadingPage/loadingPage";
+import {ItemModalTemplate} from "../../comps/AddItemModal/addItemModalTemplate";
 
 
 const ItemsPageTemplate: React.FC<any> = ({
                                               itemType,
-                                              newItemData,
-                                              setNewItemData,
+                                              editedItem,
+                                              setEditedItem,
                                               addItem,
                                               showModal,
                                               setShowModal,
@@ -27,8 +28,10 @@ const ItemsPageTemplate: React.FC<any> = ({
     if (isItemsLoading) return <LoadingPage/>;
     return <div className="page items-page">
         <div className="items-page__content">
-            <AddItemModal itemType={itemType} setNewItemData={setNewItemData} newItemData={newItemData} addItem={addItem} showModal={showModal}
-                          closeModal={() => setShowModal(false)}/>
+            <ItemModalTemplate itemType={itemType} editedItem={editedItem} addItem={addItem} showModal={showModal}
+                          closeModal={() => {
+                              setEditedItem({});
+                              setShowModal(false)}}/>
             {itemType === itemTypes.MEAL && <Stat statArray={userStat.statArray}/>}
             <Search setSearchString={setSearchString}/>
             <ActionButton className='add-item__button my-3' onClick={openModalToAddItem} label={'add ' + itemType.toLowerCase()}/>
