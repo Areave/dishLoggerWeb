@@ -11,11 +11,11 @@ import Product = Types.Product;
 export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, editedItem, itemType, addItem}) => {
 
     // @ts-ignore
-    const initItemToSave = {_id: '', name: '', description: '', ingridients: []};
-    const [itemToSave, setItemToSave] = useState(initItemToSave);
-    // const [localEditedItem, setLocalEditedItem] = useState(editedItem);
+    const initLocalEditedItem = {_id: '', name: '', description: '', ingridients: []};
+    // const [itemToSave, setItemToSave] = useState(initItemToSave);
+    const [localEditedItem, setLocalEditedItem] = useState(initLocalEditedItem);
 
-    // console.log('localEditedItem', localEditedItem);
+    console.log('localEditedItem', localEditedItem);
     // console.log('editedItem', editedItem);
 
 
@@ -30,7 +30,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
         // TODO: понять, зачем
         if (editedItem) {
             const copyEditedItem = JSON.parse(JSON.stringify(editedItem));
-            setItemToSave({
+            setLocalEditedItem({
                 _id: copyEditedItem._id,
                 name: copyEditedItem.name,
                 description: copyEditedItem.description,
@@ -42,22 +42,26 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     }, [editedItem]);
 
     useEffect(() => {
-        console.log(itemToSave);
-    }, [itemToSave]);
+        console.log('localEditedItem from useEffect', localEditedItem);
+    }, [localEditedItem]);
 
     const addIngridientField = () => {
+        setLocalEditedItem({...localEditedItem, ingridients: [...localEditedItem.ingridients, {}]})
     };
 
     const removeIngridientField = (index: number) => {
+        const newIngridientsArray = [...localEditedItem.ingridients.slice(0, index),
+            ...localEditedItem.ingridients.slice(index + 1)];
+        setLocalEditedItem({...localEditedItem, ingridients: newIngridientsArray})
     };
 
     const setNewIngridient = (ingridient: any, index: number) => {
         const newIngridientsArray = [
-            ...itemToSave.ingridients.slice(0, index),
+            ...localEditedItem.ingridients.slice(0, index),
             ingridient,
-            ...itemToSave.ingridients.slice(index + 1)
+            ...localEditedItem.ingridients.slice(index + 1)
         ];
-        setItemToSave({...itemToSave, ingridients: newIngridientsArray});
+        setLocalEditedItem({...localEditedItem, ingridients: newIngridientsArray});
 
     };
 
@@ -66,21 +70,23 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
         <Modal show={showModal} onHide={() => {
             closeModal();
             // setItemToSave(initItemToSave);
+            setLocalEditedItem(initLocalEditedItem);
         }} className='modal'>
             <Modal.Body>
                 <Form.Control value={localEditedItem?.name || ''} type="text" placeholder="name" onChange={(e: any) => {
-                    setItemToSave({...itemToSave, name: e.target.value})
+                    setLocalEditedItem({...localEditedItem, name: e.target.value})
                 }}/>
                 <Form.Control value={localEditedItem?.description || ''} type="text" placeholder="description" onChange={(e: any) => {
-                    setItemToSave({...itemToSave, description: e.target.value})
+                    setLocalEditedItem({...localEditedItem, description: e.target.value})
                 }}/>
                 <Form.Group>
                     {itemType === itemTypes.PRODUCT && <>{'product'}</>}
                     {itemType !== itemTypes.PRODUCT && <IngridientsGroup
                         items={items}
                         setNewIngridient={setNewIngridient}
+                        removeIngridientField={removeIngridientField}
                         // @ts-ignore
-                        ingridientsArray={editedItem?.ingridients || []}/>}
+                        ingridientsArray={localEditedItem?.ingridients || []}/>}
 
                     <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
                     <ActionButton onClick={() => {
@@ -95,7 +101,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
 };
 
 // @ts-ignore
-const IngridientsGroup = ({ingridientsArray, items, setNewIngridient}): any => {
+const IngridientsGroup = ({ingridientsArray, items, setNewIngridient, removeIngridientField}): any => {
 
     if (ingridientsArray.length) {
         return ingridientsArray.map((ingridientObject: any, index: number) => {
@@ -104,6 +110,7 @@ const IngridientsGroup = ({ingridientsArray, items, setNewIngridient}): any => {
                 index={index}
                 ingridientObject={ingridientObject}
                 items={items}
+                removeIngridientField={removeIngridientField}
                 // ingridientsArray={newItem.ingridients}
                 // newItemIngridients={newItemIngridients}
                 setNewIngridient={setNewIngridient}
@@ -116,6 +123,7 @@ const IngridientsGroup = ({ingridientsArray, items, setNewIngridient}): any => {
             index={0}
             ingridientObject={null}
             items={{}}
+            removeIngridientField={removeIngridientField}
             // ingridientsArray={newItem.ingridients}
             // newItemIngridients={newItemIngridients}
             setNewIngridient={setNewIngridient}
@@ -131,7 +139,7 @@ const NewIngridientSelect = ({
                                  // ingridientsArray,
                                  // newItemIngridients,
                                  setNewIngridient,
-                                 // removeIngridientField
+                                 removeIngridientField
                              }: {
     index: number,
     ingridientObject: any,
@@ -142,7 +150,7 @@ const NewIngridientSelect = ({
     // ingridientsArray: any[],
     // newItemIngridients: any[],
     setNewIngridient: (ingridient: any, index: number) => void,
-    // removeIngridientField: (args: any) => void,
+    removeIngridientField: (args: any) => void,
 }) => {
 
     // console.log('ingridientObject', ingridientObject)
@@ -231,5 +239,6 @@ const NewIngridientSelect = ({
         <Form.Select className='w-25' onChange={onSelectIngridientChange}>
             {createSelectOptionsArray()}
         </Form.Select>
+        <div className="" onClick={() => removeIngridientField(index)}>remove</div>
     </div>
 };
