@@ -18,7 +18,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
     const [filteredItems, setFilteredItems] = useState();
     const [showModal, setShowModal] = useState(false);
     const [searchString, setSearchString] = useState();
-    const [editedItem, setEditedItem] = useState({});
+    const [editedItem, setEditedItem] = useState(null);
 
     const dispatch = useDispatch();
     type ObjectKey = keyof typeof mockItems;

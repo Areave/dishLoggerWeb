@@ -172,6 +172,8 @@ export namespace Types {
     // common entities type
     export type CommonEntitiesType = Product | Dish | Meal;
 
+    export type CommonEntitiesTypeWithIngridients = Dish | Meal;
+
     // props
     export interface ActionButtonProps {
         onClick: (arg?: any) => void,
@@ -183,6 +185,6 @@ export namespace Types {
         showModal: boolean,
         closeModal: () => void,
         addItem: () => void,
-        editedItem: Types.CommonEntitiesType;
+        editedItem: Types.CommonEntitiesType | Product | null;
     }
 }

@@ -1,4 +1,3 @@
-// import {createStore, combineReducers, applyMiddleware} from 'redux'
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {composeWithDevTools} from "redux-devtools-extension";
 import itemsReducer from './reducers/itemsReducer'

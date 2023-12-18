@@ -5,18 +5,18 @@ import ActionButton from "../actionButton/actionButton";
 import {useSelector} from "react-redux";
 import {Types} from "../../utils/types";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
-import ItemsState = Types.ItemsState;
 import Dish = Types.Dish;
 import Product = Types.Product;
 
-export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, itemType, addItem, editedItem}) => {
+export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, editedItem, itemType, addItem}) => {
 
-    const initNewItem = {name: '', description: '', ingridients: [{}]};
-    const [newItem, setNewItem] = useState(initNewItem);
     // @ts-ignore
-    const initIngridientsArray = editedItem && editedItem.ingridients ? editedItem.ingridients : [{}];
-    // console.log('initIngridientsArray', initIngridientsArray)
-    const [ingridientsArray, setIngridientsArray] = useState(initIngridientsArray);
+    const initItemToSave = {_id: '', name: '', description: '', ingridients: []};
+    const [itemToSave, setItemToSave] = useState(initItemToSave);
+    // const [localEditedItem, setLocalEditedItem] = useState(editedItem);
+
+    // console.log('localEditedItem', localEditedItem);
+    // console.log('editedItem', editedItem);
 
 
     const items = useSelector((state: Types.MainState) => {
@@ -27,114 +27,135 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     });
 
     useEffect(() => {
-        if (Object.keys(editedItem).length) {
-            // console.log('editedItem', editedItem);
-            const copyeditedItem = JSON.parse(JSON.stringify(editedItem));
-
-            // @ts-ignore
-            setNewItem({_id: copyeditedItem._id,
-                name: copyeditedItem.name,
-                description: copyeditedItem.description,
-                ingridients: copyeditedItem.ingridients});
-            // @ts-ignore
-            setIngridientsArray(editedItem.ingridients);
+        // TODO: понять, зачем
+        if (editedItem) {
+            const copyEditedItem = JSON.parse(JSON.stringify(editedItem));
+            setItemToSave({
+                _id: copyEditedItem._id,
+                name: copyEditedItem.name,
+                description: copyEditedItem.description,
+                ingridients: copyEditedItem.ingridients
+            });
+        } else {
+            console.log('no editedItem', editedItem)
         }
-        // const newItem2 = editedItem ? JSON.parse(JSON.stringify(editedItem)) : {...newItem, ingridients: [{}]};
-
     }, [editedItem]);
 
-    // console.log('newItem', newItem);
-    // console.log('editedItem', editedItem);
-    // console.log('items', items);
-    // console.log('ingridientsArray', ingridientsArray);
-
+    useEffect(() => {
+        console.log(itemToSave);
+    }, [itemToSave]);
 
     const addIngridientField = () => {
-        setIngridientsArray([...ingridientsArray, {}])
     };
+
     const removeIngridientField = (index: number) => {
-        // console.log('ingridientsArray', ingridientsArray);
-        // console.log('newArray', [...ingridientsArray.slice(0, index), ...ingridientsArray.slice(index+1)]);
-        setIngridientsArray([...ingridientsArray.slice(0, index), ...ingridientsArray.slice(index + 1)])
     };
-    // console.log(newItem);
 
+    const setNewIngridient = (ingridient: any, index: number) => {
+        const newIngridientsArray = [
+            ...itemToSave.ingridients.slice(0, index),
+            ingridient,
+            ...itemToSave.ingridients.slice(index + 1)
+        ];
+        setItemToSave({...itemToSave, ingridients: newIngridientsArray});
 
+    };
+
+    // TODO: докидать weight и прочие параметры, общие для сущностей
     return <div style={{display: 'block', position: 'initial'}}>
         <Modal show={showModal} onHide={() => {
             closeModal();
-            console.log('close, initNewItem', initNewItem)
-            setNewItem(initNewItem);
-            // @ts-ignore
-            setIngridientsArray([{}]);
-            // @ts-ignore
-            // setNewItemData({});
+            // setItemToSave(initItemToSave);
         }} className='modal'>
-            {/*<Modal.Header className='modal__header' closeButton>*/}
-            {/*    <Modal.Title>{getButtonTitle()}</Modal.Title>*/}
-            {/*</Modal.Header>*/}
             <Modal.Body>
-                <Form.Control value={newItem.name} type="text" placeholder="name" onChange={(e: any) => {
-                    setNewItem({...newItem, name: e.target.value})
+                <Form.Control value={localEditedItem?.name || ''} type="text" placeholder="name" onChange={(e: any) => {
+                    setItemToSave({...itemToSave, name: e.target.value})
                 }}/>
-                <Form.Control value={newItem.description} type="text" placeholder="description" onChange={(e: any) => {
-                    setNewItem({...newItem, description: e.target.value})
+                <Form.Control value={localEditedItem?.description || ''} type="text" placeholder="description" onChange={(e: any) => {
+                    setItemToSave({...itemToSave, description: e.target.value})
                 }}/>
                 <Form.Group>
+                    {itemType === itemTypes.PRODUCT && <>{'product'}</>}
+                    {itemType !== itemTypes.PRODUCT && <IngridientsGroup
+                        items={items}
+                        setNewIngridient={setNewIngridient}
+                        // @ts-ignore
+                        ingridientsArray={editedItem?.ingridients || []}/>}
 
-
-                    {/*{ingridientsArray.map((ingridientObject: any, index: number, array: any) => {*/}
-
-                    {newItem.ingridients.map((ingridientObject: any, index: number, array: any) => {
-                        // if (index === 0) console.log(array)
-
-                        return <NewIngridientSelect
-                            key={index + ' ' + ingridientObject.ingridient?.name}
-                            index={index}
-                            items={items}
-                            ingridientObject={ingridientObject}
-                            newItem={newItem}
-                            setNewItem={setNewItem}
-                            removeIngridientField={removeIngridientField}/>
-                    })}
                     <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
                     <ActionButton onClick={() => {
-                        console.log(newItem)
-                    }} label={'print newItem'}/>
+                        // console.log(newItemIngridients)
+                    }} label={'print newItemIngridients'}/>
                     <ActionButton onClick={() => {
                     }} label={'add item'}/>
                 </Form.Group>
-
             </Modal.Body>
-            {/*<Modal.Footer>*/}
-            {/*    <ActionButton onClick={() => {*/}
-            {/*        // console.log(newItemData);*/}
-            {/*        addItem();*/}
-            {/*        closeModal();*/}
-            {/*    }} label={'add'}/>*/}
-            {/*</Modal.Footer>*/}
         </Modal>
     </div>
 };
 
-const NewIngridientSelect = ({index, items, ingridientObject, newItem, setNewItem, removeIngridientField}: {
+// @ts-ignore
+const IngridientsGroup = ({ingridientsArray, items, setNewIngridient}): any => {
+
+    if (ingridientsArray.length) {
+        return ingridientsArray.map((ingridientObject: any, index: number) => {
+            return <NewIngridientSelect
+                key={index + ' ' + ingridientObject.ingridient?.name}
+                index={index}
+                ingridientObject={ingridientObject}
+                items={items}
+                // ingridientsArray={newItem.ingridients}
+                // newItemIngridients={newItemIngridients}
+                setNewIngridient={setNewIngridient}
+                // removeIngridientField={removeIngridientField}
+            />
+        });
+    } else {
+        return <NewIngridientSelect
+            key={'0'}
+            index={0}
+            ingridientObject={null}
+            items={{}}
+            // ingridientsArray={newItem.ingridients}
+            // newItemIngridients={newItemIngridients}
+            setNewIngridient={setNewIngridient}
+            // removeIngridientField={removeIngridientField}
+        />
+    }
+};
+
+const NewIngridientSelect = ({
+                                 index,
+                                 ingridientObject,
+                                 items,
+                                 // ingridientsArray,
+                                 // newItemIngridients,
+                                 setNewIngridient,
+                                 // removeIngridientField
+                             }: {
     index: number,
+    ingridientObject: any,
     items: {
         products: Product[] | null,
         dishes: Dish[] | null,
-    },
-    ingridientObject: any,
-    newItem: any,
-    setNewItem: (args: any) => void,
-    removeIngridientField: (args: any) => void,
+    } | {},
+    // ingridientsArray: any[],
+    // newItemIngridients: any[],
+    setNewIngridient: (ingridient: any, index: number) => void,
+    // removeIngridientField: (args: any) => void,
 }) => {
 
     // console.log('ingridientObject', ingridientObject)
-    const [ingridientType, setIngridientType] = useState(ingridientObject.type || itemTypes.PRODUCT as string);
+    const [ingridientType, setIngridientType] = useState(ingridientObject?.type || itemTypes.PRODUCT as string);
+    const [localItemsObject, setLocalItemsObject] = useState(null);
     const [currentItemsArray, setCurrentItemsArray] = useState([]);
-    const [localItemsObject, setLocalItemsObject] = useState({});
+    const [selectedIngridient, setSelectedIngridient] = useState(null);
 
-    const addIngridientObjectToLocalItemsObject = (ingridientObject: any, items: any) => {
+
+
+    const putIngridientObjectToStartOfLocalItemsObject = (ingridientObject: any, items: any) => {
+
+        // устанавливаем переданный ингридиент на первое место
         if (!ingridientObject.type) {
             return items;
         }
@@ -146,10 +167,32 @@ const NewIngridientSelect = ({index, items, ingridientObject, newItem, setNewIte
             const index = arrayForAdding.findIndex((item: any) => {
                 return ingridientObject && (item._id === ingridientObject.ingridient?._id)
             });
-            arrayForAdding = [ingridientObject.ingridient, ...arrayForAdding.slice(0, index), ...arrayForAdding.slice(index + 1)];
+            if (index !== 0) {
+                arrayForAdding = [ingridientObject.ingridient, ...arrayForAdding.slice(0, index), ...arrayForAdding.slice(index + 1)];
+            }
         }
         return {...items, [fieldName]: arrayForAdding};
     };
+
+    useEffect(() => {
+        if (ingridientObject) {
+            const localItemsObject = putIngridientObjectToStartOfLocalItemsObject(ingridientObject, items);
+            setLocalItemsObject(localItemsObject);
+        }
+    }, []);
+
+    useEffect(() => {
+        // @ts-ignore
+        let currentItemsArray = localItemsObject && localItemsObject[getPluralItemType(ingridientType)];
+
+        if (currentItemsArray) {
+            setCurrentItemsArray(currentItemsArray);
+            setSelectedIngridient(currentItemsArray[0])
+        } else {
+            setCurrentItemsArray([]);
+        }
+
+    }, [ingridientType, localItemsObject]);
 
     const createSelectOptionsArray = () => {
         // console.log('currentItemsArray', currentItemsArray)
@@ -160,51 +203,23 @@ const NewIngridientSelect = ({index, items, ingridientObject, newItem, setNewIte
         })
     };
 
-    useEffect(() => {
-        const localItemsObject = addIngridientObjectToLocalItemsObject(ingridientObject, items);
-        // console.log('localItemsObject',localItemsObject)
-        setLocalItemsObject(localItemsObject);
-    }, []);
 
-    useEffect(() => {
-        // @ts-ignore
-        let currentItemsArray = localItemsObject && localItemsObject[getPluralItemType(ingridientType)];
-        // console.log('currentItemsArray',currentItemsArray)
-        // console.log('currentItemsArray from hook', currentItemsArray)
-        if (currentItemsArray) {
-            setCurrentItemsArray(currentItemsArray);
-            ingridientChangeHandler({
-                ingridient: currentItemsArray[0] ? currentItemsArray[0]._id : null,
-                type: ingridientType
-            }, index)
-        } else {
-            setCurrentItemsArray([]);
-        }
-
-
-    }, [ingridientType, localItemsObject]);
-
-    const ingridientChangeHandler = (ingridientObject: any, index: number) => {
-        // console.log('index', index)
-        let newItemIngridientsArray = newItem.ingridients || [];
-        const updatedIngridientObject = {...newItemIngridientsArray[index], ...ingridientObject}
-        // if (newItemIngridientsArray.length === 1 && index === 0) {
-        //     newItemIngridientsArray = [updatedIngridientObject]
-        // }
-        const newIngridientsArray = [
-            ...newItemIngridientsArray.slice(0, index),
-            updatedIngridientObject,
-            ...newItemIngridientsArray.slice(index + 1)
-        ];
-        setNewItem({...newItem, ingridients: newIngridientsArray})
+    const onSelectIngridientChange = (event: any) => {
+            setSelectedIngridient(currentItemsArray[+event.target.value]);
     };
 
-
-    // console.log('currentItemsArray', currentItemsArray);
+    useEffect(() => {
+        if (selectedIngridient) {
+            setNewIngridient({
+                ingridient: selectedIngridient,
+                type: selectedIngridient.type
+            }, index)
+        }
+    }, [selectedIngridient]);
 
 
     return <div className='d-flex'>
-        <div className="" onClick={(event) => removeIngridientField(index)}>remove</div>
+        {/*<div className="" onClick={(event) => removeIngridientField(index)}>remove</div>*/}
         <Form.Select className='w-25' defaultValue={ingridientType} onChange={(event) => {
             // console.log('name', event.target.value)
             setIngridientType(event.target.value)
@@ -212,33 +227,9 @@ const NewIngridientSelect = ({index, items, ingridientObject, newItem, setNewIte
             <option value={itemTypes.PRODUCT}>{itemTypes.PRODUCT.slice(0, 1)}</option>
             <option value={itemTypes.DISH}>{itemTypes.DISH.slice(0, 1)}</option>
         </Form.Select>
-        <Form.Select className='w-25' onChange={
-            (event) => {
-                if (!event.target.value) {
-                    return;
-                } else {
-                    console.log('selected ingridient', currentItemsArray[+event.target.value]);
-                    // @ts-ignore
-                    ingridientChangeHandler({ingridient: currentItemsArray[+event.target.value]._id}, index)
 
-                }
-            }
-
-            // setNewItem(ingridientIndex,
-            // // @ts-ignore
-            // {ingridient: localItemsArray[event.target.value]._id})
-        }>
+        <Form.Select className='w-25' onChange={onSelectIngridientChange}>
             {createSelectOptionsArray()}
         </Form.Select>
-        {ingridientObject.weight && <Form.Control className='w-25' value={ingridientObject.weight} type="text" placeholder="weight"
-                                                  onChange={(e: any) => {
-                                                      // @ts-ignore
-                                                      // addIngridientToItemIngridients(ingridientIndex, {...newItemData, weight: e.target.value})
-                                                  }}/>}
-        {ingridientObject.amountOfItems && <Form.Control className='w-25' value={ingridientObject.amountOfItems} type="text" placeholder="amount"
-                                                         onChange={(e: any) => {
-                                                             // @ts-ignore
-                                                             // addIngridientToItemIngridients(ingridientIndex, {...newItemData, amountOfItems: e.target.value})
-                                                         }}/>}
     </div>
 };
