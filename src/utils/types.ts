@@ -147,32 +147,37 @@ export namespace Types {
         type: string,
         description: string,
         dateString: string,
-        ingridients: {
-            ingridient: Product | Dish,
-            weight: number,
-            amountOfItems: number,
-            price: number,
-            energyValue: {
-                calories: number,
-                proteines: number,
-                fats: number,
-                carbohydrates: number
-            }
-        }[],
+        ingridients: Ingridient[],
         weight: number,
         price: number,
-        energyValue: {
-            calories: number,
-            proteines: number,
-            fats: number,
-            carbohydrates: number
-        }
+        energyValue: EnergyValue
     }
 
     // common entities type
     export type CommonEntitiesType = Product | Dish | Meal;
 
     export type CommonEntitiesTypeWithIngridients = Dish | Meal;
+
+    export type IngridientInfo = {
+        price: number,
+        energyValue: EnergyValue
+    };
+
+    export type EnergyValue = {
+        calories: number,
+        proteines: number,
+        fats: number,
+        carbohydrates: number
+    }
+
+    export type Ingridient = {
+        _id?: string,
+        ingridient: Product | Dish,
+        weight: number,
+        amountOfItems: number,
+        price: number,
+        energyValue: EnergyValue
+    };
 
     // props
     export interface ActionButtonProps {

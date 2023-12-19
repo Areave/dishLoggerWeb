@@ -7,11 +7,12 @@ import {Types} from "../../utils/types";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import Dish = Types.Dish;
 import Product = Types.Product;
+import RemoveItem from '../../assets/images/remove_item.png';
 
 export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, editedItem, itemType, addItem}) => {
 
     // @ts-ignore
-    const initLocalEditedItem = {_id: '', name: '', description: '', ingridients: []};
+    const initLocalEditedItem = {_id: '', name: '', description: '', ingridients: [{}]};
     // const [itemToSave, setItemToSave] = useState(initItemToSave);
     const [localEditedItem, setLocalEditedItem] = useState(initLocalEditedItem);
 
@@ -81,13 +82,16 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                 }}/>
                 <Form.Group>
                     {itemType === itemTypes.PRODUCT && <>{'product'}</>}
-                    {itemType !== itemTypes.PRODUCT && <IngridientsGroup
-                        items={items}
-                        setNewIngridient={setNewIngridient}
-                        removeIngridientField={removeIngridientField}
-                        // @ts-ignore
-                        ingridientsArray={localEditedItem?.ingridients || []}/>}
-
+                    {itemType !== itemTypes.PRODUCT && localEditedItem.ingridients.map((ingridientObject: any, index: number) => {
+                        return <NewIngridientSelect
+                            // key={index + '_' + ingridientObject?.ingridient?.name}
+                            key={index}
+                            index={index}
+                            ingridientObject={ingridientObject}
+                            items={items}
+                            removeIngridientField={removeIngridientField}
+                            setNewIngridient={setNewIngridient}/>
+                    })}
                     <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
                     <ActionButton onClick={() => {
                         // console.log(newItemIngridients)
@@ -100,44 +104,10 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     </div>
 };
 
-// @ts-ignore
-const IngridientsGroup = ({ingridientsArray, items, setNewIngridient, removeIngridientField}): any => {
-
-    if (ingridientsArray.length) {
-        return ingridientsArray.map((ingridientObject: any, index: number) => {
-            return <NewIngridientSelect
-                key={index + ' ' + ingridientObject.ingridient?.name}
-                index={index}
-                ingridientObject={ingridientObject}
-                items={items}
-                removeIngridientField={removeIngridientField}
-                // ingridientsArray={newItem.ingridients}
-                // newItemIngridients={newItemIngridients}
-                setNewIngridient={setNewIngridient}
-                // removeIngridientField={removeIngridientField}
-            />
-        });
-    } else {
-        return <NewIngridientSelect
-            key={'0'}
-            index={0}
-            ingridientObject={null}
-            items={{}}
-            removeIngridientField={removeIngridientField}
-            // ingridientsArray={newItem.ingridients}
-            // newItemIngridients={newItemIngridients}
-            setNewIngridient={setNewIngridient}
-            // removeIngridientField={removeIngridientField}
-        />
-    }
-};
-
 const NewIngridientSelect = ({
                                  index,
                                  ingridientObject,
                                  items,
-                                 // ingridientsArray,
-                                 // newItemIngridients,
                                  setNewIngridient,
                                  removeIngridientField
                              }: {
@@ -147,8 +117,6 @@ const NewIngridientSelect = ({
         products: Product[] | null,
         dishes: Dish[] | null,
     } | {},
-    // ingridientsArray: any[],
-    // newItemIngridients: any[],
     setNewIngridient: (ingridient: any, index: number) => void,
     removeIngridientField: (args: any) => void,
 }) => {
@@ -158,7 +126,15 @@ const NewIngridientSelect = ({
     const [localItemsObject, setLocalItemsObject] = useState(null);
     const [currentItemsArray, setCurrentItemsArray] = useState([]);
     const [selectedIngridient, setSelectedIngridient] = useState(null);
-
+    // const [ingridientInfo, setIngridientInfo] = useState({
+    //     price: 0,
+    //     energyValue: {
+    //         calories: 0,
+    //         proteines: 0,
+    //         fats: 0,
+    //         carbohydrates: 0
+    //     }
+    // });
 
 
     const putIngridientObjectToStartOfLocalItemsObject = (ingridientObject: any, items: any) => {
@@ -182,10 +158,23 @@ const NewIngridientSelect = ({
         return {...items, [fieldName]: arrayForAdding};
     };
 
+    const setIngridientAsCurrent = (givenIngridientObject: any) => {
+        if ((givenIngridientObject === null && ingridientObject?.ingridient === null)
+            || (givenIngridientObject?._id === ingridientObject?.ingridient?._id)) {
+            setSelectedIngridient(ingridientObject);
+        } else {
+            setSelectedIngridient({
+                ...givenIngridientObject,
+                type: givenIngridientObject?.type,
+                ingridient: givenIngridientObject
+            });
+        }
+    };
+
     useEffect(() => {
         if (ingridientObject) {
-            const localItemsObject = putIngridientObjectToStartOfLocalItemsObject(ingridientObject, items);
-            setLocalItemsObject(localItemsObject);
+            const newLocalItemsObject = putIngridientObjectToStartOfLocalItemsObject(ingridientObject, items);
+            setLocalItemsObject(newLocalItemsObject);
         }
     }, []);
 
@@ -195,12 +184,31 @@ const NewIngridientSelect = ({
 
         if (currentItemsArray) {
             setCurrentItemsArray(currentItemsArray);
-            setSelectedIngridient(currentItemsArray[0])
         } else {
             setCurrentItemsArray([]);
         }
 
     }, [ingridientType, localItemsObject]);
+
+    useEffect(() => {
+        if (currentItemsArray.length) {
+            const firstIngridient = currentItemsArray[0];
+            setIngridientAsCurrent(firstIngridient);
+
+        }
+    }, [currentItemsArray]);
+
+    useEffect(() => {
+        if (selectedIngridient) {
+            setNewIngridient(selectedIngridient, index)
+            // const ingridientInfo: Types.IngridientInfo = getIngridientInfo(selectedIngridient);
+            // setIngridientInfo(ingridientInfo);
+        }
+    }, [selectedIngridient]);
+
+    // useEffect(() => {
+    //     setNewIngridient(selectedIngridient, index);
+    // }, [ingridientInfo]);
 
     const createSelectOptionsArray = () => {
         // console.log('currentItemsArray', currentItemsArray)
@@ -211,34 +219,104 @@ const NewIngridientSelect = ({
         })
     };
 
+    const getIngridientInfo = (ingridient: Types.Ingridient): Types.IngridientInfo => {
+        let newIngridientInfo: Types.IngridientInfo;
 
-    const onSelectIngridientChange = (event: any) => {
-            setSelectedIngridient(currentItemsArray[+event.target.value]);
+        // @ts-ignore
+        if (ingridient.ingridient.isThatPieceProduct) {
+            newIngridientInfo = {
+                // @ts-ignore
+                price: +((ingridient.ingridient.priceForAllPieces / ingridient.ingridient.amountOfPieces) * ingridient.amount).toFixed(2),
+                energyValue: {
+                    // @ts-ignore
+                    calories: +(ingridient.ingridient.energyValueForOnePiece.calories * ingridient.amount),
+                    // @ts-ignore
+                    proteines: +(ingridient.ingridient.energyValueForOnePiece.proteines * ingridient.amount),
+                    // @ts-ignore
+                    fats: +(ingridient.ingridient.energyValueForOnePiece.fats * ingridient.amount),
+                    // @ts-ignore
+                    carbohydrates: +(ingridient.ingridient.energyValueForOnePiece.carbohydrates * ingridient.amount),
+                }
+            };
+        } else {
+            newIngridientInfo = {
+                price: +((ingridient.ingridient.price / ingridient.ingridient.weight) * ingridient.weight).toFixed(2),
+                energyValue: {
+                    calories: +((ingridient.ingridient.energyValue.calories / 100) * ingridient.weight).toFixed(2),
+                    proteines: +((ingridient.ingridient.energyValue.proteines / 100) * ingridient.weight).toFixed(2),
+                    fats: +((ingridient.ingridient.energyValue.fats / 100) * ingridient.weight).toFixed(2),
+                    carbohydrates: +((ingridient.ingridient.energyValue.carbohydrates / 100) * ingridient.weight).toFixed(2)
+                }
+            };
+        }
+        return newIngridientInfo;
     };
 
-    useEffect(() => {
-        if (selectedIngridient) {
-            setNewIngridient({
-                ingridient: selectedIngridient,
-                type: selectedIngridient.type
-            }, index)
-        }
-    }, [selectedIngridient]);
 
+    const onSelectIngridientChange = (event: any) => {
+        const firstIngridient = currentItemsArray[+event.target.value]
+        setIngridientAsCurrent(firstIngridient);
+    };
 
-    return <div className='d-flex'>
+    return <div className='ingridient_container'>
         {/*<div className="" onClick={(event) => removeIngridientField(index)}>remove</div>*/}
-        <Form.Select className='w-25' defaultValue={ingridientType} onChange={(event) => {
-            // console.log('name', event.target.value)
-            setIngridientType(event.target.value)
-        }}>
-            <option value={itemTypes.PRODUCT}>{itemTypes.PRODUCT.slice(0, 1)}</option>
-            <option value={itemTypes.DISH}>{itemTypes.DISH.slice(0, 1)}</option>
-        </Form.Select>
-
-        <Form.Select className='w-25' onChange={onSelectIngridientChange}>
-            {createSelectOptionsArray()}
-        </Form.Select>
-        <div className="" onClick={() => removeIngridientField(index)}>remove</div>
+        <div className="">
+            <div className='d-flex justify-content-between mb-3'>
+                <div className="">
+                    <Form.Label>type</Form.Label>
+                    <Form.Select defaultValue={ingridientType} onChange={(event) => {
+                        // console.log('name', event.target.value)
+                        setIngridientType(event.target.value)
+                    }}>
+                        <option value={itemTypes.PRODUCT}>{itemTypes.PRODUCT.slice(0, 1)}</option>
+                        <option value={itemTypes.DISH}>{itemTypes.DISH.slice(0, 1)}</option>
+                    </Form.Select>
+                </div>
+                <div className="">
+                    <Form.Label>ingridient</Form.Label>
+                    <Form.Select onChange={onSelectIngridientChange}>
+                        {createSelectOptionsArray()}
+                    </Form.Select>
+                </div>
+                {selectedIngridient?.weight && <div className="weight">
+                    <Form.Label>weight</Form.Label>
+                    <Form.Control value={selectedIngridient?.weight || ''} type="text" placeholder="weight" onChange={(e: any) => {
+                        setSelectedIngridient({...selectedIngridient, weight: e.target.value})
+                    }}/>
+                </div>}
+                {selectedIngridient?.amountOfItems && <div className="amount">
+                    <Form.Label>amount</Form.Label>
+                    <Form.Control value={selectedIngridient?.amountOfItems || ''} type="text" placeholder="amount" onChange={(e: any) => {
+                        setSelectedIngridient({...selectedIngridient, amountOfItems: e.target.value})
+                    }}/>
+                </div>}
+                <div className="d-flex justify-content-center align-items-center">
+                    <div className="remove_item_icon_container" onClick={() => removeIngridientField(index)}><img
+                        src={RemoveItem} alt=""/></div>
+                </div>
+            </div>
+            <div className="d-flex justify-content-between">
+                {/*<div className="ingridient_data price">*/}
+                {/*    <Form.Label>price</Form.Label>*/}
+                {/*    <Form.Control value={ingridientInfo.price || ''} type="text" readOnly/>*/}
+                {/*</div>*/}
+                {/*<div className="ingridient_data calories">*/}
+                {/*    <Form.Label>calories</Form.Label>*/}
+                {/*    <Form.Control value={ingridientInfo.energyValue.calories || ''} type="text" readOnly/>*/}
+                {/*</div>*/}
+                {/*<div className="ingridient_data fats">*/}
+                {/*    <Form.Label>fats</Form.Label>*/}
+                {/*    <Form.Control value={ingridientInfo.energyValue.fats || ''} type="text" readOnly/>*/}
+                {/*</div>*/}
+                {/*<div className="ingridient_data carbs">*/}
+                {/*    <Form.Label>carbs</Form.Label>*/}
+                {/*    <Form.Control value={ingridientInfo.energyValue.carbohydrates || ''} type="text" readOnly/>*/}
+                {/*</div>*/}
+                {/*<div className="ingridient_data prots">*/}
+                {/*    <Form.Label>prots</Form.Label>*/}
+                {/*    <Form.Control value={ingridientInfo.energyValue.proteines || ''} type="text" readOnly/>*/}
+                {/*</div>*/}
+            </div>
+        </div>
     </div>
 };
