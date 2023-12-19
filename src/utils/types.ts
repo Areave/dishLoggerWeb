@@ -94,6 +94,7 @@ export namespace Types {
         _id?: string,
         name: string,
         type: string,
+        cookingCoefficient?: number,
         description?: string,
         weight?: number,
         price?: number,

@@ -30,7 +30,7 @@ const ItemsPageTemplate: React.FC<any> = ({
         <div className="items-page__content">
             <ItemModalTemplate itemType={itemType} editedItem={editedItem} addItem={addItem} showModal={showModal}
                           closeModal={() => {
-                              setEditedItem(null);
+                              setEditedItem({});
                               setShowModal(false)}}/>
             {itemType === itemTypes.MEAL && <Stat statArray={userStat.statArray}/>}
             <Search setSearchString={setSearchString}/>

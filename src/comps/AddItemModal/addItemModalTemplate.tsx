@@ -12,7 +12,8 @@ import RemoveItem from '../../assets/images/remove_item.png';
 export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, editedItem, itemType, addItem}) => {
 
     // @ts-ignore
-    const initLocalEditedItem = {_id: '', name: '', description: '', ingridients: [{}]};
+    // const initLocalEditedItem = {_id: '', name: '', description: '', ingridients: [{}]};
+    const initLocalEditedItem: any = {};
     // const [itemToSave, setItemToSave] = useState(initItemToSave);
     const [localEditedItem, setLocalEditedItem] = useState(initLocalEditedItem);
 
@@ -31,12 +32,13 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
         // TODO: понять, зачем
         if (editedItem) {
             const copyEditedItem = JSON.parse(JSON.stringify(editedItem));
-            setLocalEditedItem({
-                _id: copyEditedItem._id,
-                name: copyEditedItem.name,
-                description: copyEditedItem.description,
-                ingridients: copyEditedItem.ingridients
-            });
+            // setLocalEditedItem({
+            //     _id: copyEditedItem._id,
+            //     name: copyEditedItem.name,
+            //     description: copyEditedItem.description,
+            //     ingridients: copyEditedItem.ingridients
+            // });
+            setLocalEditedItem(copyEditedItem);
         } else {
             console.log('no editedItem', editedItem)
         }
@@ -70,7 +72,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
         <Modal show={showModal} onHide={() => {
             closeModal();
             // setItemToSave(initItemToSave);
-            setLocalEditedItem(initLocalEditedItem);
+            setLocalEditedItem({});
         }} className='modal'>
             <Modal.Body>
                 <Form.Control value={localEditedItem?.name || ''} type="text" placeholder="name" onChange={(e: any) => {
@@ -80,8 +82,10 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                     setLocalEditedItem({...localEditedItem, description: e.target.value})
                 }}/>
                 <Form.Group>
-                    {itemType === itemTypes.PRODUCT && <AddProductCard setLocalEditedItem={setLocalEditedItem} localEditedItem={localEditedItem}/>}
-                    {itemType !== itemTypes.PRODUCT && localEditedItem.ingridients.map((ingridientObject: any, index: number) => {
+                    {itemType === itemTypes.PRODUCT &&
+                    <AddProductCard setLocalEditedItem={setLocalEditedItem} localEditedItem={localEditedItem}/>}
+                    {itemType !== itemTypes.PRODUCT &&
+                    localEditedItem.ingridients.map((ingridientObject: any, index: number) => {
                         return <NewIngridientSelect
                             // key={index + '_' + ingridientObject?.ingridient?.name}
                             key={index}
@@ -91,10 +95,12 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                             removeIngridientField={removeIngridientField}
                             setNewIngridient={setNewIngridient}/>
                     })}
-                    <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
-                    <ActionButton onClick={() => {
-                        // console.log(newItemIngridients)
-                    }} label={'print newItemIngridients'}/>
+                    {itemType !== itemTypes.PRODUCT && <div>
+                        <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
+                        <ActionButton onClick={() => {
+                            // console.log(newItemIngridients)
+                        }} label={'print newItemIngridients'}/>
+                    </div>}
                     <ActionButton onClick={() => {
                     }} label={'add item'}/>
                 </Form.Group>
@@ -105,35 +111,14 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
 
 const AddProductCard = ({localEditedItem, setLocalEditedItem}: any) => {
 
-
-    // isThatPieceProduct: Boolean,
-
-//     amountOfPieces: Number,
-//     priceForAllPieces: Number,
-
-//     energyValueForOnePiece: {
-//     calories: Number,
-//         proteines: Number,
-//         fats: Number,
-//         carbohydrates: Number
-    // },
-
-    // weight: Number,
-//     price: Number,
-
-//     energyValue: {
-//     calories: Number,
-//         proteines: Number,
-//         fats: Number,
-//         carbohydrates: Number
-// },
-
+    console.log('localEditedItem from product', localEditedItem);
 
     const [isPieceProduct, setIsPieceProduct] = useState(false);
     const [energyValueFieldName, setEnergyValueFieldName] = useState('energyValue');
 
-    const handleToggle = () => {
+    const handleToggle = (e: any) => {
         setIsPieceProduct(!isPieceProduct);
+        setLocalEditedItem({...localEditedItem, isPieceProduct: e.target.checked})
     };
 
     useEffect(() => {
@@ -141,71 +126,93 @@ const AddProductCard = ({localEditedItem, setLocalEditedItem}: any) => {
     }, [isPieceProduct]);
 
     return <div className='product'>
-        {!localEditedItem && <Form.Check type="switch"
+        <Form.Check type="switch"
                     id="custom-switch"
                     label={isPieceProduct ? 'PieceProduct' : 'WeightProduct'}
                     checked={isPieceProduct}
-                    onChange={handleToggle}/>}
+                    onChange={handleToggle}/>
+        <div className="cookingCoefficient">
+            <DigitalValueItem localEditedItem={localEditedItem}
+                              setLocalEditedItem={setLocalEditedItem}
+                              fieldName='cookingCoefficient'/>
+            {/*<Form.Label>cookingCoefficient</Form.Label>*/}
+            {/*<Form.Control value={localEditedItem?.cookingCoefficient || ''} type="text" placeholder="cookingCoefficient" onChange={(e: any) => {*/}
+            {/*    setLocalEditedItem({...localEditedItem, cookingCoefficient: +e.target.value})*/}
+            {/*}}/>*/}
+        </div>
+
         {isPieceProduct && <div>
-            <div className="amountOfPieces">
-                <Form.Label>amountOfPieces</Form.Label>
-                <Form.Control value={localEditedItem?.amountOfPieces || ''} type="text" placeholder="amountOfPieces" onChange={(e: any) => {
-                    setLocalEditedItem({...localEditedItem, amountOfPieces: +e.target.value})
-                }}/></div>
-            <div className="priceForAllPieces">
-                <Form.Label>priceForAllPieces</Form.Label>
-                <Form.Control value={localEditedItem?.priceForAllPieces || ''} type="text" placeholder="priceForAllPieces" onChange={(e: any) => {
-                    setLocalEditedItem({...localEditedItem, priceForAllPieces: +e.target.value})
-                }}/></div>
+            {['amountOfPieces', 'priceForAllPieces'].map((field: string) =>
+                <DigitalValueItem localEditedItem={localEditedItem}
+                                 setLocalEditedItem={setLocalEditedItem}
+                                 fieldName={field}/>
+            )}
         </div>}
         {!isPieceProduct && <div>
-            <div className="weight">
-                <Form.Label>weight</Form.Label>
-                <Form.Control value={localEditedItem?.weight || ''} type="text" placeholder="weight" onChange={(e: any) => {
-                    setLocalEditedItem({...localEditedItem, weight: +e.target.value})
-                }}/></div>
-            <div className="price">
-                <Form.Label>price</Form.Label>
-                <Form.Control value={localEditedItem?.price || ''} type="text" placeholder="price" onChange={(e: any) => {
-                    setLocalEditedItem({...localEditedItem, price: +e.target.value})
-                }}/></div>
+            {['weight', 'price'].map((field: string) =>
+                <DigitalValueItem localEditedItem={localEditedItem}
+                                 setLocalEditedItem={setLocalEditedItem}
+                                 fieldName={field}/>
+            )}
         </div>}
         <div className="energyValue">
             <div className="energyValue_label">{isPieceProduct ? 'energyValue for one piece' : 'energyValue'}</div>
             <div className="energyValue_data">
-                <div className="calories">
-                    <Form.Label>calories</Form.Label>
-                    <Form.Control value={localEditedItem && localEditedItem[energyValueFieldName].calories || ''} type="text" placeholder="calories" onChange={(e: any) => {
-                        setLocalEditedItem({...localEditedItem,[energyValueFieldName]: {
-                                ...localEditedItem[energyValueFieldName],
-                                calories: +e.target.value}})
-                    }}/></div>
-                <div className="proteines">
-                    <Form.Label>proteines</Form.Label>
-                    <Form.Control value={localEditedItem && localEditedItem[energyValueFieldName].proteines || ''} type="text" placeholder="proteines" onChange={(e: any) => {
-                        setLocalEditedItem({...localEditedItem,[energyValueFieldName]: {
-                                ...localEditedItem[energyValueFieldName],
-                                proteines: +e.target.value}})
-                    }}/></div>
-                <div className="fats">
-                    <Form.Label>fats</Form.Label>
-                    <Form.Control value={localEditedItem && localEditedItem[energyValueFieldName].fats || ''} type="text" placeholder="fats" onChange={(e: any) => {
-                        setLocalEditedItem({...localEditedItem,[energyValueFieldName]: {
-                                ...localEditedItem[energyValueFieldName],
-                                fats: +e.target.value}})
-                    }}/></div>
-                <div className="carbohydrates">
-                    <Form.Label>carbohydrates</Form.Label>
-                    <Form.Control value={localEditedItem && localEditedItem[energyValueFieldName].carbohydrates || ''} type="text" placeholder="carbohydrates" onChange={(e: any) => {
-                        setLocalEditedItem({...localEditedItem,[energyValueFieldName]: {
-                                ...localEditedItem[energyValueFieldName],
-                                carbohydrates: +e.target.value}})
-                    }}/></div>
+                {['calories', 'proteines', 'fats', 'carbohydrates'].map((field: string) =>
+                    <DigitalValueItem localEditedItem={localEditedItem}
+                                     setLocalEditedItem={setLocalEditedItem}
+                                     energyValueFieldName={energyValueFieldName}
+                                     fieldName={field}/>
+                )}
             </div>
 
         </div>
     </div>
 
+};
+
+const DigitalValueItem = ({localEditedItem, setLocalEditedItem, energyValueFieldName, fieldName}: any) => {
+
+    let value;
+    if (energyValueFieldName && localEditedItem[energyValueFieldName]) {
+        value = localEditedItem[energyValueFieldName][fieldName]
+    } else if (localEditedItem[fieldName]) {
+        value = localEditedItem[fieldName];
+    } else {
+        value = '';
+    }
+
+    return <div className="calories">
+        <Form.Label>{fieldName}</Form.Label>
+        <Form.Control value={value} type="text" placeholder={fieldName}
+                      onChange={(e: any) => {
+                          const value = e.target.value;
+                          let valueToSet = e.target.value;
+
+                          console.log(valueToSet);
+
+                          if (isNaN(+value) && value.slice(-1) !== '.' && value.slice(-1) !== ',') {
+                              return;
+                          } else {
+                              console.log(value.slice(-1));
+                              console.log(value.slice(-1) === ',');
+                              if (value.slice(-1) === ',') {
+                                  valueToSet = value.slice(0, value.length - 1) + '.';
+                              }
+                              if (energyValueFieldName) {
+                                  let energyValue = localEditedItem[energyValueFieldName] ?
+                                      localEditedItem[energyValueFieldName] : {};
+                                  setLocalEditedItem({
+                                      ...localEditedItem, [energyValueFieldName]: {
+                                          ...energyValue,
+                                          [fieldName]: valueToSet
+                                      }
+                                  })
+                              } else {
+                                  setLocalEditedItem({...localEditedItem, [fieldName]: valueToSet})
+                              }
+                          }
+                      }}/></div>
 };
 
 const NewIngridientSelect = ({
