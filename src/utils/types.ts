@@ -103,7 +103,7 @@ export namespace Types {
             fats: number,
             carbohydrates: number
         },
-        isThatPieceProduct: boolean,
+        isThatPieceProduct?: boolean,
         amountOfPieces?: number,
         priceForAllPieces?: number,
         energyValueForOnePiece?: {
@@ -132,6 +132,8 @@ export namespace Types {
             }
         }[],
         weight: number,
+        isThatPieceDish: boolean,
+        amountOfItems: number
         price: number,
         energyValue: {
             calories: number,
@@ -191,5 +193,15 @@ export namespace Types {
         closeModal: () => void,
         addItem: () => void,
         editedItem: Types.CommonEntitiesType | Product | null;
+    }
+    export interface NewIngridientProps {
+        index: number,
+        ingridientObject: any,
+        items: {
+            products: Product[] | null,
+            dishes: Dish[] | null,
+        } | {},
+        setNewIngridient: (ingridient: any, index: number) => void,
+        removeIngridientField: (args: any) => void,
     }
 }

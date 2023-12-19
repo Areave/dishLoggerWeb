@@ -66,7 +66,6 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
 
     };
 
-    // TODO: докидать weight и прочие параметры, общие для сущностей
     return <div style={{display: 'block', position: 'initial'}}>
         <Modal show={showModal} onHide={() => {
             closeModal();
@@ -81,7 +80,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                     setLocalEditedItem({...localEditedItem, description: e.target.value})
                 }}/>
                 <Form.Group>
-                    {itemType === itemTypes.PRODUCT && <>{'product'}</>}
+                    {itemType === itemTypes.PRODUCT && <AddProductCard setLocalEditedItem={setLocalEditedItem} localEditedItem={localEditedItem}/>}
                     {itemType !== itemTypes.PRODUCT && localEditedItem.ingridients.map((ingridientObject: any, index: number) => {
                         return <NewIngridientSelect
                             // key={index + '_' + ingridientObject?.ingridient?.name}
@@ -104,22 +103,118 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     </div>
 };
 
+const AddProductCard = ({localEditedItem, setLocalEditedItem}: any) => {
+
+
+    // isThatPieceProduct: Boolean,
+
+//     amountOfPieces: Number,
+//     priceForAllPieces: Number,
+
+//     energyValueForOnePiece: {
+//     calories: Number,
+//         proteines: Number,
+//         fats: Number,
+//         carbohydrates: Number
+    // },
+
+    // weight: Number,
+//     price: Number,
+
+//     energyValue: {
+//     calories: Number,
+//         proteines: Number,
+//         fats: Number,
+//         carbohydrates: Number
+// },
+
+
+    const [isPieceProduct, setIsPieceProduct] = useState(false);
+    const [energyValueFieldName, setEnergyValueFieldName] = useState('energyValue');
+
+    const handleToggle = () => {
+        setIsPieceProduct(!isPieceProduct);
+    };
+
+    useEffect(() => {
+        setEnergyValueFieldName(isPieceProduct ? 'energyValueForOnePiece' : 'energyValue');
+    }, [isPieceProduct]);
+
+    return <div className='product'>
+        {!localEditedItem && <Form.Check type="switch"
+                    id="custom-switch"
+                    label={isPieceProduct ? 'PieceProduct' : 'WeightProduct'}
+                    checked={isPieceProduct}
+                    onChange={handleToggle}/>}
+        {isPieceProduct && <div>
+            <div className="amountOfPieces">
+                <Form.Label>amountOfPieces</Form.Label>
+                <Form.Control value={localEditedItem?.amountOfPieces || ''} type="text" placeholder="amountOfPieces" onChange={(e: any) => {
+                    setLocalEditedItem({...localEditedItem, amountOfPieces: +e.target.value})
+                }}/></div>
+            <div className="priceForAllPieces">
+                <Form.Label>priceForAllPieces</Form.Label>
+                <Form.Control value={localEditedItem?.priceForAllPieces || ''} type="text" placeholder="priceForAllPieces" onChange={(e: any) => {
+                    setLocalEditedItem({...localEditedItem, priceForAllPieces: +e.target.value})
+                }}/></div>
+        </div>}
+        {!isPieceProduct && <div>
+            <div className="weight">
+                <Form.Label>weight</Form.Label>
+                <Form.Control value={localEditedItem?.weight || ''} type="text" placeholder="weight" onChange={(e: any) => {
+                    setLocalEditedItem({...localEditedItem, weight: +e.target.value})
+                }}/></div>
+            <div className="price">
+                <Form.Label>price</Form.Label>
+                <Form.Control value={localEditedItem?.price || ''} type="text" placeholder="price" onChange={(e: any) => {
+                    setLocalEditedItem({...localEditedItem, price: +e.target.value})
+                }}/></div>
+        </div>}
+        <div className="energyValue">
+            <div className="energyValue_label">{isPieceProduct ? 'energyValue for one piece' : 'energyValue'}</div>
+            <div className="energyValue_data">
+                <div className="calories">
+                    <Form.Label>calories</Form.Label>
+                    <Form.Control value={localEditedItem && localEditedItem[energyValueFieldName].calories || ''} type="text" placeholder="calories" onChange={(e: any) => {
+                        setLocalEditedItem({...localEditedItem,[energyValueFieldName]: {
+                                ...localEditedItem[energyValueFieldName],
+                                calories: +e.target.value}})
+                    }}/></div>
+                <div className="proteines">
+                    <Form.Label>proteines</Form.Label>
+                    <Form.Control value={localEditedItem && localEditedItem[energyValueFieldName].proteines || ''} type="text" placeholder="proteines" onChange={(e: any) => {
+                        setLocalEditedItem({...localEditedItem,[energyValueFieldName]: {
+                                ...localEditedItem[energyValueFieldName],
+                                proteines: +e.target.value}})
+                    }}/></div>
+                <div className="fats">
+                    <Form.Label>fats</Form.Label>
+                    <Form.Control value={localEditedItem && localEditedItem[energyValueFieldName].fats || ''} type="text" placeholder="fats" onChange={(e: any) => {
+                        setLocalEditedItem({...localEditedItem,[energyValueFieldName]: {
+                                ...localEditedItem[energyValueFieldName],
+                                fats: +e.target.value}})
+                    }}/></div>
+                <div className="carbohydrates">
+                    <Form.Label>carbohydrates</Form.Label>
+                    <Form.Control value={localEditedItem && localEditedItem[energyValueFieldName].carbohydrates || ''} type="text" placeholder="carbohydrates" onChange={(e: any) => {
+                        setLocalEditedItem({...localEditedItem,[energyValueFieldName]: {
+                                ...localEditedItem[energyValueFieldName],
+                                carbohydrates: +e.target.value}})
+                    }}/></div>
+            </div>
+
+        </div>
+    </div>
+
+};
+
 const NewIngridientSelect = ({
                                  index,
                                  ingridientObject,
                                  items,
                                  setNewIngridient,
                                  removeIngridientField
-                             }: {
-    index: number,
-    ingridientObject: any,
-    items: {
-        products: Product[] | null,
-        dishes: Dish[] | null,
-    } | {},
-    setNewIngridient: (ingridient: any, index: number) => void,
-    removeIngridientField: (args: any) => void,
-}) => {
+                             }: Types.NewIngridientProps) => {
 
     // console.log('ingridientObject', ingridientObject)
     const [ingridientType, setIngridientType] = useState(ingridientObject?.type || itemTypes.PRODUCT as string);
@@ -284,7 +379,7 @@ const NewIngridientSelect = ({
                         setSelectedIngridient({...selectedIngridient, weight: e.target.value})
                     }}/>
                 </div>}
-                {selectedIngridient?.amountOfItems && <div className="amount">
+                {selectedIngridient?.amount && <div className="amount">
                     <Form.Label>amount</Form.Label>
                     <Form.Control value={selectedIngridient?.amountOfItems || ''} type="text" placeholder="amount" onChange={(e: any) => {
                         setSelectedIngridient({...selectedIngridient, amountOfItems: e.target.value})
