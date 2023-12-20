@@ -92,6 +92,7 @@ export namespace Types {
     }
 
     export interface Product {
+        isThisInitItem?: boolean,
         _id?: string,
         name: string,
         type: string,
@@ -117,12 +118,13 @@ export namespace Types {
     }
 
     export interface Dish {
+        isThisInitItem?: boolean,
         _id?: string,
         name: string,
         type: string,
         description: string,
         ingridients: {
-            ingridient: Product,
+            ingridient: Product | null,
             weight: number,
             amountOfItems: number,
             price: number,
@@ -132,7 +134,7 @@ export namespace Types {
                 fats: number,
                 carbohydrates: number
             }
-        }[],
+        }[] | [{}],
         weight: number,
         isThatPieceDish: boolean,
         amountOfItems: number
@@ -146,6 +148,7 @@ export namespace Types {
     }
 
     export interface Meal {
+        isThisInitItem?: boolean,
         _id?: string,
         name: string,
         type: string,

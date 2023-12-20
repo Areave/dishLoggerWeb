@@ -8,7 +8,7 @@ import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import Dish = Types.Dish;
 import Product = Types.Product;
 import RemoveItem from '../../assets/images/remove_item.png';
-import {initProductItem} from "../../utils/initItems";
+import {initDishItem, initProductItem} from "../../utils/initItems";
 
 export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, setEditedItem, editedItem, itemType, addItem, updateExistingItem}) => {
 
@@ -32,28 +32,9 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     });
 
     useEffect(() => {
-        // TODO: понять, зачем
-        // @ts-ignore
-        if (editedItem && Object.keys(editedItem).length && !editedItem.isThisInitItem) {
-            const copyEditedItem = JSON.parse(JSON.stringify(editedItem));
-            // setEditedItem({
-            //     _id: copyEditedItem._id,
-            //     name: copyEditedItem.name,
-            //     description: copyEditedItem.description,
-            //     ingridients: copyEditedItem.ingridients
-            // });
-            setIsExistingItem(true);
-            // setEditedItem(editedItem);
-            // setEditedItem(copyEditedItem);
-        } else {
-            // console.log('no editedItem', editedItem)
-            setIsExistingItem(false);
-        }
-    }, [editedItem]);
-
-    // useEffect(() => {
-    //     // console.log('editedItem from useEffect', editedItem);
-    // }, [editedItem]);
+        console.log(!editedItem?.isThisInitItem)
+        setIsExistingItem(!editedItem?.isThisInitItem)
+    }, []);
 
     const addIngridientField = () => {
         // @ts-ignore
@@ -87,10 +68,13 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
 
         for (let key in item) {
             const value = item[key];
+            if (typeof value === 'function') {
+                return;
+            }
             if (typeof value == "object" && typeof value.length !== 'number') {
                 checkIsItemValid(value);
             }
-            if ((value === '' || typeof value === 'undefined') && value !== 0 ) {
+            if ((value === '' || typeof value === 'undefined') && value !== 0) {
                 isItemValid = false;
                 return;
             }
@@ -112,55 +96,57 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
         }
     };
 
-
     return <div style={{display: 'block', position: 'initial'}}>
         <Modal show={showModal} onHide={() => {
             closeModal();
-            // setItemToSave(initItemToSave);
-            // @ts-ignore
             setEditedItem(null);
         }} className='modal'>
             <Modal.Body>
-                <Form.Control isInvalid={!editedItem?.name} value={editedItem?.name || ''} type="text" placeholder="name" onChange={(e: any) => {
-                    setEditedItem({...editedItem, name: e.target.value})
-                }}/>
-                <Form.Control isInvalid={!editedItem?.description} value={editedItem?.description || ''} type="text" placeholder="description" onChange={(e: any) => {
-                    setEditedItem({...editedItem, description: e.target.value})
-                }}/>
-                <Form.Group>
-                    {itemType === itemTypes.PRODUCT &&
-                    <AddProductCard setEditedItem={setEditedItem} editedItem={editedItem} isExistingItem={isExistingItem}/>}
-                    {itemType !== itemTypes.PRODUCT
-                    // @ts-ignore
-                    && editedItem.ingridients &&
-                    // @ts-ignore
-                    editedItem.ingridients.map((ingridientObject: any, index: number) => {
-                        return <NewIngridientSelect
-                            // key={index + '_' + ingridientObject?.ingridient?.name}
-                            key={index}
-                            index={index}
-                            ingridientObject={ingridientObject}
-                            items={items}
-                            removeIngridientField={removeIngridientField}
-                            setNewIngridient={setNewIngridient}/>
-                    })}
-                    {itemType !== itemTypes.PRODUCT && <div>
-                        <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
-                        <ActionButton onClick={() => {
-                            // console.log(newItemIngridients)
-                        }} label={'print newItemIngridients'}/>
-                    </div>}
-                    {inValidError && <div>fill all fields</div>}
-                    <ActionButton onClick={(e) => {
-                        AddOrUpdateItem(e, editedItem)
-                    }} label={isExistingItem ? 'update' : 'add'}/>
-                </Form.Group>
+                {!editedItem && <div>no item</div>}
+                {editedItem && <div>
+                    <Form.Control isInvalid={!editedItem.name} value={editedItem.name || ''} type="text" placeholder="name" onChange={(e: any) => {
+                        setEditedItem({...editedItem, name: e.target.value})
+                    }}/>
+                    <Form.Control isInvalid={!editedItem.description} value={editedItem.description || ''} type="text" placeholder="description"
+                                  onChange={(e: any) => {
+                                      setEditedItem({...editedItem, description: e.target.value})
+                                  }}/>
+                    <Form.Group>
+                        {itemType === itemTypes.PRODUCT &&
+                        <AddProductCard setEditedItem={setEditedItem} setIsExistingItem={setIsExistingItem} editedItem={editedItem} isExistingItem={isExistingItem}/>}
+                        {itemType !== itemTypes.PRODUCT
+                        // @ts-ignore
+                        && editedItem.ingridients &&
+                        // @ts-ignore
+                        editedItem.ingridients.map((ingridientObject: any, index: number) => {
+                            return <div>ingr</div>
+                            // return <NewIngridientSelect
+                            //     // key={index + '_' + ingridientObject?.ingridient?.name}
+                            //     key={index}
+                            //     index={index}
+                            //     ingridientObject={ingridientObject}
+                            //     items={items}
+                            //     removeIngridientField={removeIngridientField}
+                            //     setNewIngridient={setNewIngridient}/>
+                        })}
+                        {itemType !== itemTypes.PRODUCT && <div>
+                            <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
+                            <ActionButton onClick={() => {
+                                // console.log(newItemIngridients)
+                            }} label={'print newItemIngridients'}/>
+                        </div>}
+                        {inValidError && <div>fill all fields</div>}
+                        <ActionButton onClick={(e) => {
+                            AddOrUpdateItem(e, editedItem)
+                        }} label={isExistingItem ? 'update' : 'add'}/>
+                    </Form.Group>
+                </div>}
             </Modal.Body>
         </Modal>
     </div>
 };
 
-const AddProductCard = ({editedItem, setEditedItem, isExistingItem}: any) => {
+const AddProductCard = ({editedItem, setEditedItem, setIsExistingItem, isExistingItem}: any) => {
 
     console.log('editedItem from product', editedItem);
 
@@ -178,28 +164,21 @@ const AddProductCard = ({editedItem, setEditedItem, isExistingItem}: any) => {
     //     }
     // }, [isExistingItem]);
     useEffect(() => {
-        if (editedItem) {
-            setIsThatPieceProduct(editedItem.isThatPieceProduct);
-        } else {
-            setEditedItem(initProductItem)
-        }
-
+        setIsThatPieceProduct(editedItem.isThatPieceProduct);
+        setIsExistingItem(!editedItem.isThisInitItem)
     }, [editedItem]);
 
     useEffect(() => {
         setEnergyValueFieldName(isThatPieceProduct ? 'energyValueForOnePiece' : 'energyValue');
     }, [isThatPieceProduct]);
 
-    if (!editedItem) {
-        return <div>no item</div>
-    }
     return <div className='product'>
         {isExistingItem && (editedItem.isThatPieceProduct ? <div>PieceProduct</div> : <div>WeightProduct</div>)}
         {!isExistingItem && <Form.Check type="switch"
-                    id="custom-switch"
-                    label={isThatPieceProduct ? 'PieceProduct' : 'WeightProduct'}
-                    checked={isThatPieceProduct}
-                    onChange={handleToggle}/>}
+                                        id="custom-switch"
+                                        label={isThatPieceProduct ? 'PieceProduct' : 'WeightProduct'}
+                                        checked={isThatPieceProduct}
+                                        onChange={handleToggle}/>}
         <div className="cookingCoefficient">
             <DigitalValueItem editedItem={editedItem}
                               setEditedItem={setEditedItem}
@@ -209,15 +188,15 @@ const AddProductCard = ({editedItem, setEditedItem, isExistingItem}: any) => {
         {isThatPieceProduct && <div>
             {['amountOfPieces', 'priceForAllPieces'].map((field: string) =>
                 <DigitalValueItem editedItem={editedItem}
-                                 setEditedItem={setEditedItem}
-                                 fieldName={field}/>
+                                  setEditedItem={setEditedItem}
+                                  fieldName={field}/>
             )}
         </div>}
         {!isThatPieceProduct && <div>
             {['weight', 'price'].map((field: string) =>
                 <DigitalValueItem editedItem={editedItem}
-                                 setEditedItem={setEditedItem}
-                                 fieldName={field}/>
+                                  setEditedItem={setEditedItem}
+                                  fieldName={field}/>
             )}
         </div>}
         <div className="energyValue">
@@ -225,9 +204,9 @@ const AddProductCard = ({editedItem, setEditedItem, isExistingItem}: any) => {
             <div className="energyValue_data">
                 {['calories', 'proteines', 'fats', 'carbohydrates'].map((field: string) =>
                     <DigitalValueItem editedItem={editedItem}
-                                     setEditedItem={setEditedItem}
-                                     energyValueFieldName={energyValueFieldName}
-                                     fieldName={field}/>
+                                      setEditedItem={setEditedItem}
+                                      energyValueFieldName={energyValueFieldName}
+                                      fieldName={field}/>
                 )}
             </div>
         </div>

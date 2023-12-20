@@ -10,6 +10,7 @@ import {
 import apiService from "../../utils/apiService";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import mockItems from '../../assets/stub/mockItemsForAdding.json'
+import {initDishItem, initProductItem} from "../../utils/initItems";
 
 const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
@@ -68,10 +69,27 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
     }, [searchString, itemsArray]);
 
+    const getInitItemByType = (itemType: string): Types.CommonEntitiesType | {} => {
+        switch (itemType) {
+            case itemTypes.PRODUCT:
+                return initProductItem;
+                break;
+            case itemTypes.DISH:
+                return initDishItem;
+                break;
+            case itemTypes.MEAL:
+                // return initMealItem;
+                break;
+            default: return {};
+        }
+    };
+
     const openModalToAddItem = (event: any, item?: Types.CommonEntitiesType) => {
         event.stopPropagation();
         if (item) {
             setEditedItem(item);
+        } else {
+            setEditedItem(getInitItemByType(itemType));
         }
         setShowModal(true);
     };
