@@ -204,10 +204,6 @@ export namespace Types {
     export interface NewIngridientProps {
         index: number,
         ingridientObject: any,
-        items: {
-            products: Product[] | null,
-            dishes: Dish[] | null,
-        } | {},
         setNewIngridient: (ingridient: any, index: number) => void,
         removeIngridientField: (args: any) => void,
     }
