@@ -24,12 +24,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     // console.log('editedItem', editedItem);
 
 
-    const items = useSelector((state: Types.MainState) => {
-        return {
-            dishes: state.items.dishes,
-            products: state.items.products
-        };
-    });
+
 
     useEffect(() => {
         console.log(!editedItem?.isThisInitItem)
@@ -132,10 +127,9 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                         // @ts-ignore
                         editedItem.ingridients.map((ingridientObject: any, index: number) => {
                             return <NewIngridientSelect
-                                key={index + '_' + ingridientObject?.ingridient ? ingridientObject.ingridient?.name : ''}
+                                key={index}
                                 index={index}
                                 ingridientObject={ingridientObject}
-                                items={items}
                                 removeIngridientField={removeIngridientField}
                                 setNewIngridient={setNewIngridient}/>
                         })}
@@ -269,7 +263,6 @@ const DigitalValueItem = ({editedItem, setEditedItem, energyValueFieldName, fiel
 const NewIngridientSelect = ({
                                  index,
                                  ingridientObject,
-                                 items,
                                  setNewIngridient,
                                  removeIngridientField
                              }: Types.NewIngridientProps) => {
@@ -279,6 +272,14 @@ const NewIngridientSelect = ({
     const [localItemsObject, setLocalItemsObject] = useState(null);
     const [currentItemsArray, setCurrentItemsArray] = useState([]);
     const [selectedIngridient, setSelectedIngridient] = useState(null);
+
+    const items = useSelector((state: Types.MainState) => {
+        return {
+            dishes: state.items.dishes,
+            products: state.items.products
+        };
+    });
+
     // const [ingridientInfo, setIngridientInfo] = useState({
     //     price: 0,
     //     energyValue: {
@@ -412,7 +413,6 @@ const NewIngridientSelect = ({
     };
 
     return <div className='ingridient_container'>
-        {/*<div className="" onClick={(event) => removeIngridientField(index)}>remove</div>*/}
         <div className="">
             <div className='d-flex justify-content-between mb-3'>
                 <div className="">
@@ -444,7 +444,7 @@ const NewIngridientSelect = ({
                     }}/>
                 </div>}
                 <div className="d-flex justify-content-center align-items-center">
-                    <div className="remove_item_icon_container" onClick={() => removeIngridientField(index)}><img
+                    <div className="remove_item_icon_container h-25" onClick={() => removeIngridientField(index)}><img
                         src={RemoveItem} alt=""/></div>
                 </div>
             </div>
