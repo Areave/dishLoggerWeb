@@ -194,6 +194,7 @@ export namespace Types {
         showModal: boolean,
         closeModal: () => void,
         addItem: (item: Types.CommonEntitiesType) => void,
+        setEditedItem: (item: Types.CommonEntitiesType) => void,
         updateExistingItem: (item: Types.CommonEntitiesType) => void,
         editedItem: Types.CommonEntitiesType | Product | null;
     }
