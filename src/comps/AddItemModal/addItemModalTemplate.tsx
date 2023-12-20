@@ -62,23 +62,35 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     };
 
 
-    const checkIsItemValid = (item: any) => {
+    const checkIsItemValid = (item: any): boolean => {
 
         let isItemValid = true;
 
+        if (!item) {
+            isItemValid = false;
+            return;
+        }
+
+        const keys = Object.keys(item);
+
+        if (!keys.length) {
+            isItemValid = false;
+            return;
+        }
         for (let key in item) {
             const value = item[key];
-            if (typeof value === 'function') {
-                return;
-            }
-            if (typeof value == "object" && typeof value.length !== 'number') {
-                checkIsItemValid(value);
-            }
-            if ((value === '' || typeof value === 'undefined') && value !== 0) {
+
+            if ((!value && value !== 0) || value === '') {
                 isItemValid = false;
                 return;
             }
-        }
+            if (typeof value === 'function' || Array.isArray(value)) {
+                continue;
+            }
+            if (typeof value === "object") {
+                isItemValid = checkIsItemValid(value);
+            }
+        }        
         return isItemValid;
     };
 
@@ -119,15 +131,13 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                         && editedItem.ingridients &&
                         // @ts-ignore
                         editedItem.ingridients.map((ingridientObject: any, index: number) => {
-                            return <div>ingr</div>
-                            // return <NewIngridientSelect
-                            //     // key={index + '_' + ingridientObject?.ingridient?.name}
-                            //     key={index}
-                            //     index={index}
-                            //     ingridientObject={ingridientObject}
-                            //     items={items}
-                            //     removeIngridientField={removeIngridientField}
-                            //     setNewIngridient={setNewIngridient}/>
+                            return <NewIngridientSelect
+                                key={index + '_' + ingridientObject?.ingridient ? ingridientObject.ingridient?.name : ''}
+                                index={index}
+                                ingridientObject={ingridientObject}
+                                items={items}
+                                removeIngridientField={removeIngridientField}
+                                setNewIngridient={setNewIngridient}/>
                         })}
                         {itemType !== itemTypes.PRODUCT && <div>
                             <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
@@ -135,10 +145,10 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                                 // console.log(newItemIngridients)
                             }} label={'print newItemIngridients'}/>
                         </div>}
-                        {inValidError && <div>fill all fields</div>}
                         <ActionButton onClick={(e) => {
                             AddOrUpdateItem(e, editedItem)
                         }} label={isExistingItem ? 'update' : 'add'}/>
+                        {inValidError && <div>fill all fields</div>}
                     </Form.Group>
                 </div>}
             </Modal.Body>
@@ -226,13 +236,15 @@ const DigitalValueItem = ({editedItem, setEditedItem, energyValueFieldName, fiel
     }
 
     const onControlChange = (e: any) => {
-        const value = e.target.value;
-        let valueToSet = e.target.value;
+        let value = e.target.value;
         if (isNaN(+value) && value.slice(-1) !== '.' && value.slice(-1) !== ',') {
             return;
         } else {
             if (value.slice(-1) === ',') {
-                valueToSet = value.slice(0, value.length - 1) + '.';
+                value = value.slice(0, value.length - 1) + '.';
+            }
+            if (value.length === 2 && value[0] === '0' && !isNaN(+value[1])) {
+                value = value[1];
             }
             if (energyValueFieldName) {
                 let energyValue = editedItem[energyValueFieldName] ?
@@ -240,17 +252,17 @@ const DigitalValueItem = ({editedItem, setEditedItem, energyValueFieldName, fiel
                 setEditedItem({
                     ...editedItem, [energyValueFieldName]: {
                         ...energyValue,
-                        [fieldName]: valueToSet
+                        [fieldName]: value
                     }
                 })
             } else {
-                setEditedItem({...editedItem, [fieldName]: valueToSet})
+                setEditedItem({...editedItem, [fieldName]: value})
             }
         }
     };
     return <div className={fieldName}>
         <Form.Label>{fieldName}</Form.Label>
-        <Form.Control isInvalid={!value} value={value} type="text" placeholder={fieldName}
+        <Form.Control isInvalid={!value && value !== 0} value={value} type="text" placeholder={fieldName}
                       onChange={onControlChange}/></div>
 };
 
