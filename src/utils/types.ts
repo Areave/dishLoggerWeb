@@ -47,6 +47,7 @@ export namespace Types {
                 carbohydrates: number
             },
         },
+        role: string,
         products?: Product[],
         dishes?: Dish[],
         meals?: Meal[],
@@ -192,7 +193,8 @@ export namespace Types {
         itemType: string,
         showModal: boolean,
         closeModal: () => void,
-        addItem: () => void,
+        addItem: (item: Types.CommonEntitiesType) => void,
+        updateExistingItem: (item: Types.CommonEntitiesType) => void,
         editedItem: Types.CommonEntitiesType | Product | null;
     }
     export interface NewIngridientProps {

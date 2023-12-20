@@ -28,12 +28,12 @@ const MainPage: React.FC<any> = () => {
     });
 
     const fetchStat = useCallback(() => {
-        dispatch(fetchUserStatForToday());
+        // dispatch(fetchUserStatForToday());
     }, [meals]);
 
     useEffect(() => {
         // fetchStat();
-        dispatch(fetchUserStatForToday());
+        // dispatch(fetchUserStatForToday());
     }, []);
     useEffect(() => {
         // @ts-ignore
@@ -119,7 +119,7 @@ const MainPage: React.FC<any> = () => {
             <AddItemModal targetItem={itemTypes.MEAL} setNewItemData={setNewItemData} addItem={addItem} showModal={showModal} closeModal={() => setShowModal(false)}/>
             <Stat mainStat={userStat.mainStat} statArray={userStat.statArray}/>
             {(filteredMeals || meals.length) ? <Search setSearchString={setSearchString}/> : <div className="text-center fw-bold py-1">No meals yet</div>}
-            <ActionButton className='add-item__button my-3' onClick={openModalToAddMeal} label={'add meal'}/>
+            <ActionButton className='add-item__button my-3' onClick={() => openModalToAddMeal()} label={'add meal'}/>
             {/*<Meals meals={filteredMeals || meals} removeMeal={removeMeal}/>*/}
         </div>
     </div>

@@ -23,7 +23,7 @@ type Response = {
 
 export const fetchUser = () => {
     return (dispatch: any) => {
-        dispatch(setIsUserLoading(true));
+        // dispatch(setIsUserLoading(true));
         apiService.getUserData().then((response: Response) => {
             checkResponseForMessage(response, dispatch);
             dispatch(setIsAuthorizedAction(true));
@@ -43,13 +43,14 @@ export const fetchLogin = (data: any) => {
     return (dispatch: any) => {
         dispatch(setIsUserLoading(true));
         apiService.login(data).then((response: Response) => {
+            // dispatch(setIsUserLoading(false));
             checkResponseForMessage(response, dispatch);
             dispatch(setIsAuthorizedAction(true));
             dispatch(setUserAction(response.user));
-            dispatch(createSetMealsAction(response.user.meals));
+            // dispatch(createSetMealsAction(response.user.meals));
         }).catch((error) => {
             checkResponseForMessage(error, dispatch);
-            dispatch(setIsAuthorizedAction(false));
+            // dispatch(setIsAuthorizedAction(false));
         }).finally(() => {
             dispatch(setIsUserLoading(false));
         })
@@ -75,12 +76,28 @@ export const addNewItem = (fetchFunction: any, setItemsAction: any, data: any) =
     return (dispatch: any) => {
         dispatch(createSetItemsLoadingAction(true));
         fetchFunction(data).then((response: any) => {
+            // console.log('response', response);
             checkResponseForMessage(response, dispatch);
             dispatch(setItemsAction(response));
         }).catch((error: any) => {
             checkResponseForMessage(error, dispatch);
         }).finally(() => {
-            dispatch(fetchUserStatForToday());
+            // dispatch(fetchUserStatForToday());
+            dispatch(createSetItemsLoadingAction(false));
+        })
+    }
+};
+export const updateItem = (fetchFunction: any, setItemsAction: any, data: any) => {
+    return (dispatch: any) => {
+        dispatch(createSetItemsLoadingAction(true));
+        fetchFunction(data).then((response: any) => {
+            console.log('response', response);
+            checkResponseForMessage(response, dispatch);
+            dispatch(setItemsAction(response));
+        }).catch((error: any) => {
+            checkResponseForMessage(error, dispatch);
+        }).finally(() => {
+            // dispatch(fetchUserStatForToday());
             dispatch(createSetItemsLoadingAction(false));
         })
     }
@@ -95,7 +112,7 @@ export const removeNewItem = (removeFunction: any, setItemsAction: any, id: stri
         }).catch((error: any) => {
             checkResponseForMessage(error, dispatch);
         }).finally(() => {
-            dispatch(fetchUserStatForToday());
+            // dispatch(fetchUserStatForToday());
             dispatch(createSetItemsLoadingAction(false));
         })
     }
@@ -108,11 +125,13 @@ export const fetchItems = (itemType: string, setItemsAction: any) => {
 
     return (dispatch: any) => {
         dispatch(createSetItemsLoadingAction(true));
+        // console.log(fetchMethod);
 
         setTimeout(() => {
 
             fetchMethod().then((response: any) => {
-                dispatch(createSetItemsLoadingAction(false));
+
+                // dispatch(createSetItemsLoadingAction(false));
                 // if (itemType === itemTypes.MEAL && response.length > 0) {
                 //     dispatch(fetchUserStatForToday());
                 // }
@@ -122,7 +141,7 @@ export const fetchItems = (itemType: string, setItemsAction: any) => {
                 checkResponseForMessage(error, dispatch);
             }).finally(() => {
                 // dispatch(fetchUserStatForToday());
-                // dispatch(createSetItemsLoadingAction(false));
+                dispatch(createSetItemsLoadingAction(false));
             })
         }, 1000)
     }

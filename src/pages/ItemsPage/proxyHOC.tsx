@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import ItemsPageTemplate from "./itemsPageTemplate";
 import {useDispatch, useSelector} from "react-redux";
 import {Types} from "../../utils/types";
-import {addNewItem, fetchItems, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
+import {addNewItem, updateItem, fetchItems, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
 import {
     getCreateSetItemActionByType,
     getCreateSetItemsActionByType
@@ -44,7 +44,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
             // dispatch(fetchItems(itemType, createSetItemsAction));
         // } else {
             if (!userStat.statArray.length) {
-                dispatch(fetchUserStatForToday());
+                // dispatch(fetchUserStatForToday());
             }
         // }
     }, []);
@@ -76,13 +76,24 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         setShowModal(true);
     };
 
-    const addItem = () => {
-        const newItem = mockItems[key];
-        console.log(newItem)
-        newItem.name = Math.random() + ' ' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random();
+
+    const addItem = (newItem: any) => {
+        // const newItem = mockItems[key];
+        // const newItem = editedItem;
+        newItem.type = itemType;
+        // console.log(newItem);
+        setShowModal(false);
+
+        // newItem.name = Math.random() + ' ' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random();
         // @ts-ignore
-        dispatch(createSetItemsAction([...itemsArray, newItem]));
-        dispatch(addNewItem(apiMethodsObject.addItem, createSetItemsAction, {[key]: mockItems[key]}))
+        // dispatch(createSetItemsAction([...itemsArray, newItem]));
+        // dispatch(addNewItem(apiMethodsObject.addItem, createSetItemsAction, {[key]: mockItems[key]}))
+        dispatch(addNewItem(apiMethodsObject.addItem, createSetItemsAction, newItem));
+    };
+
+    const updateExistingItem = (item: any) => {
+        setShowModal(false);
+        dispatch(updateItem(apiMethodsObject.updateItem, createSetItemsAction, item));
     };
 
     const removeItem = (event: any, id: string) => {
@@ -98,6 +109,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         editedItem,
         setEditedItem,
         addItem,
+        updateExistingItem,
         showModal,
         setShowModal,
         items: filteredItems,

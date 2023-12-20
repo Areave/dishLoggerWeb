@@ -15,6 +15,7 @@ const ItemsPageTemplate: React.FC<any> = ({
                                               editedItem,
                                               setEditedItem,
                                               addItem,
+                                              updateExistingItem,
                                               showModal,
                                               setShowModal,
                                               items,
@@ -28,13 +29,13 @@ const ItemsPageTemplate: React.FC<any> = ({
     if (isItemsLoading) return <LoadingPage/>;
     return <div className="page items-page">
         <div className="items-page__content">
-            <ItemModalTemplate itemType={itemType} editedItem={editedItem} addItem={addItem} showModal={showModal}
+            <ItemModalTemplate itemType={itemType} editedItem={editedItem} addItem={addItem} updateExistingItem={updateExistingItem} showModal={showModal}
                           closeModal={() => {
                               setEditedItem({});
                               setShowModal(false)}}/>
             {itemType === itemTypes.MEAL && <Stat statArray={userStat.statArray}/>}
             <Search setSearchString={setSearchString}/>
-            <ActionButton className='add-item__button my-3' onClick={openModalToAddItem} label={'add ' + itemType.toLowerCase()}/>
+            <ActionButton className='add-item__button my-3' onClick={(e) => openModalToAddItem(e, null)} label={'add ' + itemType.toLowerCase()}/>
             <div className='mb-5'>
                 {items?.length ? items.map((item: any, index: number) =>
                         <ItemCard key={index} itemType={itemType} item={item} removeItem={removeItem} openModalForEdit={(e: any) => openModalToAddItem(e, item)}/>)

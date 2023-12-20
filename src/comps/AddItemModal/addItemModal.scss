@@ -1,34 +1,37 @@
 @use '../../style/style' as styles;
 
 .modal {
-  &__header {
-    //max-width: 80%;
-    @include styles.forTrimLongString;
-  }
-  .weight {
-    width: 70px;
-  }
-  .price {
-    width: 70px;
-  }
-  .amount {
-    width: 70px;
-  }
-  .ingridient_container {
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid black;
-  }
-
-  .ingridient_data {
-    width: 50px
-  }
-
-  .remove_item_icon_container {
-    width: 30px;
-    height: 30px;
-    &:hover {
-      cursor: pointer;
-    }
-  }
+  //.product {
+  //
+  //}
+  //&__header {
+  //  //max-width: 80%;
+  //  @include styles.forTrimLongString;
+  //}
+  //.weight {
+  //  width: 70px;
+  //}
+  //.price {
+  //  width: 70px;
+  //}
+  //.amount {
+  //  width: 70px;
+  //}
+  //.ingridient_container {
+  //  padding: 10px;
+  //  margin: 10px;
+  //  border: 1px solid black;
+  //}
+  //
+  //.ingridient_data {
+  //  width: 50px
+  //}
+  //
+  //.remove_item_icon_container {
+  //  width: 30px;
+  //  height: 30px;
+  //  &:hover {
+  //    cursor: pointer;
+  //  }
+  //}
 }

@@ -40,7 +40,7 @@ const App: React.FC<any> = () => {
     }, []);
 
     useEffect(() => {
-        if (!isAuthorized) {
+        if (isAuthorized) {
             dispatch(fetchItems(itemTypes.PRODUCT, getCreateSetItemsActionByType(itemTypes.PRODUCT)));
             dispatch(fetchItems(itemTypes.DISH, getCreateSetItemsActionByType(itemTypes.DISH)));
             dispatch(fetchItems(itemTypes.MEAL, getCreateSetItemsActionByType(itemTypes.MEAL)));

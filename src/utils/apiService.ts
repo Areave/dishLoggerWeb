@@ -32,6 +32,7 @@ const apiGetRequest = (url: string) => {
     // });
     return new Promise((res, rej) => {
         // setTimeout(() => {
+        console.log('axios', url)
             return res(axios.get(url).then((data: any) => {
                     return Promise.resolve(data.data)
                 }).catch(error => {
@@ -49,19 +50,14 @@ const apiPostRequest = (url: string, data: any) => {
     })
 };
 const apiPutRequest = (url: string, data: any) => {
-    return new Promise((res, rej) => {
-        return res(setTimeout(() => {
+    // return new Promise((res, rej) => {
+        // return res(setTimeout(() => {
             return axios.put(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
-                return error.response.data || {
-                    message: {
-                        type: 'error',
-                        text: error.message
-                    }
-                };
-            }).catch((error)=>{
                 errorHandler(error);
-            })
-        }, 1000));
+            // }).catch((error)=>{
+            //     errorHandler(error);
+            // })
+        // }, 1000));
     })
 };
 const apiDeleteRequest = (url: string, id: string = '') => {
@@ -101,9 +97,9 @@ const deleteAllUsers = () => {
 };
 
 // products
-const addProduct = (data: any) => {
+const addProduct = (product: any) => {
     const url = productsEndpoint + 'add';
-    return apiPostRequest(url, data);
+    return apiPostRequest(url, {product});
 };
 const getProduct = (productId: string) => {
     const url = productsEndpoint + 'product/' + productId;
@@ -113,9 +109,9 @@ const getAllProducts = () => {
     const url = productsEndpoint + 'get_all';
     return apiGetRequest(url);
 };
-const updateProduct = (data: any) => {
+const updateProduct = (product: any) => {
     const url = productsEndpoint + 'update';
-    return apiPutRequest(url, data);
+    return apiPutRequest(url, {product});
 };
 const removeProduct = (id: string) => {
     const url = productsEndpoint + 'remove';

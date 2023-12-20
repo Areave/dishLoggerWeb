@@ -7,6 +7,7 @@ const initialUserState: Types.UserState = {
     currentUser: {
         name: '',
         login: '',
+        role: '',
         intakeData: {
             energyValue: {
                 calories: 0,
