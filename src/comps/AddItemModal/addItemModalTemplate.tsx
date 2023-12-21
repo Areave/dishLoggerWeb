@@ -143,7 +143,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                                       setEditedItem({...editedItem, description: e.target.value})
                                   }}/>
                     <Form.Group>
-                        {itemType === itemTypes.DISH && <Form.Check type="switch"
+                        {(itemType === itemTypes.DISH || itemType === itemTypes.PRODUCT) && <Form.Check type="switch"
                                     id="custom-switch"
                                     label={editedItem.isThatPieceItem ? 'Piece Dish' : 'Weight Dish'}
                                     checked={editedItem.isThatPieceItem}
@@ -184,41 +184,41 @@ const AddProductCard = ({editedItem, setEditedItem, setIsExistingItem, isExistin
     const [isThatPieceItem, setIsThatPieceItem] = useState(editedItem?.isThatPieceItem || false);
     const [energyValueFieldName, setEnergyValueFieldName] = useState('energyValue');
 
-    const handleToggle = (e: any) => {
-        setIsThatPieceItem(!isThatPieceItem);
-        setEditedItem({...editedItem, isThatPieceItem: e.target.checked})
-    };
+    // const handleToggle = (e: any) => {
+    //     setIsThatPieceItem(!isThatPieceItem);
+    //     setEditedItem({...editedItem, isThatPieceItem: e.target.checked})
+    // };
+
+    // useEffect(() => {
+    //     setIsThatPieceItem(editedItem.isThatPieceItem);
+    //     setIsExistingItem(!editedItem.isThisInitItem)
+    // }, [editedItem]);
 
     useEffect(() => {
-        setIsThatPieceItem(editedItem.isThatPieceItem);
-        setIsExistingItem(!editedItem.isThisInitItem)
-    }, [editedItem]);
-
-    useEffect(() => {
-        setEnergyValueFieldName(isThatPieceItem ? 'energyValueForOneItem' : 'energyValue');
+        setEnergyValueFieldName(editedItem.isThatPieceItem ? 'energyValueForOneItem' : 'energyValue');
     }, [isThatPieceItem]);
 
     return <div className='product'>
-        {isExistingItem && (editedItem.isThatPieceItem ? <div>PieceProduct</div> : <div>WeightProduct</div>)}
-        {!isExistingItem && <Form.Check type="switch"
-                                        id="custom-switch"
-                                        label={isThatPieceItem ? 'Piece Product' : 'Weight Product'}
-                                        checked={isThatPieceItem}
-                                        onChange={handleToggle}/>}
+        {!editedItem.isThisInitItem && (editedItem.isThatPieceItem ? <div>PieceProduct</div> : <div>WeightProduct</div>)}
+        {/*{!editedItem.isThisInitItem && <Form.Check type="switch"*/}
+        {/*                                id="custom-switch"*/}
+        {/*                                label={editedItem.isThatPieceItem ? 'Piece Product' : 'Weight Product'}*/}
+        {/*                                checked={editedItem.isThatPieceItem}*/}
+        {/*                                onChange={handleToggle}/>}*/}
         <div className="cookingCoefficient">
             <DigitalValueItem editedItem={editedItem}
                               setEditedItem={setEditedItem}
                               fieldName='cookingCoefficient'/>
         </div>
 
-        {isThatPieceItem && <div>
+        {editedItem.isThatPieceItem && <div>
             {['amount', 'priceForAllItems'].map((field: string) =>
                 <DigitalValueItem editedItem={editedItem}
                                   setEditedItem={setEditedItem}
                                   fieldName={field}/>
             )}
         </div>}
-        {!isThatPieceItem && <div>
+        {!editedItem.isThatPieceItem && <div>
             {['weight', 'price'].map((field: string) =>
                 <DigitalValueItem editedItem={editedItem}
                                   setEditedItem={setEditedItem}
@@ -226,7 +226,7 @@ const AddProductCard = ({editedItem, setEditedItem, setIsExistingItem, isExistin
             )}
         </div>}
         <div className="energyValue">
-            <div className="energyValue_label">{isThatPieceItem ? 'energyValue for one piece' : 'energyValue for 100gr'}</div>
+            <div className="energyValue_label">{editedItem.isThatPieceItem ? 'energyValue for one piece' : 'energyValue for 100gr'}</div>
             <div className="energyValue_data">
                 {['calories', 'proteines', 'fats', 'carbohydrates'].map((field: string) =>
                     <DigitalValueItem editedItem={editedItem}
