@@ -1,6 +1,10 @@
 @use '../../style/style' as styles;
 
 .modal {
+  .remove_item_icon_container {
+    height: 30px;
+    width: 30px;
+  }
   //.product {
   //
   //}

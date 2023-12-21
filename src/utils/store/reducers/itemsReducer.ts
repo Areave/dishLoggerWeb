@@ -14,11 +14,11 @@ import {
 
 const initialItemState: Types.ItemsState = {
     product: null,
-    products: null,
+    products: [],
     dish: null,
-    dishes: null,
+    dishes: [],
     meal: null,
-    meals: null,
+    meals: [],
     isItemLoading: false,
     isItemsLoading: false,
 };

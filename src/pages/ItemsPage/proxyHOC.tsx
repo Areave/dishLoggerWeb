@@ -96,23 +96,21 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
 
     const addItem = (newItem: any) => {
-        // const newItem = mockItems[key];
-        // const newItem = editedItem;
+
         newItem.type = itemType;
 
         if (itemType === itemTypes.PRODUCT) {
             delete newItem.isThisInitItem;
-            if (newItem.isThatPieceProduct) {
+            if (newItem.isThatPieceItem) {
                 delete newItem.price;
                 delete newItem.weight;
                 delete newItem.energyValue;
             } else {
-                delete newItem.priceForAllPieces;
-                delete newItem.amountOfPieces;
-                delete newItem.energyValueForOnePiece;
+                delete newItem.priceForOneItem;
+                delete newItem.amount;
+                delete newItem.energyValueForOneItem;
             }
         }
-        console.log('newItem from hoc', newItem);
         setShowModal(false);
 
         // newItem.name = Math.random() + ' ' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random();

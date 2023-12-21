@@ -93,77 +93,60 @@ export namespace Types {
 
     export interface Product {
         isThisInitItem?: boolean,
-        _id?: string,
+        _id?: number,
         name: string,
         type: string,
-        cookingCoefficient?: number,
-        description?: string,
+        // Только в PRODUCT
+        cookingCoefficient: number,
+        description: string,
         weight?: number,
         price?: number,
-        energyValue?: {
-            calories: number,
-            proteines: number,
-            fats: number,
-            carbohydrates: number
-        },
-        isThatPieceProduct?: boolean,
-        amountOfPieces?: number,
-        priceForAllPieces?: number,
-        energyValueForOnePiece?: {
-            calories: number,
-            proteines: number,
-            fats: number,
-            carbohydrates: number
-        }
+        energyValue?: EnergyValue,
+        isThatPieceItem: boolean,
+        amount?: number,
+        priceForAllItems?: number,
+        energyValueForOneItem?: EnergyValue
     }
 
     export interface Dish {
         isThisInitItem?: boolean,
-        _id?: string,
+        _id?: number,
         name: string,
         type: string,
         description: string,
-        ingridients: {
-            ingridient: Product | null,
-            weight: number,
-            amountOfItems: number,
-            price: number,
-            energyValue: {
-                calories: number,
-                proteines: number,
-                fats: number,
-                carbohydrates: number
-            }
-        }[] | [{}],
-        weight: number,
-        isThatPieceDish: boolean,
-        amountOfItems: number
-        price: number,
-        energyValue: {
-            calories: number,
-            proteines: number,
-            fats: number,
-            carbohydrates: number
-        }
+        weight?: number,
+        price?: number,
+        energyValue?: EnergyValue,
+        isThatPieceItem: boolean,
+        amount?: number,
+        // Только в DISH
+        priceForOneItem?: number,
+        energyValueForOneItem?: EnergyValue,
+        // Только в DISH и MEAL
+        ingridients: Ingridient[] | [{}]
     }
 
     export interface Meal {
         isThisInitItem?: boolean,
-        _id?: string,
+        _id?: number,
         name: string,
         type: string,
+        cookingCoefficient: number,
         description: string,
-        dateString: string,
-        ingridients: Ingridient[],
         weight: number,
         price: number,
-        energyValue: EnergyValue
+        energyValue: EnergyValue,
+        ingridients: Ingridient[] | [{}],
+        // Только в MEAL
+        date: Date
     }
 
     // common entities type
     export type CommonEntitiesType = Product | Dish | Meal;
 
     export type CommonEntitiesTypeWithIngridients = Dish | Meal;
+
+    export type CommonEntitiesTypeCanBeAPiece = Dish | Product;
 
     export type IngridientInfo = {
         price: number,
@@ -178,12 +161,10 @@ export namespace Types {
     }
 
     export type Ingridient = {
-        _id?: string,
-        ingridient: Product | Dish,
-        weight: number,
-        amountOfItems: number,
-        price: number,
-        energyValue: EnergyValue
+        ingridient: Product | Dish | null,
+        type: string,
+        weight?: number,
+        amount?: number,
     };
 
     // props
@@ -196,10 +177,11 @@ export namespace Types {
         itemType: string,
         showModal: boolean,
         closeModal: () => void,
-        addItem: (item: Types.CommonEntitiesType) => void,
-        setEditedItem: (item: Types.CommonEntitiesType) => void,
-        updateExistingItem: (item: Types.CommonEntitiesType) => void,
-        editedItem: Types.CommonEntitiesType | Product | null;
+        addItem: (item: any) => void,
+        setEditedItem: (item: any) => void,
+        updateExistingItem: (item: any) => void,
+        // editedItem: CommonEntitiesType | Product | null;
+        editedItem: any;
     }
     export interface NewIngridientProps {
         index: number,

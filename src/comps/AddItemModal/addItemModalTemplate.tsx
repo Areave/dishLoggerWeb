@@ -9,6 +9,7 @@ import Dish = Types.Dish;
 import Product = Types.Product;
 import RemoveItem from '../../assets/images/remove_item.png';
 import {initDishItem, initProductItem} from "../../utils/initItems";
+import {ItemType} from "../ItemType/itemType";
 
 export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, setEditedItem, editedItem, itemType, addItem, updateExistingItem}) => {
 
@@ -23,11 +24,16 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     console.log('editedItem', editedItem);
     // console.log('editedItem', editedItem);
 
-
+    const items = useSelector((state: Types.MainState) => {
+        return {
+            dishes: state.items.dishes,
+            products: state.items.products
+        };
+    });
 
 
     useEffect(() => {
-        console.log(!editedItem?.isThisInitItem)
+        console.log(!editedItem?.isThisInitItem);
         setIsExistingItem(!editedItem?.isThisInitItem)
     }, []);
 
@@ -52,6 +58,8 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
             // @ts-ignore
             ...editedItem.ingridients.slice(index + 1)
         ];
+        // @ts-ignore
+        // const dishData = createEnergyValueFromIngridientsArray(newIngridientsArray, editedItem.isThatPieceItem);
         setEditedItem({...editedItem, ingridients: newIngridientsArray});
 
     };
@@ -75,12 +83,18 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
         for (let key in item) {
             const value = item[key];
 
-            if ((!value && value !== 0) || value === '') {
+            if ((!value && value !== 0 && typeof value !== 'boolean') || value === '') {
                 isItemValid = false;
                 return;
             }
             if (typeof value === 'function' || Array.isArray(value)) {
                 continue;
+            }
+            if (item.type === itemTypes.PRODUCT || item.type === itemTypes.DISH) {
+                if ((item.isThatPieceItem && (key === 'price' || key === 'weight' || key === 'energyValue'))
+                || (!item.isThatPieceItem && (key === 'priceForOneItem' || key === 'amount' || key === 'energyValueForOneItem'))) {
+                    continue;
+                }
             }
             if (typeof value === "object") {
                 isItemValid = checkIsItemValid(value);
@@ -102,6 +116,15 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
             }
         }
     };
+    // @ts-ignore
+    // if (editedItem && editedItem.ingridients) {
+    //     // @ts-ignore
+    //     const namesAr = editedItem.ingridients.map((ingridient: any) => {
+    //         if (ingridient.ingridient) {
+    //             return ingridient.ingridient?.name} });
+    //     console.log(namesAr);
+    // }
+
 
     return <div style={{display: 'block', position: 'initial'}}>
         <Modal show={showModal} onHide={() => {
@@ -110,24 +133,30 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
         }} className='modal'>
             <Modal.Body>
                 {!editedItem && <div>no item</div>}
+                {!editedItem && itemType !== itemTypes.PRODUCT && !items.products.length && <div>no products</div>}
                 {editedItem && <div>
-                    <Form.Control isInvalid={!editedItem.name} value={editedItem.name || ''} type="text" placeholder="name" onChange={(e: any) => {
+                    <Form.Control isInvalid={!editedItem.name} value={editedItem.name} type="text" placeholder="name" onChange={(e: any) => {
                         setEditedItem({...editedItem, name: e.target.value})
                     }}/>
-                    <Form.Control isInvalid={!editedItem.description} value={editedItem.description || ''} type="text" placeholder="description"
+                    <Form.Control isInvalid={!editedItem.description} value={editedItem.description} type="text" placeholder="description"
                                   onChange={(e: any) => {
                                       setEditedItem({...editedItem, description: e.target.value})
                                   }}/>
                     <Form.Group>
+                        {itemType === itemTypes.DISH && <Form.Check type="switch"
+                                    id="custom-switch"
+                                    label={editedItem.isThatPieceItem ? 'Piece Dish' : 'Weight Dish'}
+                                    checked={editedItem.isThatPieceItem}
+                                    onChange={(e) => {
+                                        setEditedItem({...editedItem, isThatPieceItem: e.target.checked})
+                                    }}/>}
                         {itemType === itemTypes.PRODUCT &&
                         <AddProductCard setEditedItem={setEditedItem} setIsExistingItem={setIsExistingItem} editedItem={editedItem} isExistingItem={isExistingItem}/>}
-                        {itemType !== itemTypes.PRODUCT
-                        // @ts-ignore
-                        && editedItem.ingridients &&
+                        {itemType !== itemTypes.PRODUCT &&
                         // @ts-ignore
                         editedItem.ingridients.map((ingridientObject: any, index: number) => {
                             return <NewIngridientSelect
-                                key={index}
+                                key={index + '_' + ingridientObject.name || ingridientObject.type}
                                 index={index}
                                 ingridientObject={ingridientObject}
                                 removeIngridientField={removeIngridientField}
@@ -135,9 +164,9 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                         })}
                         {itemType !== itemTypes.PRODUCT && <div>
                             <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
-                            <ActionButton onClick={() => {
-                                // console.log(newItemIngridients)
-                            }} label={'print newItemIngridients'}/>
+                            {/*<ActionButton onClick={() => {*/}
+                            {/*    // console.log(newItemIngridients)*/}
+                            {/*}} label={'print newItemIngridients'}/>*/}
                         </div>}
                         <ActionButton onClick={(e) => {
                             AddOrUpdateItem(e, editedItem)
@@ -152,36 +181,29 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
 
 const AddProductCard = ({editedItem, setEditedItem, setIsExistingItem, isExistingItem}: any) => {
 
-    console.log('editedItem from product', editedItem);
-
-    const [isThatPieceProduct, setIsThatPieceProduct] = useState(editedItem?.isThatPieceProduct || false);
+    const [isThatPieceItem, setIsThatPieceItem] = useState(editedItem?.isThatPieceItem || false);
     const [energyValueFieldName, setEnergyValueFieldName] = useState('energyValue');
 
     const handleToggle = (e: any) => {
-        setIsThatPieceProduct(!isThatPieceProduct);
-        setEditedItem({...editedItem, isThatPieceProduct: e.target.checked})
+        setIsThatPieceItem(!isThatPieceItem);
+        setEditedItem({...editedItem, isThatPieceItem: e.target.checked})
     };
 
-    // useEffect(() => {
-    //     if (!isExistingItem) {
-    //         setEditedItem(initProductItem)
-    //     }
-    // }, [isExistingItem]);
     useEffect(() => {
-        setIsThatPieceProduct(editedItem.isThatPieceProduct);
+        setIsThatPieceItem(editedItem.isThatPieceItem);
         setIsExistingItem(!editedItem.isThisInitItem)
     }, [editedItem]);
 
     useEffect(() => {
-        setEnergyValueFieldName(isThatPieceProduct ? 'energyValueForOnePiece' : 'energyValue');
-    }, [isThatPieceProduct]);
+        setEnergyValueFieldName(isThatPieceItem ? 'energyValueForOneItem' : 'energyValue');
+    }, [isThatPieceItem]);
 
     return <div className='product'>
-        {isExistingItem && (editedItem.isThatPieceProduct ? <div>PieceProduct</div> : <div>WeightProduct</div>)}
+        {isExistingItem && (editedItem.isThatPieceItem ? <div>PieceProduct</div> : <div>WeightProduct</div>)}
         {!isExistingItem && <Form.Check type="switch"
                                         id="custom-switch"
-                                        label={isThatPieceProduct ? 'PieceProduct' : 'WeightProduct'}
-                                        checked={isThatPieceProduct}
+                                        label={isThatPieceItem ? 'Piece Product' : 'Weight Product'}
+                                        checked={isThatPieceItem}
                                         onChange={handleToggle}/>}
         <div className="cookingCoefficient">
             <DigitalValueItem editedItem={editedItem}
@@ -189,14 +211,14 @@ const AddProductCard = ({editedItem, setEditedItem, setIsExistingItem, isExistin
                               fieldName='cookingCoefficient'/>
         </div>
 
-        {isThatPieceProduct && <div>
-            {['amountOfPieces', 'priceForAllPieces'].map((field: string) =>
+        {isThatPieceItem && <div>
+            {['amount', 'priceForAllItems'].map((field: string) =>
                 <DigitalValueItem editedItem={editedItem}
                                   setEditedItem={setEditedItem}
                                   fieldName={field}/>
             )}
         </div>}
-        {!isThatPieceProduct && <div>
+        {!isThatPieceItem && <div>
             {['weight', 'price'].map((field: string) =>
                 <DigitalValueItem editedItem={editedItem}
                                   setEditedItem={setEditedItem}
@@ -204,7 +226,7 @@ const AddProductCard = ({editedItem, setEditedItem, setIsExistingItem, isExistin
             )}
         </div>}
         <div className="energyValue">
-            <div className="energyValue_label">{isThatPieceProduct ? 'energyValue for one piece' : 'energyValue for 100gr'}</div>
+            <div className="energyValue_label">{isThatPieceItem ? 'energyValue for one piece' : 'energyValue for 100gr'}</div>
             <div className="energyValue_data">
                 {['calories', 'proteines', 'fats', 'carbohydrates'].map((field: string) =>
                     <DigitalValueItem editedItem={editedItem}
@@ -260,18 +282,7 @@ const DigitalValueItem = ({editedItem, setEditedItem, energyValueFieldName, fiel
                       onChange={onControlChange}/></div>
 };
 
-const NewIngridientSelect = ({
-                                 index,
-                                 ingridientObject,
-                                 setNewIngridient,
-                                 removeIngridientField
-                             }: Types.NewIngridientProps) => {
-
-    // console.log('ingridientObject', ingridientObject)
-    const [ingridientType, setIngridientType] = useState(ingridientObject?.type || itemTypes.PRODUCT as string);
-    const [localItemsObject, setLocalItemsObject] = useState(null);
-    const [currentItemsArray, setCurrentItemsArray] = useState([]);
-    const [selectedIngridient, setSelectedIngridient] = useState(null);
+const NewIngridientSelect = ({index, ingridientObject, setNewIngridient, removeIngridientField}: Types.NewIngridientProps) => {
 
     const items = useSelector((state: Types.MainState) => {
         return {
@@ -279,6 +290,22 @@ const NewIngridientSelect = ({
             products: state.items.products
         };
     });
+    const getInitIngridientType = (): string => {
+        if (ingridientObject?.type) {
+            return ingridientObject.type;
+        } else if (items.products.length) {
+            return itemTypes.PRODUCT;
+        } else {
+            return Object.keys(items)[0];
+        }
+    };
+    // const [ingridientType, setIngridientType] = useState(getInitIngridientType());
+    const [ingridientType, setIngridientType] = useState(getInitIngridientType());
+    const [localItemsObject, setLocalItemsObject] = useState(null);
+    const [currentItemsArray, setCurrentItemsArray] = useState([]);
+    const [selectedIngridient, setSelectedIngridient] = useState(null);
+
+
 
     // const [ingridientInfo, setIngridientInfo] = useState({
     //     price: 0,
@@ -300,7 +327,7 @@ const NewIngridientSelect = ({
         const fieldName = getPluralItemType(ingridientType);
         let arrayForAdding = items[fieldName] || [];
         if (!ingridientObject.ingridient) {
-            arrayForAdding = [ingridientObject.ingridient, ...arrayForAdding]
+            arrayForAdding = [null, ...arrayForAdding]
         } else {
             const index = arrayForAdding.findIndex((item: any) => {
                 return ingridientObject && (item._id === ingridientObject.ingridient?._id)
@@ -312,25 +339,15 @@ const NewIngridientSelect = ({
         return {...items, [fieldName]: arrayForAdding};
     };
 
-    const setIngridientAsCurrent = (givenIngridientObject: any) => {
-        if ((givenIngridientObject === null && ingridientObject?.ingridient === null)
-            || (givenIngridientObject?._id === ingridientObject?.ingridient?._id)) {
-            setSelectedIngridient(ingridientObject);
-        } else {
-            setSelectedIngridient({
-                ...givenIngridientObject,
-                type: givenIngridientObject?.type,
-                ingridient: givenIngridientObject
-            });
-        }
-    };
+    // useEffect(() => {
+    //     const newLocalItemsObject = putIngridientObjectToStartOfLocalItemsObject(ingridientObject, items);
+    //     setLocalItemsObject(newLocalItemsObject);
+    // }, [ingridientObject]);
 
     useEffect(() => {
-        if (ingridientObject) {
-            const newLocalItemsObject = putIngridientObjectToStartOfLocalItemsObject(ingridientObject, items);
-            setLocalItemsObject(newLocalItemsObject);
-        }
-    }, []);
+        const newLocalItemsObject = putIngridientObjectToStartOfLocalItemsObject(ingridientObject, items);
+        setLocalItemsObject(newLocalItemsObject);
+    }, [ingridientObject]);
 
     useEffect(() => {
         // @ts-ignore
@@ -344,19 +361,40 @@ const NewIngridientSelect = ({
 
     }, [ingridientType, localItemsObject]);
 
+    const createIngridientForSaveFromSelected = (givenIngridientObject: any) => {
+        let ingridientForSave;
+        if (givenIngridientObject?._id === ingridientObject?.ingridient?._id
+        || !givenIngridientObject && !ingridientObject.ingridient) {
+            ingridientForSave = ingridientObject;
+        } else {
+            ingridientForSave = {
+                ...selectedIngridient,
+                ingridient: givenIngridientObject
+            };
+            if (!ingridientForSave.type) {
+                ingridientForSave.type = givenIngridientObject.type;
+            }
+            if (givenIngridientObject.isThatPieceItem) {
+                ingridientForSave.amount = 0;
+                delete ingridientForSave.weight;
+            } else {
+                ingridientForSave.weight = 0;
+                delete ingridientForSave.amount;
+            }
+        }
+        return ingridientForSave;
+    };
+
     useEffect(() => {
         if (currentItemsArray.length) {
-            const firstIngridient = currentItemsArray[0];
-            setIngridientAsCurrent(firstIngridient);
-
+            setSelectedIngridient(createIngridientForSaveFromSelected(currentItemsArray[0]))
         }
     }, [currentItemsArray]);
 
     useEffect(() => {
+        console.log('selectedIngridient', selectedIngridient);
         if (selectedIngridient) {
             setNewIngridient(selectedIngridient, index)
-            // const ingridientInfo: Types.IngridientInfo = getIngridientInfo(selectedIngridient);
-            // setIngridientInfo(ingridientInfo);
         }
     }, [selectedIngridient]);
 
@@ -364,87 +402,90 @@ const NewIngridientSelect = ({
     //     setNewIngridient(selectedIngridient, index);
     // }, [ingridientInfo]);
 
+    // const getIngridientInfo = (ingridient: Types.Ingridient): Types.IngridientInfo => {
+    //     let newIngridientInfo: Types.IngridientInfo;
+    //
+    //     // @ts-ignore
+    //     if (ingridient.ingridient.isThatPieceItem) {
+    //         newIngridientInfo = {
+    //             // @ts-ignore
+    //             price: +((ingridient.ingridient.priceForAllPieces / ingridient.ingridient.amountOfPieces) * ingridient.amount).toFixed(2),
+    //             energyValue: {
+    //                 // @ts-ignore
+    //                 calories: +(ingridient.ingridient.energyValueForOneItem.calories * ingridient.amount),
+    //                 // @ts-ignore
+    //                 proteines: +(ingridient.ingridient.energyValueForOneItem.proteines * ingridient.amount),
+    //                 // @ts-ignore
+    //                 fats: +(ingridient.ingridient.energyValueForOneItem.fats * ingridient.amount),
+    //                 // @ts-ignore
+    //                 carbohydrates: +(ingridient.ingridient.energyValueForOneItem.carbohydrates * ingridient.amount),
+    //             }
+    //         };
+    //     } else {
+    //         newIngridientInfo = {
+    //             price: +((ingridient.ingridient.price / ingridient.ingridient.weight) * ingridient.weight).toFixed(2),
+    //             energyValue: {
+    //                 calories: +((ingridient.ingridient.energyValue.calories / 100) * ingridient.weight).toFixed(2),
+    //                 proteines: +((ingridient.ingridient.energyValue.proteines / 100) * ingridient.weight).toFixed(2),
+    //                 fats: +((ingridient.ingridient.energyValue.fats / 100) * ingridient.weight).toFixed(2),
+    //                 carbohydrates: +((ingridient.ingridient.energyValue.carbohydrates / 100) * ingridient.weight).toFixed(2)
+    //             }
+    //         };
+    //     }
+    //     return newIngridientInfo;
+    // };
+
     const createSelectOptionsArray = () => {
         // console.log('currentItemsArray', currentItemsArray)
-        return currentItemsArray.map((item: any, index: number) => {
-            // console.log('item', item)
-            return <option key={index}
-                           value={index}>{item ? item.name : 'Deleted'}</option>
-        })
+        return
     };
 
-    const getIngridientInfo = (ingridient: Types.Ingridient): Types.IngridientInfo => {
-        let newIngridientInfo: Types.IngridientInfo;
-
-        // @ts-ignore
-        if (ingridient.ingridient.isThatPieceProduct) {
-            newIngridientInfo = {
-                // @ts-ignore
-                price: +((ingridient.ingridient.priceForAllPieces / ingridient.ingridient.amountOfPieces) * ingridient.amount).toFixed(2),
-                energyValue: {
-                    // @ts-ignore
-                    calories: +(ingridient.ingridient.energyValueForOnePiece.calories * ingridient.amount),
-                    // @ts-ignore
-                    proteines: +(ingridient.ingridient.energyValueForOnePiece.proteines * ingridient.amount),
-                    // @ts-ignore
-                    fats: +(ingridient.ingridient.energyValueForOnePiece.fats * ingridient.amount),
-                    // @ts-ignore
-                    carbohydrates: +(ingridient.ingridient.energyValueForOnePiece.carbohydrates * ingridient.amount),
-                }
-            };
-        } else {
-            newIngridientInfo = {
-                price: +((ingridient.ingridient.price / ingridient.ingridient.weight) * ingridient.weight).toFixed(2),
-                energyValue: {
-                    calories: +((ingridient.ingridient.energyValue.calories / 100) * ingridient.weight).toFixed(2),
-                    proteines: +((ingridient.ingridient.energyValue.proteines / 100) * ingridient.weight).toFixed(2),
-                    fats: +((ingridient.ingridient.energyValue.fats / 100) * ingridient.weight).toFixed(2),
-                    carbohydrates: +((ingridient.ingridient.energyValue.carbohydrates / 100) * ingridient.weight).toFixed(2)
-                }
-            };
-        }
-        return newIngridientInfo;
-    };
-
-
-    const onSelectIngridientChange = (event: any) => {
-        const firstIngridient = currentItemsArray[+event.target.value]
-        setIngridientAsCurrent(firstIngridient);
-    };
+    if (ingridientObject.ingridient) {
+        console.log(ingridientObject.ingridient.name)
+    }
 
     return <div className='ingridient_container'>
-        <div className="">
+        {selectedIngridient && <div className="">
             <div className='d-flex justify-content-between mb-3'>
                 <div className="">
+                    {/*<div className="">{ingridientObject.ingridient?.name}</div>*/}
                     <Form.Label>type</Form.Label>
                     <Form.Select defaultValue={ingridientType} onChange={(event) => {
                         // console.log('name', event.target.value)
                         setIngridientType(event.target.value)
                     }}>
                         <option value={itemTypes.PRODUCT}>{itemTypes.PRODUCT.slice(0, 1)}</option>
-                        <option value={itemTypes.DISH}>{itemTypes.DISH.slice(0, 1)}</option>
+                        {items.dishes.length && <option value={itemTypes.DISH}>{itemTypes.DISH.slice(0, 1)}</option>}
                     </Form.Select>
                 </div>
                 <div className="">
                     <Form.Label>ingridient</Form.Label>
-                    <Form.Select onChange={onSelectIngridientChange}>
-                        {createSelectOptionsArray()}
+                    <Form.Select value={'0'}
+                                 onChange={(e) => {
+                        const ingridient = createIngridientForSaveFromSelected(currentItemsArray[+e.target.value]);
+                        setSelectedIngridient(ingridient)}}>
+
+                        {currentItemsArray.map((item: any, index: number) => {
+                            return <option key={index}
+                                           value={index}>{item?.name || 'Deleted'}</option>
+                        })}
                     </Form.Select>
                 </div>
-                {selectedIngridient?.weight && <div className="weight">
+
+                {selectedIngridient.hasOwnProperty('weight') && <div className="weight">
                     <Form.Label>weight</Form.Label>
-                    <Form.Control value={selectedIngridient?.weight || ''} type="text" placeholder="weight" onChange={(e: any) => {
+                    <Form.Control value={selectedIngridient.weight} type="text" placeholder="weight" onChange={(e: any) => {
                         setSelectedIngridient({...selectedIngridient, weight: e.target.value})
                     }}/>
                 </div>}
-                {selectedIngridient?.amount && <div className="amount">
+                {selectedIngridient.hasOwnProperty('amount') && <div className="amount">
                     <Form.Label>amount</Form.Label>
-                    <Form.Control value={selectedIngridient?.amountOfItems || ''} type="text" placeholder="amount" onChange={(e: any) => {
-                        setSelectedIngridient({...selectedIngridient, amountOfItems: e.target.value})
+                    <Form.Control value={selectedIngridient.amount} type="text" placeholder="amount" onChange={(e: any) => {
+                        setSelectedIngridient({...selectedIngridient, amount: e.target.value})
                     }}/>
                 </div>}
                 <div className="d-flex justify-content-center align-items-center">
-                    <div className="remove_item_icon_container h-25" onClick={() => removeIngridientField(index)}><img
+                    <div className="remove_item_icon_container" onClick={() => removeIngridientField(index)}><img
                         src={RemoveItem} alt=""/></div>
                 </div>
             </div>
@@ -470,6 +511,6 @@ const NewIngridientSelect = ({
                 {/*    <Form.Control value={ingridientInfo.energyValue.proteines || ''} type="text" readOnly/>*/}
                 {/*</div>*/}
             </div>
-        </div>
+        </div>}
     </div>
 };

@@ -8,8 +8,8 @@ export const ItemType: React.FC<any> = ({itemType}) => {
         itemType = 'none';
     }
 
-    let itemText  = itemType.toUpperCase().slice(0,1);
-    return <div title={itemType} className={'item-type ' + itemType + 'Type'}>
+    let itemText  = itemType.slice(0,1);
+    return <div title={itemType} className={'item-type ' + itemType.toLowerCase() + 'Type'}>
         {itemText}
     </div>
 };

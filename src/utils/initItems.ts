@@ -14,10 +14,10 @@ export const initProductItem: Types.Product = {
         fats: 0,
         carbohydrates: 0
     },
-    isThatPieceProduct: false,
-    amountOfPieces: 0,
-    priceForAllPieces: 0,
-    energyValueForOnePiece: {
+    isThatPieceItem: false,
+    amount: 0,
+    priceForAllItems: 0,
+    energyValueForOneItem: {
         calories: 0,
         proteines: 0,
         fats: 0,
@@ -32,10 +32,17 @@ export const initDishItem: Types.Dish = {
     description: '',
     ingridients: [{}],
     weight: 0,
-    isThatPieceDish: false,
-    amountOfItems: 0,
     price: 0,
     energyValue: {
+        calories: 0,
+        proteines: 0,
+        fats: 0,
+        carbohydrates: 0
+    },
+    isThatPieceItem: false,
+    amount: 0,
+    priceForOneItem: 0,
+    energyValueForOneItem: {
         calories: 0,
         proteines: 0,
         fats: 0,
