@@ -38,14 +38,5 @@ export const initDishItem: Types.Dish = {
         proteines: 0,
         fats: 0,
         carbohydrates: 0
-    },
-    isThatPieceItem: false,
-    amount: 0,
-    priceForOneItem: 0,
-    energyValueForOneItem: {
-        calories: 0,
-        proteines: 0,
-        fats: 0,
-        carbohydrates: 0
     }
 };

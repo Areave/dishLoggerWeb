@@ -5,6 +5,7 @@ import userReducer from './reducers/userReducer'
 import messagesReducer from './reducers/messagesReducer'
 import thunk from "redux-thunk";
 import {applyMiddleware, createStore} from "redux";
+import {buildModeTypes} from "../itemTypes";
 
 const mainReducer = combineReducers({
     user: userReducer,
@@ -17,5 +18,5 @@ export type RootState = ReturnType<typeof mainReducer>
 export default configureStore({
     reducer: mainReducer,
     middleware: [thunk],
-    devTools: process.env.NODE_ENV !== 'production',
+    devTools: process.env.NODE_ENV !== buildModeTypes.PRODUCTION,
 });

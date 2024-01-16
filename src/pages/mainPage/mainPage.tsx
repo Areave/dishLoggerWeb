@@ -110,6 +110,7 @@ const MainPage: React.FC<any> = () => {
     };
 
     const removeMeal = (id: string) => {
+        // @ts-ignore
         dispatch(createSetMealsAction(meals.filter((meal: Types.Meal) => meal._id !== id)));
         dispatch(removeNewItem(apiService.removeMeal, createSetMealsAction, id));
     };

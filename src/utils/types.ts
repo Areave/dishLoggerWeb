@@ -104,6 +104,8 @@ export namespace Types {
         energyValue?: EnergyValue,
         isThatPieceItem: boolean,
         amount?: number,
+        // Только в PRODUCT
+        weightForAllItems?: number
         priceForAllItems?: number,
         energyValueForOneItem?: EnergyValue
     }
@@ -117,11 +119,10 @@ export namespace Types {
         weight?: number,
         price?: number,
         energyValue?: EnergyValue,
-        isThatPieceItem: boolean,
-        amount?: number,
-        // Только в DISH
-        priceForOneItem?: number,
-        energyValueForOneItem?: EnergyValue,
+        // isThatPieceItem: boolean,
+        // amount?: number,
+        // priceForAllItems?: number,
+        // energyValueForOneItem?: EnergyValue,
         // Только в DISH и MEAL
         ingridients: Ingridient[] | [{}]
     }
@@ -136,6 +137,7 @@ export namespace Types {
         weight: number,
         price: number,
         energyValue: EnergyValue,
+        // Только в DISH и MEAL
         ingridients: Ingridient[] | [{}],
         // Только в MEAL
         date: Date
@@ -164,7 +166,10 @@ export namespace Types {
         ingridient: Product | Dish | null,
         type: string,
         weight?: number,
+        weightForTakenAmount?: number
         amount?: number,
+        price: number,
+        energyValue: EnergyValue
     };
 
     // props

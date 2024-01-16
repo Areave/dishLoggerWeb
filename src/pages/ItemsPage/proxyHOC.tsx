@@ -9,7 +9,7 @@ import {
 } from "../../utils/store/actionCreators";
 import apiService from "../../utils/apiService";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
-import mockItems from '../../assets/stub/mockItemsForAdding.json'
+import mockItems from '../../assets/stub/users/login.json'
 import {initDishItem, initProductItem} from "../../utils/initItems";
 
 const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
@@ -109,6 +109,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
                 delete newItem.priceForOneItem;
                 delete newItem.amount;
                 delete newItem.energyValueForOneItem;
+                delete newItem.weightForAllItems;
             }
         }
         setShowModal(false);

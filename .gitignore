@@ -2,3 +2,5 @@
 /.git/
 /public/
 /node_modules/
+src/comps/AddItemModal/addItemModalTemplateOld.tsx
+src/comps/AddItemModal/addItemModalTemplateOld2.tsx

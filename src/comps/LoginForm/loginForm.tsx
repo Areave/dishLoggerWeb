@@ -14,8 +14,6 @@ const LoginFormHOC = (Comp: React.FC<any>, props?: any) => {
 
     const login = (event: any) => {
         event.preventDefault();
-        // console.log(formData);
-        // setIsLoading(true);
         const loginData = {
             login: 'joe',
             password: '1234'

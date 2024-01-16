@@ -89,9 +89,9 @@ module.exports = function (_, webpackEnv) {
     };
 
     const imgRule = {
-        test: /\.(jpg|jpeg|png|gif|svg)$/,
+        test: /\.(jpg|jpeg|png|gif|svg|json)$/,
         // type: 'asset/resource',
-        exclude: [/node_modules/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+        exclude: [/node_modules/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/],
         use: [{
             loader: 'file-loader',
             options: {
@@ -99,6 +99,28 @@ module.exports = function (_, webpackEnv) {
                 name: '[name]_[contenthash:8].[ext]'
             }
         }]
+    };
+    const jsonRule = {
+        test: /\.json/,
+        type: 'asset/resource',
+        exclude: [/node_modules/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/],
+        use: [{
+            loader: 'file-loader',
+            options: {
+                outputPath: 'assets/stub/',
+                name: '[name].[ext]'
+            }
+        }]
+    };
+
+    const getHostName = () => {
+        if (webpackEnv.env.api_mode === 'stub') {
+            return './assets/stub/'
+        } else if (webpackEnv.env.api_mode === 'home_server') {
+            return 'http://127.0.0.1:4000/api/';
+        } else {
+            return 'https://dish-logger.onrender.com/api/';
+        }
     };
 
     return {
@@ -126,13 +148,17 @@ module.exports = function (_, webpackEnv) {
         },
         plugins: [htmlWebpackPlugin, miniCss, copyPlugin, new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: JSON.stringify(webpackEnv.mode),
+                API_MODE: JSON.stringify(webpackEnv.env.api_mode),
+                HOST: JSON.stringify(getHostName()),
+                NODE_ENV: JSON.stringify(webpackEnv.mode || 'development'),
             },
-            // ...
         })],
         devServer: {
             historyApiFallback: true,
-            port: 3000
+            port: 3000,
+            devMiddleware: {
+                writeToDisk: true,
+            }
         },
 
         // watch: true

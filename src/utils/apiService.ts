@@ -15,9 +15,15 @@ axios.defaults.withCredentials = true;
 // });
 
 const errorHandler = (error: any) => {
-    error.message = error.response.data || {
+    let message = 'Error';
+    if (error.message) {
+        message = error.message;
+    } else if (error.response.data && typeof error.response.data === 'string' && error.response.data[0] !== '<') {
+        message = error.response.data;
+    }
+    error.message = {
         type: 'error',
-        text: error.message || 'Error'
+        text: message
     };
     throw error;
 };
