@@ -9,7 +9,8 @@
     "start:stub": "webpack serve --mode development --open --env api_mode=stub",
     "start:home_server": "webpack serve --mode development --open --env api_mode=home_server",
     "start:server": "webpack serve --mode development --open --env api_mode=server",
-    "build": "webpack --mode production --env api_mode=stub"
+    "build": "webpack --mode production --env api_mode=server",
+    "build:stub": "webpack --mode production --env api_mode=stub"
   },
   "keywords": [],
   "author": "",
