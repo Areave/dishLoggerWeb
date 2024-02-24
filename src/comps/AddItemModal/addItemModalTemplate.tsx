@@ -61,12 +61,16 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
         ];
         // @ts-ignore
         const itemData = createEnergyValueFromIngridientsArray(newIngridientsArray);
-        console.log('itemData', itemData);
-        editedItem.price = itemData.price;
-        editedItem.weight = itemData.weight;
-        editedItem.weight = itemData.weight;
-        editedItem.energyValue = itemData.energyValue;
-        setEditedItem({...editedItem, ingridients: newIngridientsArray});
+        // console.log('itemData', itemData);
+        const editedItem2 = {
+            price: 0,
+            weight: 0,
+            energyValue: {}
+        };
+        editedItem2.price = itemData.price;
+        editedItem2.weight = itemData.weight;
+        editedItem2.energyValue = itemData.energyValue;
+        setEditedItem({...editedItem2, ingridients: newIngridientsArray});
 
     };
 
@@ -170,11 +174,37 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     const isDish = itemType === itemTypes.DISH;
     const isMeal = itemType === itemTypes.MEAL;
 
+    const array = [
+        {id: '0',
+        value: {
+            name: '0john'
+        }},
+        {id: '1',
+        value: {
+            name: '1paul'
+        }},
+        {id: '2',
+        value: {
+            name: '2ringo'
+        }},
+    ];
+
+
     return <div style={{display: 'block', position: 'initial'}}>
         <Modal show={showModal} onHide={() => {
             closeModal();
             setEditedItem(null);
         }} className='modal'>
+            {/*<Form.Select defaultValue={JSON.stringify(array[1].value)}*/}
+            {/*             onChange={(e) => {*/}
+            {/*                 console.log('value: ', e.target.value)*/}
+            {/*             }}>*/}
+
+            {/*    {array.map((item: any, index: number) => {*/}
+            {/*        return <option key={index}*/}
+            {/*                       value={JSON.stringify(item.value)}>{item.id}</option>*/}
+            {/*    })}*/}
+            {/*</Form.Select>*/}
             <Modal.Body>
                 {!editedItem && <div>no item</div>}
                 {!editedItem && !isProduct && !items.products.length && <div>no products</div>}
@@ -369,7 +399,10 @@ const DigitalValueItem = ({editedItem, setEditedItem, energyValueFieldName, fiel
                       onChange={onControlChange}/></div>
 };
 
-const NewIngridientSelect = ({index, ingridientObject, setNewIngridient, removeIngridientField}: Types.NewIngridientProps) => {
+const NewIngridientSelect = ({index,
+                             ingridientObject,
+                             setNewIngridient,
+                             removeIngridientField}: Types.NewIngridientProps) => {
 
     const items = useSelector((state: Types.MainState) => {
         return {
@@ -386,23 +419,10 @@ const NewIngridientSelect = ({index, ingridientObject, setNewIngridient, removeI
             return Object.keys(items)[0];
         }
     };
-    // const [ingridientType, setIngridientType] = useState(getInitIngridientType());
     const [ingridientType, setIngridientType] = useState(getInitIngridientType());
     const [localItemsObject, setLocalItemsObject] = useState(null);
     const [currentItemsArray, setCurrentItemsArray] = useState([]);
     const [selectedIngridient, setSelectedIngridient] = useState(null);
-
-
-    // const [ingridientInfo, setIngridientInfo] = useState({
-    //     price: 0,
-    //     energyValue: {
-    //         calories: 0,
-    //         proteines: 0,
-    //         fats: 0,
-    //         carbohydrates: 0
-    //     }
-    // });
-
 
     const putIngridientObjectToStartOfLocalItemsObject = (ingridientObject: any, items: any) => {
 
@@ -426,28 +446,6 @@ const NewIngridientSelect = ({index, ingridientObject, setNewIngridient, removeI
         return {...items, [fieldName]: arrayForAdding};
     };
 
-    // useEffect(() => {
-    //     const newLocalItemsObject = putIngridientObjectToStartOfLocalItemsObject(ingridientObject, items);
-    //     setLocalItemsObject(newLocalItemsObject);
-    // }, [ingridientObject]);
-
-    useEffect(() => {
-        const newLocalItemsObject = putIngridientObjectToStartOfLocalItemsObject(ingridientObject, items);
-        setLocalItemsObject(newLocalItemsObject);
-    }, [ingridientObject]);
-
-    useEffect(() => {
-        // @ts-ignore
-        let currentItemsArray = localItemsObject && localItemsObject[getPluralItemType(ingridientType)];
-
-        if (currentItemsArray) {
-            setCurrentItemsArray(currentItemsArray);
-        } else {
-            setCurrentItemsArray([]);
-        }
-
-    }, [ingridientType, localItemsObject]);
-
     const createIngridientForSaveFromSelected = (givenIngridientObject: any) => {
         let ingridientForSave;
         if (givenIngridientObject?._id === ingridientObject?.ingridient?._id
@@ -469,8 +467,65 @@ const NewIngridientSelect = ({index, ingridientObject, setNewIngridient, removeI
                 delete ingridientForSave.amount;
             }
         }
-        return ingridientForSave;
+        const newIngridientToSave = setValuesToSelectedIngridient(ingridientForSave);
+        return newIngridientToSave;
     };
+
+    const setValuesToSelectedIngridient = (ingridientForSave: any) => {
+        const ing2: any = JSON.parse(JSON.stringify(ingridientForSave));
+        if (ingridientForSave.amount === 0 || ingridientForSave.weight === 0) {
+
+            // selectedIngridient.price = 0;
+            // selectedIngridient.energyValue = {
+            //     calories: 0,
+            //     proteines: 0,
+            //     fats: 0,
+            //     carbohydrates: 0
+            // };
+        } else {
+            if (ingridientForSave.ingridient.isThatPieceItem) {
+                ing2.price = +((ingridientForSave.ingridient.priceForAllItems / ingridientForSave.ingridient.amount)
+                    * ingridientForSave.amount).toFixed(2);
+                // @ts-ignore
+                ing2.weightForTakenAmount = +((ingridientForSave.ingridient.weightForAllItems / ingridientForSave.ingridient.amount)
+                    * ingridientForSave.amount).toFixed(2);
+                ing2.energyValue = {
+                    calories: +(ingridientForSave.ingridient.energyValueForOneItem.calories * ingridientForSave.amount).toFixed(2),
+                    proteines: +(ingridientForSave.ingridient.energyValueForOneItem.proteines * ingridientForSave.amount).toFixed(2),
+                    fats: +(ingridientForSave.ingridient.energyValueForOneItem.fats * ingridientForSave.amount).toFixed(2),
+                    carbohydrates: +(ingridientForSave.ingridient.energyValueForOneItem.carbohydrates * ingridientForSave.amount).toFixed(2),
+                };
+            } else {
+                const coeff = +ingridientForSave.weight / 100;
+                ing2.price = +((ingridientForSave.ingridient.price / ingridientForSave.ingridient.weight)
+                    * ingridientForSave.weight).toFixed(2);
+                ing2.energyValue = {
+                    calories: +(ingridientForSave.ingridient.energyValue.calories * coeff).toFixed(2),
+                    proteines: +(ingridientForSave.ingridient.energyValue.proteines * coeff).toFixed(2),
+                    fats: +(ingridientForSave.ingridient.energyValue.fats * coeff).toFixed(2),
+                    carbohydrates: +(ingridientForSave.ingridient.energyValue.carbohydrates * coeff).toFixed(2)
+                };
+            }
+        }
+        return ing2;
+    };
+
+    useEffect(() => {
+        const newLocalItemsObject = putIngridientObjectToStartOfLocalItemsObject(ingridientObject, items);
+        setLocalItemsObject(newLocalItemsObject);
+    }, [ingridientObject]);
+
+    useEffect(() => {
+        // @ts-ignore
+        let currentItemsArray = localItemsObject && localItemsObject[getPluralItemType(ingridientType)];
+
+        if (currentItemsArray) {
+            setCurrentItemsArray(currentItemsArray);
+        } else {
+            setCurrentItemsArray([]);
+        }
+
+    }, [ingridientType, localItemsObject]);
 
     useEffect(() => {
         if (currentItemsArray.length) {
@@ -479,45 +534,11 @@ const NewIngridientSelect = ({index, ingridientObject, setNewIngridient, removeI
     }, [currentItemsArray]);
 
     useEffect(() => {
-        console.log('selectedIngridient', selectedIngridient);
         if (selectedIngridient && selectedIngridient.ingridient) {
-            if (selectedIngridient.amount === 0 || selectedIngridient.weight === 0) {
-                selectedIngridient.price = 0;
-                selectedIngridient.energyValue = {
-                    calories: 0,
-                    proteines: 0,
-                    fats: 0,
-                    carbohydrates: 0
-                };
-            } else {
-                if (selectedIngridient.ingridient.isThatPieceItem) {
-                    selectedIngridient.price = +((selectedIngridient.ingridient.priceForAllItems / selectedIngridient.ingridient.amount)
-                        * selectedIngridient.amount).toFixed(2);
-                    selectedIngridient.weightForTakenAmount = +((selectedIngridient.ingridient.weightForAllItems / selectedIngridient.ingridient.amount)
-                        * selectedIngridient.amount).toFixed(2);
-                    selectedIngridient.energyValue = {
-                        calories: +(selectedIngridient.ingridient.energyValueForOneItem.calories * selectedIngridient.amount).toFixed(2),
-                        proteines: +(selectedIngridient.ingridient.energyValueForOneItem.proteines * selectedIngridient.amount).toFixed(2),
-                        fats: +(selectedIngridient.ingridient.energyValueForOneItem.fats * selectedIngridient.amount).toFixed(2),
-                        carbohydrates: +(selectedIngridient.ingridient.energyValueForOneItem.carbohydrates * selectedIngridient.amount).toFixed(2),
-                    };
-                } else {
-                    const coeff = +selectedIngridient.weight / 100;
-                    selectedIngridient.price = +((selectedIngridient.ingridient.price / selectedIngridient.ingridient.weight)
-                        * selectedIngridient.weight).toFixed(2);
-                    selectedIngridient.energyValue = {
-                        calories: +(selectedIngridient.ingridient.energyValue.calories * coeff).toFixed(2),
-                        proteines: +(selectedIngridient.ingridient.energyValue.proteines * coeff).toFixed(2),
-                        fats: +(selectedIngridient.ingridient.energyValue.fats * coeff).toFixed(2),
-                        carbohydrates: +(selectedIngridient.ingridient.energyValue.carbohydrates * coeff).toFixed(2)
-                    };
-                }
-            }
-
             setNewIngridient(selectedIngridient, index)
         }
-    }, [selectedIngridient]);
 
+    }, [selectedIngridient]);
 
     if (!selectedIngridient) {
         return <div>no ingridient</div>
@@ -594,7 +615,7 @@ const NewIngridientSelect = ({index, ingridientObject, setNewIngridient, removeI
                 </div>
                 <div className="ingridient_data carbs">
                     <Form.Label>carbs</Form.Label>
-                    <Form.Control value={selectedIngridient.energyValue?.carbohydrates} type="text" readOnly disabled/>
+                    <Form.Control value={selectedIngridient.energyValue?.carbohydrates} type="text"readOnly disabled />
                 </div>
                 <div className="ingridient_data prots">
                     <Form.Label>prots</Form.Label>
