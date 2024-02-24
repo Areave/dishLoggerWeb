@@ -1,5 +1,4 @@
 import React from "react";
-import MainPage from "../pages/mainPage/mainPage";
 import {Routes, Route, Navigate} from 'react-router-dom';
 import AuthPage from "../pages/authPage/authPage";
 import 'materialize-css'
