@@ -39,12 +39,12 @@ const apiGetRequest = (url: string) => {
     return new Promise((res, rej) => {
         // setTimeout(() => {
         console.log('axios', url)
-            return res(axios.get(url).then((data: any) => {
-                    return Promise.resolve(data.data)
-                }).catch(error => {
-                    errorHandler(error);
-                })
-            )
+        return res(axios.get(url).then((data: any) => {
+                return Promise.resolve(data.data)
+            }).catch(error => {
+                errorHandler(error);
+            })
+        )
         // }, 1000);
     });
 };
@@ -57,12 +57,12 @@ const apiPostRequest = (url: string, data: any) => {
 };
 const apiPutRequest = (url: string, data: any) => {
     // return new Promise((res, rej) => {
-        // return res(setTimeout(() => {
-            return axios.put(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
-                errorHandler(error);
-            // }).catch((error)=>{
-            //     errorHandler(error);
-            // })
+    // return res(setTimeout(() => {
+    return axios.put(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
+        errorHandler(error);
+        // }).catch((error)=>{
+        //     errorHandler(error);
+        // })
         // }, 1000));
     })
 };
@@ -102,6 +102,46 @@ const deleteAllUsers = () => {
     return apiDeleteRequest(url);
 };
 
+const getEndpointByType = (itemType: string): string => {
+    switch (itemType) {
+        case itemTypes.PRODUCT:
+            return productsEndpoint;
+            break;
+        case itemTypes.DISH:
+            return dishesEndpoint;
+            break;
+        case itemTypes.MEAL:
+            return mealsEndpoint;
+            break;
+    }
+};
+
+// common
+const addItem = (item: any) => {
+    const endpoint = getEndpointByType(item.type);
+    return apiPostRequest(endpoint + 'add', {item});
+};
+const getItem = (itemId: string) => {
+    const url = productsEndpoint + 'product/' + itemId;
+    return apiGetRequest(url);
+};
+const getAllItems = () => {
+    const url = productsEndpoint + 'get_all';
+    return apiGetRequest(url);
+};
+const updateItem = (item: any) => {
+    const url = productsEndpoint + 'update';
+    return apiPutRequest(url, {item});
+};
+const removeItem = (id: string) => {
+    const url = productsEndpoint + 'remove';
+    return apiDeleteRequest(url, id);
+};
+const removeAllItems = () => {
+    const url = productsEndpoint + 'remove_all';
+    return apiDeleteRequest(url);
+};
+
 // products
 const addProduct = (product: any) => {
     const url = productsEndpoint + 'add';
@@ -129,9 +169,9 @@ const removeAllProducts = () => {
 };
 
 // dishes
-const addDish = (data: any) => {
+const addDish = (dish: any) => {
     const url = dishesEndpoint + 'add';
-    return apiPostRequest(url, data);
+    return apiPostRequest(url, {dish});
 };
 const getDish = (dishId: string) => {
     const url = dishesEndpoint + 'dish/' + dishId;
@@ -200,33 +240,36 @@ const getStatsForOneDay = (data: any) => {
 
 const getApiMethodsObject = (itemType: string) => {
     switch (itemType) {
-        case itemTypes.PRODUCT: return {
-            addItem: addProduct,
-            getItem: getProduct,
-            getAllItems: getAllProducts,
-            updateItem: updateProduct,
-            removeItem: removeProduct,
-            removeAllItems: removeAllProducts,
+        case itemTypes.PRODUCT:
+            return {
+                addItem: addProduct,
+                getItem: getProduct,
+                getAllItems: getAllProducts,
+                updateItem: updateProduct,
+                removeItem: removeProduct,
+                removeAllItems: removeAllProducts,
 
-        };
-        case itemTypes.DISH: return {
-            addItem: addDish,
-            getItem: getDish,
-            getAllItems: getAllDishes,
-            updateItem: updateDish,
-            removeItem: removeDish,
-            removeAllItems: removeAllDishes,
+            };
+        case itemTypes.DISH:
+            return {
+                addItem: addDish,
+                getItem: getDish,
+                getAllItems: getAllDishes,
+                updateItem: updateDish,
+                removeItem: removeDish,
+                removeAllItems: removeAllDishes,
 
-        };
-        case itemTypes.MEAL: return {
-            addItem: addMeal,
-            getItem: getMeal,
-            getAllItems: getAllMeals,
-            updateItem: updateMeal,
-            removeItem: removeMeal,
-            removeAllItems: removeAllMeals,
+            };
+        case itemTypes.MEAL:
+            return {
+                addItem: addMeal,
+                getItem: getMeal,
+                getAllItems: getAllMeals,
+                updateItem: updateMeal,
+                removeItem: removeMeal,
+                removeAllItems: removeAllMeals,
 
-        };
+            };
     }
 };
 
@@ -244,29 +287,13 @@ export default {
     // common methods getter
     getApiMethodsObject,
 
-    // // products
-    // addProduct,
-    // getProduct,
-    // getAllProducts,
-    // updateProduct,
-    // removeProduct,
-    // removeAllProducts,
-    //
-    // // dishes
-    // addDish,
-    // getDish,
-    // getAllDishes,
-    // updateDish,
-    // removeDish,
-    // removeAllDishes,
-    //
-    // meals
-    addMeal,
-    getMeal,
-    getAllMeals,
-    updateMeal,
-    removeMeal,
-    removeAllMeals,
+    // common
+    addItem,
+    getItem,
+    getAllItems,
+    updateItem,
+    removeItem,
+    removeAllItems,
 
     // stats
     getAllStats,
