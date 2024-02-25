@@ -62,7 +62,7 @@ const AddDishOrMealCard: React.FC<Types.AddDishOrMealCardProps> = ({editedItem, 
         newIngridientsArray.forEach((ingridient: Types.Ingridient) => {
             itemData.price += ingridient.price;
             if (ingridient.weight) {
-                const ingridientWeight = ingridient.weight;
+                const ingridientWeight = +ingridient.weight;
                 // @ts-ignore
                 if (ingridient.ingridient.cookingCoefficient) {
                     // @ts-ignore
@@ -70,7 +70,7 @@ const AddDishOrMealCard: React.FC<Types.AddDishOrMealCardProps> = ({editedItem, 
                 }
                 itemData.weight += ingridientWeight;
             } else if (ingridient.amount) {
-                itemData.weight += ingridient.weightForTakenAmount;
+                itemData.weight += +ingridient.weightForTakenAmount;
             }
 
             const {calories, proteines, fats, carbohydrates} = ingridient.energyValue;

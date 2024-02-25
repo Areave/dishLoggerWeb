@@ -132,7 +132,6 @@ export namespace Types {
         _id?: number,
         name: string,
         type: string,
-        cookingCoefficient: number,
         description: string,
         weight: number,
         price: number,
@@ -140,7 +139,7 @@ export namespace Types {
         // Только в DISH и MEAL
         ingridients: Ingridient[] | [{}],
         // Только в MEAL
-        date: Date
+        date?: Date
     }
 
     // common entities type

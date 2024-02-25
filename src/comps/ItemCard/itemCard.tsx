@@ -34,5 +34,6 @@ export const ItemCard: React.FC<any> = ({itemType, item, removeItem, openModalFo
                 return <Ingridient key={index + "" + ingridient.name} ingridient={ingridient}/>
             })}
         </div>}
+        {item.date && <div>{item.date.toString()}</div>}
     </div>
 };

@@ -10,7 +10,7 @@ import {
 import apiService from "../../utils/apiService";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import mockItems from '../../assets/stub/users/login.json'
-import {initDishItem, initProductItem} from "../../utils/initItems";
+import {initDishItem, initMealItem, initProductItem} from "../../utils/initItems";
 
 const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
@@ -78,7 +78,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
                 return initDishItem;
                 break;
             case itemTypes.MEAL:
-                // return initMealItem;
+                return initMealItem;
                 break;
             default: return {};
         }

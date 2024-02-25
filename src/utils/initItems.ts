@@ -40,3 +40,19 @@ export const initDishItem: Types.Dish = {
         carbohydrates: 0
     }
 };
+
+export const initMealItem: Types.Meal = {
+    isThisInitItem: true,
+    name: '',
+    type: 'MEAL',
+    description: '',
+    ingridients: [{}],
+    weight: 0,
+    price: 0,
+    energyValue: {
+        calories: 0,
+        proteines: 0,
+        fats: 0,
+        carbohydrates: 0
+    }
+};

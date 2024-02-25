@@ -13,11 +13,9 @@ const NewIngridient: React.FC<Types.NewIngridientProps> = ({
                                  removeIngridientField
                              }: Types.NewIngridientProps) => {
 
-    // прилетает либо нормальный ingridientObject, либо ingridientObject с null в поле ingridient, либо {}
+    console.log('ingridientObject', ingridientObject);
 
-    if (ingridientObject.type === 'DISH') {
-        console.log('ingridientObject', ingridientObject)
-    }
+    // прилетает либо нормальный ingridientObject, либо ingridientObject с null в поле ingridient, либо {}
 
     const items = useSelector((state: Types.MainState) => {
         return {

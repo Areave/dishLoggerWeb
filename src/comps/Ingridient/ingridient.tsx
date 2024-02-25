@@ -8,8 +8,9 @@ export const Ingridient: React.FC<any> = ({ingridient}) => {
             <ItemType itemType={ingridient.ingridient && ingridient.ingridient.type}/>
             <div title={ingridient.ingridient?.name || 'deleted'} className={"ingridient-name ms-2 " + (ingridient.ingridient ? '' : 'deleted')}>{ingridient.ingridient ? ingridient.ingridient.name : 'Deleted'}</div>
             {ingridient.amountOfItems && <div className="ingridient-info__item ingridient-amount">{ingridient.amountOfItems + 'p'}</div>}
-            {ingridient.weight && <div className="ingridient-info__item ingridient-weight">{ingridient.weight + 'gr'}</div>}
-            {ingridient.weightForTakenAmount && <div className="ingridient-info__item ingridient-weight">{ingridient.weightForTakenAmount + 'gr'}</div>}
+            {!ingridient.amount && ingridient.weight && <div className="ingridient-info__item ingridient-weight">{ingridient.weight + 'gr'}</div>}
+            {ingridient.amount && <div className="ingridient-info__item ingridient-amount">{ingridient.amount + 'ps'}</div>}
+            {/*{ingridient.weightForTakenAmount && <div className="ingridient-info__item ingridient-weight">{ingridient.weightForTakenAmount + 'gr'}</div>}*/}
             <div className="ingridient-info__item ingridient-calories">{ingridient.energyValue.calories + 'cal'}</div>
             <div className="ingridient-info__item ingridient-price">{ingridient.price + 's'}</div>
         </div>

@@ -185,9 +185,9 @@ const removeAllDishes = () => {
 };
 
 // meals
-const addMeal = (data: any) => {
+const addMeal = (meal: any) => {
     const url = mealsEndpoint + 'add';
-    return apiPostRequest(url, data);
+    return apiPostRequest(url, {meal});
 };
 const getMeal = (mealId: string) => {
     const url = mealsEndpoint + 'meal/' + mealId;
@@ -201,9 +201,9 @@ const getAllMeals = () => {
 //     const url = mealsEndpoint + 'get_all';
 //     return apiPostRequest(url);
 // };
-const updateMeal = (data: any) => {
+const updateMeal = (meal: any) => {
     const url = mealsEndpoint + 'update';
-    return apiPutRequest(url, data);
+    return apiPutRequest(url, {meal});
 };
 const removeMeal = (id: string) => {
     const url = mealsEndpoint + 'remove';
