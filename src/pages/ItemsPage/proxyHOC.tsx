@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import ItemsPageTemplate from "./itemsPageTemplate";
 import {useDispatch, useSelector} from "react-redux";
 import {Types} from "../../utils/types";
-import {addNewItem, updateItem, fetchItems, fetchUserStatForToday, removeNewItem} from "../../utils/store/asyncThunks";
+import {addNewItem, updateItem, removeNewItem} from "../../utils/store/asyncThunks";
 import {
     getCreateSetItemActionByType,
     getCreateSetItemsActionByType
@@ -62,7 +62,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         if (typeof searchString === 'undefined' || searchString === '') {
             // @ts-ignore
             setFilteredItems(itemsArray);
-            return
+            return;
         }
         // @ts-ignore
         setFilteredItems(filterItems(searchString));
@@ -113,11 +113,6 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
             }
         }
         setShowModal(false);
-
-        // newItem.name = Math.random() + ' ' + Math.random() + Math.random() + Math.random() + Math.random() + Math.random();
-        // @ts-ignore
-        // dispatch(createSetItemsAction([...itemsArray, newItem]));
-        // dispatch(addNewItem(apiMethodsObject.addItem, createSetItemsAction, {[key]: mockItems[key]}))
         dispatch(addNewItem(apiMethodsObject.addItem, createSetItemsAction, newItem));
     };
 

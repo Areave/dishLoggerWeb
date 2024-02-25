@@ -3,7 +3,6 @@ import './itemsPage.scss';
 import ActionButton from "../../comps/actionButton/actionButton";
 import {Stat} from "../../comps/Stat/stat";
 import {Search} from "../../comps/Search/search";
-import {AddItemModal} from "../../comps/AddItemModal/addItemModal";
 import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import {ItemCard} from "../../comps/ItemCard/itemCard";
 import LoadingPage from "../loadingPage/loadingPage";
@@ -25,7 +24,6 @@ const ItemsPageTemplate: React.FC<any> = ({
                                               removeItem,
                                               isItemsLoading
                                           }) => {
-    // console.log('render page');
     if (isItemsLoading) return <LoadingPage/>;
     return <div className="page items-page">
         <div className="items-page__content">

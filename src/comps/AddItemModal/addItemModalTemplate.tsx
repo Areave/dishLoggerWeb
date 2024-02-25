@@ -4,15 +4,9 @@ import './addItemModal.scss'
 import ActionButton from "../actionButton/actionButton";
 import {useSelector} from "react-redux";
 import {Types} from "../../utils/types";
-import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
-import Dish = Types.Dish;
-import Product = Types.Product;
-import RemoveItem from '../../assets/images/remove_item.png';
-import {initDishItem, initProductItem} from "../../utils/initItems";
-import {ItemType} from "../ItemType/itemType";
-import {Ingridient} from "../Ingridient/ingridient";
+import {itemTypes} from "../../utils/itemTypes";
 import AddProductCard from "../AddProductCard/AddProductCard";
-import NewIngridient from "../NewIngridient/NewIngridient";
+import AddDishOrMealCard from "../AddDishOrMealCard/AddDishOrMealCard";
 
 export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, setEditedItem, editedItem, itemType, addItem, updateExistingItem}) => {
 
@@ -20,6 +14,10 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     const [inValidError, setInValidError] = useState(false);
 
     console.log('editedItem', editedItem);
+
+    const isProduct = itemType === itemTypes.PRODUCT;
+    const isDish = itemType === itemTypes.DISH;
+    const isMeal = itemType === itemTypes.MEAL;
 
     const items = useSelector((state: Types.MainState) => {
         return {
@@ -31,16 +29,6 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
     useEffect(() => {
         setIsExistingItem(!editedItem?.isThisInitItem)
     }, [editedItem]);
-
-    const addIngridientField = () => {
-        setEditedItem({...editedItem, ingridients: [...editedItem.ingridients, {}]})
-    };
-
-    const removeIngridientField = (index: number) => {
-        const newIngridientsArray = [...editedItem.ingridients?.slice(0, index),
-            ...editedItem.ingridients.slice(index + 1)];
-        setEditedItem({...editedItem, ingridients: newIngridientsArray})
-    };
 
     const setValuesToSelectedIngridient = (ingridient: any) => {
         const ingridientForSave: any = JSON.parse(JSON.stringify(ingridient));
@@ -90,16 +78,13 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
             ...editedItem.ingridients.slice(index + 1)
         ];
         const itemData = createEnergyValueFromIngridientsArray(newIngridientsArray);
-        const newEditedItem = {
+        setEditedItem({
             ...editedItem,
-            price: 0,
-            weight: 0,
-            energyValue: {}
-        };
-        newEditedItem.price = itemData.price;
-        newEditedItem.weight = itemData.weight;
-        newEditedItem.energyValue = itemData.energyValue;
-        setEditedItem({...newEditedItem, ingridients: newIngridientsArray});
+            price: itemData.price,
+            weight: itemData.weight,
+            energyValue: itemData.energyValue,
+            ingridients: newIngridientsArray
+        });
     };
 
     const createEnergyValueFromIngridientsArray = (ingridientsArray: Types.Ingridient[]): any => {
@@ -189,9 +174,6 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
         }
     };
 
-    const isProduct = itemType === itemTypes.PRODUCT;
-    const isDish = itemType === itemTypes.DISH;
-    const isMeal = itemType === itemTypes.MEAL;
 
     return <div style={{display: 'block', position: 'initial'}}>
         <Modal show={showModal} onHide={() => {
@@ -210,61 +192,12 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                                       setEditedItem({...editedItem, description: e.target.value})
                                   }}/>
                     <Form.Group>
-                        <div className="d-flex">
-                            {isProduct && <Form.Check type="switch"
-                                                      id="custom-switch"
-                                                      label={editedItem.isThatPieceItem ? ('Piece ' + itemType.toLowerCase()) : ('Weight ' + itemType.toLowerCase())}
-                                                      checked={editedItem.isThatPieceItem}
-                                                      onChange={(e) => {
-                                                          setEditedItem({
-                                                              ...editedItem,
-                                                              isThatPieceItem: e.target.checked
-                                                          })
-                                                      }}/>}
-                            {isDish && <div className="">
-                                <Form.Label>weight</Form.Label>
-                                <Form.Control value={editedItem.weight} type="text" placeholder="weight" onChange={(e: any) => {
-                                    setEditedItem({...editedItem, weight: +e.target.value})
-                                }}/>
-                            </div>}
-                        </div>
-                        {isDish && <div className='commonData d-flex justify-content-between'>
+                        {(isDish || isMeal) && <AddDishOrMealCard setNewIngridient={setNewIngridient}
+                                                                  setEditedItem={setEditedItem}
+                                                                  editedItem={editedItem}/>}
+                        {isProduct && <AddProductCard setEditedItem={setEditedItem}
+                                                      editedItem={editedItem}/>}
 
-                            <div className="common_data">
-                                <Form.Label>price</Form.Label>
-                                <Form.Control value={editedItem.price || '-'} type="text" readOnly disabled/>
-                            </div>
-                            <div className="common_data">
-                                <Form.Label>calories</Form.Label>
-                                <Form.Control value={editedItem.energyValue?.calories || '-'} type="text" readOnly disabled/>
-                            </div>
-                            <div className="common_data">
-                                <Form.Label>fats</Form.Label>
-                                <Form.Control value={editedItem.energyValue?.fats || '-'} type="text" readOnly disabled/>
-                            </div>
-                            <div className="common_data">
-                                <Form.Label>carbs</Form.Label>
-                                <Form.Control value={editedItem.energyValue?.carbohydrates || '-'} type="text" readOnly disabled/>
-                            </div>
-                            <div className="common_data">
-                                <Form.Label>prots</Form.Label>
-                                <Form.Control value={editedItem.energyValue?.proteines || '-'} type="text" readOnly disabled/>
-                            </div>
-
-                        </div>}
-                        {isProduct &&
-                        <AddProductCard setEditedItem={setEditedItem} editedItem={editedItem}/>}
-                        {!isProduct && editedItem.ingridients.map((ingridientObject: any, index: number) => {
-                            return <NewIngridient
-                                key={index + '_' + ingridientObject.name || ingridientObject.type}
-                                index={index}
-                                ingridientObject={ingridientObject}
-                                removeIngridientField={removeIngridientField}
-                                setNewIngridient={setNewIngridient}/>
-                        })}
-                        {!isProduct && <div>
-                            <ActionButton onClick={addIngridientField} label={'add ingridient'}/>
-                        </div>}
                         <ActionButton onClick={(e) => {
                             AddOrUpdateItem(e, editedItem)
                         }} label={isExistingItem ? 'update' : 'add'}/>

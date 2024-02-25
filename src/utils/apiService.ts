@@ -29,23 +29,13 @@ const errorHandler = (error: any) => {
 };
 
 const apiGetRequest = (url: string) => {
-    // const showToast = useError();
-    // return axios.get(url).then((data: any) => Promise.resolve(data.data)).catch(error => {
-    //     return {
-    //         message: 'Database error',
-    //         stack: error.message
-    //     }
-    // });
     return new Promise((res, rej) => {
-        // setTimeout(() => {
-        console.log('axios', url)
         return res(axios.get(url).then((data: any) => {
                 return Promise.resolve(data.data)
             }).catch(error => {
                 errorHandler(error);
             })
         )
-        // }, 1000);
     });
 };
 const apiPostRequest = (url: string, data: any) => {

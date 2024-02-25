@@ -197,6 +197,11 @@ export namespace Types {
         editedItem: any,
         setEditedItem: (item: any) => void,
     }
+    export interface AddDishOrMealCardProps {
+        setNewIngridient: (item: any, index: number) => void,
+        editedItem: any,
+        setEditedItem: (item: any) => void,
+    }
     export interface DigitalValueItemProps {
         editedItem: any,
         setEditedItem: (item: any) => void,
