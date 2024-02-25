@@ -181,9 +181,9 @@ const getAllDishes = () => {
     const url = dishesEndpoint + 'get_all';
     return apiGetRequest(url);
 };
-const updateDish = (data: any) => {
+const updateDish = (dish: any) => {
     const url = dishesEndpoint + 'update';
-    return apiPutRequest(url, data);
+    return apiPutRequest(url, {dish});
 };
 const removeDish = (id: string) => {
     const url = dishesEndpoint + 'remove';
