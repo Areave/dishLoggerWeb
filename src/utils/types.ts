@@ -198,7 +198,6 @@ export namespace Types {
         setEditedItem: (item: any) => void,
     }
     export interface AddDishOrMealCardProps {
-        setNewIngridient: (item: any, index: number) => void,
         editedItem: any,
         setEditedItem: (item: any) => void,
     }
