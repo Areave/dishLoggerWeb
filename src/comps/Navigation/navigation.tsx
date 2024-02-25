@@ -21,9 +21,9 @@ export const Navigation: React.FC<any> = () => {
     });
 
     const links = <>
-        <Link className='navigation_link ps-3' to="/meals">Meals</Link>
-        <Link className='navigation_link ps-3' to="/dishes">Dishes</Link>
         <Link className='navigation_link ps-3' to="/products">Products</Link>
+        <Link className='navigation_link ps-3' to="/dishes">Dishes</Link>
+        <Link className='navigation_link ps-3' to="/meals">Meals</Link>
         <Link className='navigation_link ps-3' to="/stats">Stats</Link>
     </>;
 
