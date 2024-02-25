@@ -185,7 +185,6 @@ export namespace Types {
         addItem: (item: any) => void,
         setEditedItem: (item: any) => void,
         updateExistingItem: (item: any) => void,
-        // editedItem: CommonEntitiesType | Product | null;
         editedItem: any;
     }
     export interface NewIngridientProps {
@@ -193,5 +192,21 @@ export namespace Types {
         ingridientObject: any,
         setNewIngridient: (ingridient: any, index: number) => void,
         removeIngridientField: (args: any) => void,
+    }
+    export interface AddProductCardProps {
+        editedItem: any,
+        setEditedItem: (item: any) => void,
+    }
+    export interface DigitalValueItemProps {
+        editedItem: any,
+        setEditedItem: (item: any) => void,
+        energyValueFieldName?: string,
+        fieldName: string
+    }
+    export interface NewIngridientProps {
+        index: number,
+        ingridientObject: any,
+        setNewIngridient: (item: any, index: number) => void,
+        removeIngridientField: (item: any) => void
     }
 }
