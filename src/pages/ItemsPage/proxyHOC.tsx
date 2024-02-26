@@ -16,10 +16,14 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
     const itemType = props.itemType;
 
-    const [filteredItems, setFilteredItems] = useState();
+    const [filteredItems, setFilteredItems] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [searchString, setSearchString] = useState();
-    const [currentTagsArray, setCurrentTagsArray] = useState([]);
+    const [filterObject, setFilterObject] = useState({
+        searchString: '',
+        searchTags: []
+    });
+    // const [currentTagsArray, setCurrentTagsArray] = useState([]);
+    const [sortMethod, setSortMethod] = useState('');
     const [editedItem, setEditedItem] = useState(null);
 
     const dispatch = useDispatch();
@@ -56,57 +60,51 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         // }
     }, []);
 
-    // useEffect(() => {
-    //     if (pageTags && pageTags.length) {
-    //         setCurrentTagsArray(pageTags)
-    //     }
-    // }, [pageTags]);
+    const isFilterObjectEmpty = (filterObject: Types.FilterObject): boolean => {
+        // TODO: универсализировать?
+        return (!filterObject.searchString && !filterObject.searchTags.length);
+    };
 
-    const filterItemsByTags = (tagsArray: string[]): Types.CommonEntitiesType[] => {
-        const filterFunc = (item: Types.CommonEntitiesType) => {
-            // @ts-ignore
-            if (!item.tags || !item.tags.length) {
-                return false;
-            } else {
+    const getFilteredItemsArray = (itemsArray: Types.CommonEntitiesType[], filterObject: Types.FilterObject): Types.CommonEntitiesType[] => {
+
+        let filteredItemsArray: Types.CommonEntitiesType[] = itemsArray;
+
+        if (filterObject.searchString) {
+            const filterFunc = (item: Types.CommonEntitiesType) => {
+                return item.name.includes(filterObject.searchString)
+                    || item.description?.includes(filterObject.searchString);
+            };
+            filteredItemsArray = filteredItemsArray.filter(filterFunc);
+        }
+        if (filterObject.searchTags.length) {
+            const filterFunc = (item: Types.CommonEntitiesType) => {
                 // @ts-ignore
-                return item.tags.some((itemTag: string) => {
-                    return tagsArray.some((localTag: string) => {
-                        // @ts-ignore
-                        return item.tags.includes(localTag);
-                    })})
-            }
-        };
-        return itemsArray.filter(filterFunc);
+                if (!item.tags || !item.tags.length) {
+                    return false;
+                } else {
+                    // @ts-ignore
+                    return item.tags.some((itemTag: string) => {
+                        return filterObject.searchTags.some((localTag: string) => {
+                            // @ts-ignore
+                            return item.tags.includes(localTag);
+                        })})
+                }
+            };
+            filteredItemsArray = filteredItemsArray.filter(filterFunc);
+        }
+
+        return filteredItemsArray;
     };
 
     useEffect(() => {
-        if (!currentTagsArray.length) {
-            // @ts-ignore
+        if (isFilterObjectEmpty(filterObject)) {
             setFilteredItems(itemsArray);
-            return;
+        } else {
+            const filteredItemsArray = getFilteredItemsArray(itemsArray, filterObject);
+            setFilteredItems(filteredItemsArray);
         }
-        // @ts-ignore
-        setFilteredItems(filterItemsByTags(currentTagsArray));
-    }, [currentTagsArray]);
 
-    const filterItemsBySearchString = (searchString: string): Types.CommonEntitiesType[] => {
-        const filterFunc = (item: Types.CommonEntitiesType) => {
-            return item.name.includes(searchString)
-                || item.description?.includes(searchString);
-        };
-        return itemsArray.filter(filterFunc);
-    };
-
-    useEffect(() => {
-        if (typeof searchString === 'undefined' || searchString === '') {
-            // @ts-ignore
-            setFilteredItems(itemsArray);
-            return;
-        }
-        // @ts-ignore
-        setFilteredItems(filterItemsBySearchString(searchString));
-
-    }, [searchString, itemsArray]);
+    }, [filterObject, itemsArray]);
 
     const getInitItemByType = (itemType: string): Types.CommonEntitiesType | {} => {
         switch (itemType) {
@@ -178,12 +176,11 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         setShowModal,
         items: filteredItems,
         userStat,
-        setSearchString,
         openModalToAddItem,
         removeItem,
         isItemsLoading,
-        setCurrentTagsArray,
-        currentTagsArray,
+        filterObject,
+        setFilterObject,
         pageTags
     };
 

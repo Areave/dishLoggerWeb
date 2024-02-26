@@ -157,6 +157,10 @@ export namespace Types {
         price: number,
         energyValue: EnergyValue
     };
+    export type FilterObject = {
+        searchString: string,
+        searchTags: string[]
+    };
 
     export type EnergyValue = {
         calories: number,

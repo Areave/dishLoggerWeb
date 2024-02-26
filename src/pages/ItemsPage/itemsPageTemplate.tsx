@@ -7,7 +7,7 @@ import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import {ItemCard} from "../../comps/ItemCard/itemCard";
 import LoadingPage from "../loadingPage/loadingPage";
 import {ItemModalTemplate} from "../../comps/AddItemModal/addItemModalTemplate";
-import { Form } from "react-bootstrap";
+import {Form} from "react-bootstrap";
 
 
 const ItemsPageTemplate: React.FC<any> = ({
@@ -20,12 +20,11 @@ const ItemsPageTemplate: React.FC<any> = ({
                                               setShowModal,
                                               items,
                                               userStat,
-                                              setSearchString,
                                               openModalToAddItem,
                                               removeItem,
                                               isItemsLoading,
-                                              currentTagsArray,
-                                              setCurrentTagsArray,
+                                              filterObject,
+                                              setFilterObject,
                                               pageTags
                                           }) => {
     if (isItemsLoading) return <LoadingPage/>;
@@ -39,16 +38,20 @@ const ItemsPageTemplate: React.FC<any> = ({
                                }}/>
             {itemType === itemTypes.MEAL && <Stat statArray={userStat.statArray}/>}
 
-            <Search setSearchString={setSearchString}/>
+            <Search setSearchString={(searchString: string) => {
+                setFilterObject({...filterObject, searchString})
+            }}/>
             {pageTags && pageTags.length > 0 && pageTags.map((pageTag: string) => {
                 return <Form.Check
                     onChange={(e) => {
                         if (e.target.checked) {
-                            setCurrentTagsArray([e.target.id, ...currentTagsArray])
+                            setFilterObject({...filterObject, searchTags: [e.target.id, ...filterObject.searchTags]});
                         } else {
-                            const index = currentTagsArray.findIndex((tag: string) => tag === e.target.id);
-                            setCurrentTagsArray([...currentTagsArray.slice(0, index),
-                                ...currentTagsArray.slice(index + 1)])
+                            const index = filterObject.searchTags.findIndex((tag: string) => tag === e.target.id);
+                            setFilterObject({
+                                ...filterObject, searchTags: [...filterObject.searchTags.slice(0, index),
+                                    ...filterObject.searchTags.slice(index + 1)]
+                            });
                         }
                     }}
                     id={pageTag}
