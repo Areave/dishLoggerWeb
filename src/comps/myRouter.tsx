@@ -31,7 +31,7 @@ export const MyRouter = ({isAuthorized}: any) => {
         <Routes>
             {isAuthorized ? (
                 <>
-                    <Route path='/' element={<DishesPage/>}/>
+                    <Route path='/' element={<ProductsPage/>}/>
                     <Route path='/meals' element={<MealsPage/>}/>
                     <Route path='/dishes' element={<DishesPage/>}/>
                     <Route path='/products' element={<ProductsPage/>}/>

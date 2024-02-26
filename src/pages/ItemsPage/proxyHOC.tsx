@@ -22,8 +22,6 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         searchString: '',
         searchTags: []
     });
-    // const [currentTagsArray, setCurrentTagsArray] = useState([]);
-    const [sortMethod, setSortMethod] = useState('');
     const [editedItem, setEditedItem] = useState(null);
 
     const dispatch = useDispatch();
@@ -45,20 +43,18 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         return state.items.isItemsLoading;
     });
 
-    const createSetItemsAction = getCreateSetItemsActionByType(itemType);
-    const createSetItemAction = getCreateSetItemActionByType(itemType);
-    const apiMethodsObject = apiService.getApiMethodsObject(itemType);
-
     useEffect(() => {
-        // console.log('itemsArray',itemsArray);
-        // if (!itemsArray) {
-            // dispatch(fetchItems(itemType, createSetItemsAction));
-        // } else {
-            if (!userStat.statArray.length) {
-                // dispatch(fetchUserStatForToday());
-            }
-        // }
-    }, []);
+        if (isFilterObjectEmpty(filterObject)) {
+            setFilteredItems(itemsArray);
+        } else {
+            const filteredItemsArray = getFilteredItemsArray(itemsArray, filterObject);
+            setFilteredItems(filteredItemsArray);
+        }
+
+    }, [filterObject, itemsArray]);
+
+    const createSetItemsAction = getCreateSetItemsActionByType(itemType);
+    const apiMethodsObject = apiService.getApiMethodsObject(itemType);
 
     const isFilterObjectEmpty = (filterObject: Types.FilterObject): boolean => {
         // TODO: универсализировать?
@@ -71,11 +67,12 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
         if (filterObject.searchString) {
             const filterFunc = (item: Types.CommonEntitiesType) => {
-                return item.name.includes(filterObject.searchString)
-                    || item.description?.includes(filterObject.searchString);
+                return item.name.toLowerCase().includes(filterObject.searchString.toLowerCase())
+                    || item.description.toLowerCase().includes(filterObject.searchString.toLowerCase());
             };
             filteredItemsArray = filteredItemsArray.filter(filterFunc);
         }
+
         if (filterObject.searchTags.length) {
             const filterFunc = (item: Types.CommonEntitiesType) => {
                 // @ts-ignore
@@ -95,16 +92,6 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
         return filteredItemsArray;
     };
-
-    useEffect(() => {
-        if (isFilterObjectEmpty(filterObject)) {
-            setFilteredItems(itemsArray);
-        } else {
-            const filteredItemsArray = getFilteredItemsArray(itemsArray, filterObject);
-            setFilteredItems(filteredItemsArray);
-        }
-
-    }, [filterObject, itemsArray]);
 
     const getInitItemByType = (itemType: string): Types.CommonEntitiesType | {} => {
         switch (itemType) {
@@ -131,11 +118,8 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         setShowModal(true);
     };
 
-
     const addItem = (newItem: any) => {
-
         newItem.type = itemType;
-
         if (itemType === itemTypes.PRODUCT) {
             delete newItem.isThisInitItem;
             if (newItem.isThatPieceItem) {
