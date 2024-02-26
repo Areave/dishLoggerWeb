@@ -8,9 +8,10 @@ import {
     getCreateSetItemsActionByType
 } from "../../utils/store/actionCreators";
 import apiService from "../../utils/apiService";
-import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
+import {getPluralItemType, itemTypes, filterFunctionsEnum} from "../../utils/itemTypes";
 import mockItems from '../../assets/stub/users/login.json'
 import {initDishItem, initMealItem, initProductItem} from "../../utils/initItems";
+import {types} from "util";
 
 const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
@@ -20,7 +21,8 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
     const [showModal, setShowModal] = useState(false);
     const [filterObject, setFilterObject] = useState({
         searchString: '',
-        searchTags: []
+        searchTags: [],
+        sorted: ''
     });
     const [editedItem, setEditedItem] = useState(null);
 
@@ -42,6 +44,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
     const isItemsLoading: boolean = useSelector((state: { items: any }) => {
         return state.items.isItemsLoading;
     });
+    const filterOptions = Object.values(filterFunctionsEnum);
 
     useEffect(() => {
         if (isFilterObjectEmpty(filterObject)) {
@@ -58,7 +61,45 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
     const isFilterObjectEmpty = (filterObject: Types.FilterObject): boolean => {
         // TODO: универсализировать?
-        return (!filterObject.searchString && !filterObject.searchTags.length);
+        return (!filterObject.searchString
+            && !filterObject.searchTags.length
+            && !filterObject.sorted);
+    };
+
+    const getSortFunctionByType = (type: string): any => {
+
+        const sortByName = (itemA: Types.CommonEntitiesType, itemB: Types.CommonEntitiesType) => {
+            const isGreater = itemA.name.toLowerCase() > itemB.name.toLowerCase()
+            if (isGreater) {return 1} else {return -1}
+        };
+        const sortByNameReverse = (itemA: Types.CommonEntitiesType, itemB: Types.CommonEntitiesType) => {
+            const isGreater = itemA.name.toLowerCase() < itemB.name.toLowerCase()
+            if (isGreater) {return 1} else {return -1}
+        };
+
+        const sortByPrice = (itemA: Types.CommonEntitiesType, itemB: Types.CommonEntitiesType) => {
+            return itemA.price - itemB.price;
+        };
+        const sortByPriceReverse = (itemA: Types.CommonEntitiesType, itemB: Types.CommonEntitiesType) => {
+            return itemB.price - itemA.price;
+        };
+
+        switch (type) {
+            case filterFunctionsEnum.BYNAME:
+                return sortByName;
+                break;
+            case filterFunctionsEnum.BYNAMEREVERSE:
+                return sortByNameReverse;
+                break;
+            case filterFunctionsEnum.BYPRICE:
+                return sortByPrice;
+                break;
+            case filterFunctionsEnum.BYPRICEREVERSE:
+                return sortByPriceReverse;
+                break;
+            default:
+                return sortByName;
+        }
     };
 
     const getFilteredItemsArray = (itemsArray: Types.CommonEntitiesType[], filterObject: Types.FilterObject): Types.CommonEntitiesType[] => {
@@ -84,12 +125,17 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
                         return filterObject.searchTags.some((localTag: string) => {
                             // @ts-ignore
                             return item.tags.includes(localTag);
-                        })})
+                        })
+                    })
                 }
             };
             filteredItemsArray = filteredItemsArray.filter(filterFunc);
         }
 
+        if (filterObject.sorted) {
+            const sortFunc = getSortFunctionByType(filterObject.sorted);
+            filteredItemsArray = [...filteredItemsArray].sort(sortFunc);
+        }
         return filteredItemsArray;
     };
 
@@ -104,7 +150,8 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
             case itemTypes.MEAL:
                 return initMealItem;
                 break;
-            default: return {};
+            default:
+                return {};
         }
     };
 
@@ -159,14 +206,15 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
         updateExistingItem,
         showModal,
         setShowModal,
-        items: filteredItems,
+        filteredItems,
         userStat,
         openModalToAddItem,
         removeItem,
         isItemsLoading,
         filterObject,
         setFilterObject,
-        pageTags
+        pageTags,
+        filterOptions
     };
 
     return <Comp {...wrappedProps}/>

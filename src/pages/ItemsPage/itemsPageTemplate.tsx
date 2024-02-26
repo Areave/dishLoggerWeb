@@ -18,14 +18,15 @@ const ItemsPageTemplate: React.FC<any> = ({
                                               updateExistingItem,
                                               showModal,
                                               setShowModal,
-                                              items,
+                                              filteredItems,
                                               userStat,
                                               openModalToAddItem,
                                               removeItem,
                                               isItemsLoading,
                                               filterObject,
                                               setFilterObject,
-                                              pageTags
+                                              pageTags,
+                                              filterOptions
                                           }) => {
     if (isItemsLoading) return <LoadingPage/>;
     return <div className="page items-page">
@@ -41,6 +42,16 @@ const ItemsPageTemplate: React.FC<any> = ({
             <Search setSearchString={(searchString: string) => {
                 setFilterObject({...filterObject, searchString})
             }}/>
+            {filterOptions && <Form.Select onChange={
+                (e) => {
+                    setFilterObject({...filterObject, sorted: e.target.value});
+                }
+            }>
+                <option key={0} value={'choose sort'}>{'choose sort'}</option>
+                {filterOptions.map((filterOption: string, index: number) => {
+                    return <option key={index} value={filterOption}>{filterOption}</option>
+                })}
+            </Form.Select>}
             {pageTags && pageTags.length > 0 && pageTags.map((pageTag: string, index: number) => {
                 return <Form.Check
                     key={index}
@@ -61,7 +72,7 @@ const ItemsPageTemplate: React.FC<any> = ({
             })}
             <ActionButton className='add-item__button my-3' onClick={openModalToAddItem} label={'add ' + itemType.toLowerCase()}/>
             <div className='mb-5'>
-                {items?.length ? items.map((item: any, index: number) =>
+                {filteredItems?.length ? filteredItems.map((item: any, index: number) =>
                         <ItemCard key={index}
                                   itemType={itemType}
                                   item={item}

@@ -15,6 +15,13 @@ export const getPluralItemType = (itemType: string): string => {
     }
 };
 
+export enum filterFunctionsEnum {
+    BYNAME = 'sort by name',
+    BYNAMEREVERSE = 'sort by name reverse',
+    BYPRICE = 'sort by price',
+    BYPRICEREVERSE = 'sort by price reverse',
+}
+
 export const sortMethodsList = [
   'dateFromEarlyToLate',
   'dateFromLateToEarly',

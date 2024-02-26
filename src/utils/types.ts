@@ -159,7 +159,8 @@ export namespace Types {
     };
     export type FilterObject = {
         searchString: string,
-        searchTags: string[]
+        searchTags: string[],
+        sorted: string
     };
 
     export type EnergyValue = {
