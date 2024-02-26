@@ -107,8 +107,9 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                                       setEditedItem({...editedItem, description: e.target.value})
                                   }}/>
                     <Form.Group>
-                        {pageTags && pageTags.length > 0 && pageTags.map((pageTag: string) => {
+                        {pageTags && pageTags.length > 0 && pageTags.map((pageTag: string, index: number) => {
                             return <Form.Check
+                                key={index}
                                 onChange={(e) => {
                                     if (e.target.checked) {
                                         setEditedItem({...editedItem, tags: [...editedItem.tags, e.target.id]})

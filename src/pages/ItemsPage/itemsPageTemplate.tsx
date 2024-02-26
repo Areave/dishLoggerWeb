@@ -41,8 +41,9 @@ const ItemsPageTemplate: React.FC<any> = ({
             <Search setSearchString={(searchString: string) => {
                 setFilterObject({...filterObject, searchString})
             }}/>
-            {pageTags && pageTags.length > 0 && pageTags.map((pageTag: string) => {
+            {pageTags && pageTags.length > 0 && pageTags.map((pageTag: string, index: number) => {
                 return <Form.Check
+                    key={index}
                     onChange={(e) => {
                         if (e.target.checked) {
                             setFilterObject({...filterObject, searchTags: [e.target.id, ...filterObject.searchTags]});

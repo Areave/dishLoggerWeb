@@ -23,8 +23,8 @@ export const ItemCard: React.FC<any> = ({itemType, item, removeItem, openModalFo
         <div title={item.description} className="item__description">{item.description}</div>
         <div className="">
             <span className="">Тэги: </span>
-            {item.tags && item.tags.length > 0 && item.tags.map((itemTag: string) => {
-                return <span>{itemTag + ' '}</span>
+            {item.tags && item.tags.length > 0 && item.tags.map((itemTag: string, index: number) => {
+                return <span key={index} >{itemTag + ' '}</span>
             })}
             {(!item.tags || item.tags.length === 0) && <span>нет</span>}
         </div>
