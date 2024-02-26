@@ -7,20 +7,15 @@ import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import RemoveItem from "../../assets/images/remove_item.png";
 
 const NewIngridient: React.FC<Types.NewIngridientProps> = ({
-                                 index,
-                                 ingridientObject,
-                                 setNewIngridient,
-                                 removeIngridientField
-                             }: Types.NewIngridientProps) => {
+                                                               index,
+                                                               items,
+                                                               ingridientObject,
+                                                               setNewIngridient,
+                                                               removeIngridientField
+                                                           }: Types.NewIngridientProps) => {
 
     // прилетает либо нормальный ingridientObject, либо ingridientObject с null в поле ingridient, либо {}
 
-    const items = useSelector((state: Types.MainState) => {
-        return {
-            dishes: state.items.dishes,
-            products: state.items.products
-        };
-    });
     const getInitIngridientType = (): string => {
         if (ingridientObject?.type) {
             return ingridientObject.type;
@@ -107,8 +102,8 @@ const NewIngridient: React.FC<Types.NewIngridientProps> = ({
                     <Form.Select defaultValue={ingridientType} onChange={(event) => {
                         setIngridientType(event.target.value)
                     }}>
-                        <option value={itemTypes.PRODUCT}>{itemTypes.PRODUCT.slice(0, 1)}</option>
-                        {items.dishes && <option value={itemTypes.DISH}>{itemTypes.DISH.slice(0, 1)}</option>}
+                        {items.products.length && <option value={itemTypes.PRODUCT}>{itemTypes.PRODUCT.slice(0, 1)}</option>}
+                        {items.dishes.length && <option value={itemTypes.DISH}>{itemTypes.DISH.slice(0, 1)}</option>}
                     </Form.Select>
                 </div>
                 <div className="">

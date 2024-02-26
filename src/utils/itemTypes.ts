@@ -14,3 +14,14 @@ export const getPluralItemType = (itemType: string): string => {
         case itemTypes.PRODUCT: return 'products';
     }
 };
+
+export const sortMethodsList = [
+  'dateFromEarlyToLate',
+  'dateFromLateToEarly',
+  'alphabet',
+  'reverseAlphabet',
+  'caloriesFromLowToHigh',
+  'caloriesFromHighToLow',
+  'priceFromExpensiveToCheap',
+  'priceFromCheapToExpensive',
+];

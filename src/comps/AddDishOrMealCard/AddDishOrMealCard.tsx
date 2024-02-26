@@ -4,8 +4,16 @@ import {Types} from '../../utils/types'
 import {Form} from "react-bootstrap";
 import NewIngridient from "../NewIngridient/NewIngridient";
 import ActionButton from "../actionButton/actionButton";
+import {useSelector} from "react-redux";
 
 const AddDishOrMealCard: React.FC<Types.AddDishOrMealCardProps> = ({editedItem, setEditedItem}: any) => {
+
+    const items = useSelector((state: Types.MainState) => {
+        return {
+            dishes: state.items.dishes,
+            products: state.items.products
+        };
+    });
 
     const getIngridientWithValues = (ingridient: any) => {
         const ingridientForSave: any = JSON.parse(JSON.stringify(ingridient));
@@ -135,6 +143,7 @@ const AddDishOrMealCard: React.FC<Types.AddDishOrMealCardProps> = ({editedItem, 
             return <NewIngridient
                 key={index + '_' + ingridientObject.name || ingridientObject.type}
                 index={index}
+                items={items}
                 ingridientObject={ingridientObject}
                 removeIngridientField={removeIngridientField}
                 setNewIngridient={setNewIngridient}/>

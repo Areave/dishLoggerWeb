@@ -131,6 +131,7 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
                 delete newItem.amount;
                 delete newItem.energyValueForOneItem;
                 delete newItem.weightForAllItems;
+                delete newItem.priceForAllItems;
             }
         }
         setShowModal(false);
