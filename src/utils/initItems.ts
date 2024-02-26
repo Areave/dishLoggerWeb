@@ -17,6 +17,7 @@ export const initProductItem: Types.Product = {
     isThatPieceItem: false,
     amount: 0,
     priceForAllItems: 0,
+    tags: [],
     energyValueForOneItem: {
         calories: 0,
         proteines: 0,
@@ -33,6 +34,7 @@ export const initDishItem: Types.Dish = {
     ingridients: [{}],
     weight: 0,
     price: 0,
+    tags: [],
     energyValue: {
         calories: 0,
         proteines: 0,

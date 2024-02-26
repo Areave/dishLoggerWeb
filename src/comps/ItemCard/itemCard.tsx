@@ -21,6 +21,13 @@ export const ItemCard: React.FC<any> = ({itemType, item, removeItem, openModalFo
             </div>
         </div>
         <div title={item.description} className="item__description">{item.description}</div>
+        <div className="">
+            <span className="">Тэги: </span>
+            {item.tags && item.tags.length > 0 && item.tags.map((itemTag: string) => {
+                return <span>{itemTag + ' '}</span>
+            })}
+            {(!item.tags || item.tags.length === 0) && <span>нет</span>}
+        </div>
         <AmountInfo price={item.price || (item.priceForAllItems / item.amount)}
                     calories={item.energyValue?.calories || item.energyValueForOneItem?.calories}
                     weight={item.weight}
@@ -34,6 +41,6 @@ export const ItemCard: React.FC<any> = ({itemType, item, removeItem, openModalFo
                 return <Ingridient key={index + "" + ingridient.name} ingridient={ingridient}/>
             })}
         </div>}
-        {item.date && <div>{item.date.toString()}</div>}
+        {item.createdAt && <div>{item.createdAt.toString()}</div>}
     </div>
 };

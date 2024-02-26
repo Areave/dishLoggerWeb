@@ -4,7 +4,7 @@ import './addItemModal.scss'
 import ActionButton from "../actionButton/actionButton";
 import {useSelector} from "react-redux";
 import {Types} from "../../utils/types";
-import {itemTypes} from "../../utils/itemTypes";
+import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import AddProductCard from "../AddProductCard/AddProductCard";
 import AddDishOrMealCard from "../AddDishOrMealCard/AddDishOrMealCard";
 
@@ -23,6 +23,12 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
             dishes: state.items.dishes,
             products: state.items.products
         };
+    });
+
+    const pageTags: any = useSelector((state: Types.MainState) => {
+        const fieldName = getPluralItemType(itemType);
+        // @ts-ignore
+        return state.user.currentUser.intakeData.tags[fieldName];
     });
 
     const checkIsItemValid = (item: any): boolean => {
@@ -101,6 +107,23 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal,
                                       setEditedItem({...editedItem, description: e.target.value})
                                   }}/>
                     <Form.Group>
+                        {pageTags && pageTags.length > 0 && pageTags.map((pageTag: string) => {
+                            return <Form.Check
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        setEditedItem({...editedItem, tags: [...editedItem.tags, e.target.id]})
+                                    } else {
+                                        const index = editedItem.tags.findIndex((tag: string) => tag === e.target.id);
+                                        setEditedItem({...editedItem, tags: [...editedItem.tags.slice(0, index),
+                                                ...editedItem.tags.slice(index + 1)]});
+                                    }
+                                }}
+                                inline
+                                checked={editedItem.tags.includes(pageTag)}
+                                id={pageTag}
+                                label={pageTag}
+                            />
+                        })}
                         {(isDish || isMeal) && <AddDishOrMealCard setEditedItem={setEditedItem} editedItem={editedItem}/>}
                         {isProduct && <AddProductCard setEditedItem={setEditedItem} editedItem={editedItem}/>}
                         <ActionButton onClick={(e) => {

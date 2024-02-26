@@ -13,8 +13,6 @@ const NewIngridient: React.FC<Types.NewIngridientProps> = ({
                                  removeIngridientField
                              }: Types.NewIngridientProps) => {
 
-    console.log('ingridientObject', ingridientObject);
-
     // прилетает либо нормальный ingridientObject, либо ingridientObject с null в поле ingridient, либо {}
 
     const items = useSelector((state: Types.MainState) => {

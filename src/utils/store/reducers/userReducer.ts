@@ -9,6 +9,10 @@ const initialUserState: Types.UserState = {
         login: '',
         role: '',
         intakeData: {
+            tags: {
+                products: [],
+                dishes: []
+            },
             energyValue: {
                 calories: 0,
                 proteines: 0,

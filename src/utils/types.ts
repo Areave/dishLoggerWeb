@@ -40,7 +40,11 @@ export namespace Types {
         name: string,
         login: string,
         intakeData?: {
-            energyValue: {
+            tags?: {
+                products: string[],
+                dishes: string[],
+            }
+            energyValue?: {
                 calories: number,
                 proteines: number,
                 fats: number,
@@ -107,7 +111,8 @@ export namespace Types {
         // Только в PRODUCT
         weightForAllItems?: number
         priceForAllItems?: number,
-        energyValueForOneItem?: EnergyValue
+        energyValueForOneItem?: EnergyValue,
+        tags?: string[]
     }
 
     export interface Dish {
@@ -124,7 +129,8 @@ export namespace Types {
         // priceForAllItems?: number,
         // energyValueForOneItem?: EnergyValue,
         // Только в DISH и MEAL
-        ingridients: Ingridient[] | [{}]
+        ingridients: Ingridient[] | [{}],
+        tags?: string[]
     }
 
     export interface Meal {
@@ -137,9 +143,7 @@ export namespace Types {
         price: number,
         energyValue: EnergyValue,
         // Только в DISH и MEAL
-        ingridients: Ingridient[] | [{}],
-        // Только в MEAL
-        date?: Date
+        ingridients: Ingridient[] | [{}]
     }
 
     // common entities type
