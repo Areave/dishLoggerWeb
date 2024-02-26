@@ -13,6 +13,7 @@ import {Types} from "../utils/types";
 import LoadingPage from "../pages/loadingPage/loadingPage";
 import {setIsUserLoading} from "../utils/store/actionCreators";
 import {ProductsPage} from "../pages/ItemsPage/productsPage";
+import UserPage from "../pages/UserPage/userPage";
 
 
 export const MyRouter = ({isAuthorized}: any) => {
@@ -32,6 +33,7 @@ export const MyRouter = ({isAuthorized}: any) => {
             {isAuthorized ? (
                 <>
                     <Route path='/' element={<ProductsPage/>}/>
+                    <Route path='/user' element={<UserPage/>}/>
                     <Route path='/meals' element={<MealsPage/>}/>
                     <Route path='/dishes' element={<DishesPage/>}/>
                     <Route path='/products' element={<ProductsPage/>}/>

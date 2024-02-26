@@ -1,0 +1,8 @@
+@use '../../style/style' as styles;
+
+.user-page {
+  @include styles.flexColumnCenterElements;
+  & .intake_data {
+
+  }
+}
