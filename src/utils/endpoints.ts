@@ -4,3 +4,4 @@ export const productsEndpoint = hostname + 'products/';
 export const dishesEndpoint = hostname + 'dishes/';
 export const mealsEndpoint = hostname + 'meals/';
 export const statsEndpoint = hostname + 'stats/';
+export const currencyEndpoint = hostname + 'currency/';

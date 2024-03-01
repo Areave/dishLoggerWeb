@@ -3,6 +3,6 @@
 .user-page {
   @include styles.flexColumnCenterElements;
   & .intake_data {
-
+    width: 100%;
   }
 }

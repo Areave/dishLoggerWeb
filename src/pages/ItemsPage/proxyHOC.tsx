@@ -104,6 +104,8 @@ const ItemsPageHOC = (Comp: React.FC<any>, props: any) => {
 
     const getFilteredItemsArray = (itemsArray: Types.CommonEntitiesType[], filterObject: Types.FilterObject): Types.CommonEntitiesType[] => {
 
+        if (itemsArray.length === 0) return itemsArray;
+
         let filteredItemsArray: Types.CommonEntitiesType[] = itemsArray;
 
         if (filterObject.searchString) {

@@ -13,6 +13,6 @@ const ActionButton: React.FC<Types.ActionButtonProps> = ({className, label, onCl
             {label}
         </button>
     </div>
-}
+};
 
 export default ActionButton;

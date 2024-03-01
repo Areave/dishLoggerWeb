@@ -1,10 +1,18 @@
 import {Types} from '../../types'
 import {createReducer} from "@reduxjs/toolkit";
-import {setIsAuthorizedAction, setIsUserLoading, setUserAction, setUserStatAction, setIsUserStatLoading} from "../actionCreators";
+import {
+    setIsAuthorizedAction,
+    setIsUserLoading,
+    setUserAction,
+    setUserStatAction,
+    setIsUserStatLoading,
+    setCurrentCurrencyRate
+} from "../actionCreators";
 
 const initialUserState: Types.UserState = {
     isAuthorized: false,
     currentUser: {
+        _id: '',
         name: '',
         login: '',
         role: '',
@@ -19,6 +27,11 @@ const initialUserState: Types.UserState = {
                 fats: 0,
                 carbohydrates: 0
             },
+            currency: {
+                symbol: '',
+                name: '',
+                short_code: '',
+            }
         },
         products: [],
         dishes: [],
@@ -38,7 +51,8 @@ const initialUserState: Types.UserState = {
         statArray: []
     },
     isUserLoading: false,
-    isUserStatLoading: false
+    isUserStatLoading: false,
+    currentCurrencyRate: 0
 };
 
 export default createReducer(initialUserState, (builder) => {
@@ -56,5 +70,8 @@ export default createReducer(initialUserState, (builder) => {
     });
     builder.addCase(setIsUserStatLoading, (state, action) => {
         state.isUserStatLoading = action.payload
+    });
+    builder.addCase(setCurrentCurrencyRate, (state, action) => {
+        state.currentCurrencyRate = action.payload
     });
 });

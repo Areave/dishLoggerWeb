@@ -9,7 +9,7 @@ export namespace Types {
     export interface MainState {
         readonly user: UserState;
         readonly items: ItemsState;
-        readonly messages: MessagesState;
+        readonly messages: MessagesState
     }
 
     export interface UserState {
@@ -17,7 +17,8 @@ export namespace Types {
         readonly currentUser?: User,
         readonly userStat?: UserStat,
         readonly isUserLoading: boolean,
-        readonly isUserStatLoading: boolean
+        readonly isUserStatLoading: boolean,
+        readonly currentCurrencyRate: number,
     }
 
     export interface ItemsState {
@@ -37,6 +38,7 @@ export namespace Types {
 
     // entities
     export interface User {
+        _id: string;
         name: string,
         login: string,
         intakeData?: {
@@ -50,6 +52,11 @@ export namespace Types {
                 fats: number,
                 carbohydrates: number
             },
+            currency: {
+                symbol: string,
+                name: string,
+                short_code: string,
+            }
         },
         role: string,
         products?: Product[],

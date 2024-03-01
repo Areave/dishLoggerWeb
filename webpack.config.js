@@ -151,6 +151,7 @@ module.exports = function (_, webpackEnv) {
                 API_MODE: JSON.stringify(webpackEnv.env.api_mode),
                 HOST: JSON.stringify(getHostName()),
                 NODE_ENV: JSON.stringify(webpackEnv.mode || 'development'),
+                LOCALSTORAGE_RATE_LABEL: JSON.stringify('dishLoggerCurrentCurrencyRate'),
             },
         })],
         devServer: {

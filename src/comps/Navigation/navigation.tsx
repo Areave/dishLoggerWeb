@@ -40,7 +40,7 @@ export const Navigation: React.FC<any> = () => {
             {isAuthorized ? (
                 <div className='navigation d-flex flex-column align-items-end'>
                     <div className="navigation_greeting pb-1 d-flex">welcome,
-                        <div className='navigation_greeting_link ps-3' onClick={() => navigate("/user")}>{user.name || ' stay fit'}</div>
+                        <div className='navigation_greeting_link ps-3' onClick={() => navigate("/user-info")}>{user.name || ' stay fit'}</div>
                         <div className="navigation_greeting_img_container" onClick={logout}>
                             <img src={Logout}/>
                         </div>

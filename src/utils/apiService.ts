@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {dishesEndpoint, mealsEndpoint, productsEndpoint, statsEndpoint, usersEndpoint} from "./endpoints";
+import {dishesEndpoint, mealsEndpoint, productsEndpoint, statsEndpoint, usersEndpoint, currencyEndpoint} from "./endpoints";
 import {itemTypes} from "./itemTypes";
 
 axios.defaults.withCredentials = true;
@@ -62,6 +62,41 @@ const apiDeleteRequest = (url: string, id: string = '') => {
     })
 };
 
+// currency
+const getCurrencyRate = async (from: string): Promise<any> => {
+    const url = `get_exchange_rate?from=${from}&to=USD`;
+    return apiGetRequest(currencyEndpoint + url);
+    const res = {
+        "timestamp": 1709100991,
+        "date": "2024-02-28",
+        "from": "USD",
+        "to": "UZS",
+        "amount": 1,
+        "value": 12522.52227663
+    };
+};
+const getCurrenciesList = async (): Promise<any> => {
+    const url = 'get_currencies_list';
+    return apiGetRequest(currencyEndpoint + url);
+
+    const res = [{
+        code: "840",
+        decimal_mark: ".",
+        id: 147,
+        name: "US Dollar",
+        precision: 2,
+        short_code: "USD",
+        subunit: 100,
+        symbol: "$",
+        symbol_first: true,
+        thousands_separator: ",",
+    }]
+};
+const getCurrenciesListCurrent = async (): Promise<any> => {
+    const url = 'get_currencies_list_current';
+    return apiGetRequest(currencyEndpoint + url);
+};
+
 // users
 const getUserData = () => {
     const url = usersEndpoint + 'get';
@@ -83,9 +118,9 @@ const logout = () => {
     const url = usersEndpoint + 'logout';
     return apiPostRequest(url, {});
 };
-const updateUserData = (data: any) => {
+const updateUserData = (newUser: any) => {
     const url = usersEndpoint + 'update';
-    return apiPutRequest(url, data);
+    return apiPutRequest(url, newUser);
 };
 const deleteAllUsers = () => {
     const url = usersEndpoint + 'delete_all';
@@ -264,6 +299,11 @@ const getApiMethodsObject = (itemType: string) => {
 };
 
 export default {
+
+    // other
+    getCurrenciesList,
+    getCurrencyRate,
+    getCurrenciesListCurrent,
 
     // users
     getUserData,
