@@ -53,6 +53,9 @@ export const setIsUserStatLoading = createAction('SET_USER_STAT_LOADING', (isUse
 export const setCurrentCurrencyRate = createAction('SET_CURRENT_CURRENCY_RATE', (currentCurrencyRate: number) => {
     return {payload: currentCurrencyRate}
 });
+export const setCurrenciesList = createAction('SET_CURRENCIES_LIST', (currenciesList: Types.Currency[]) => {
+    return {payload: currenciesList}
+});
 
 // product
 export const createSetProductAction = createAction('SET_PRODUCT', (product: Types.Product) => {

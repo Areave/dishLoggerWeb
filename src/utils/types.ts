@@ -19,6 +19,7 @@ export namespace Types {
         readonly isUserLoading: boolean,
         readonly isUserStatLoading: boolean,
         readonly currentCurrencyRate: number,
+        readonly currenciesList: Currency[],
     }
 
     export interface ItemsState {
@@ -46,17 +47,8 @@ export namespace Types {
                 products: string[],
                 dishes: string[],
             }
-            energyValue?: {
-                calories: number,
-                proteines: number,
-                fats: number,
-                carbohydrates: number
-            },
-            currency: {
-                symbol: string,
-                name: string,
-                short_code: string,
-            }
+            energyValue?: EnergyValue,
+            currency: Currency
         },
         role: string,
         products?: Product[],
@@ -64,14 +56,15 @@ export namespace Types {
         meals?: Meal[],
     }
 
+    export interface Currency {
+        symbol: string,
+        name: string,
+        short_code: string,
+    }
+
     export interface UserStat {
         readonly mainStat: {
-            energyValue: {
-                calories: number,
-                proteines: number,
-                fats: number,
-                carbohydrates: number
-            },
+            energyValue: EnergyValue,
             weight: number,
             price: number,
         },
@@ -80,18 +73,8 @@ export namespace Types {
 
     export interface Stat {
         dateString: string,
-        energyValue: {
-            calories: number,
-            proteines: number,
-            fats: number,
-            carbohydrates: number
-        }
-        energyValueDifference: {
-            calories: number,
-            proteines: number,
-            fats: number,
-            carbohydrates: number
-        }
+        energyValue: EnergyValue,
+        energyValueDifference: EnergyValue,
         meals: Meal[],
         price: number,
         weight: number
@@ -148,6 +131,7 @@ export namespace Types {
         description: string,
         weight: number,
         price: number,
+        priceUSD: number,
         energyValue: EnergyValue,
         // Только в DISH и MEAL
         ingridients: Ingridient[] | [{}]

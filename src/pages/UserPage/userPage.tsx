@@ -4,7 +4,14 @@ import Form from 'react-bootstrap/Form';
 import {Types} from "../../utils/types";
 import {useDispatch, useSelector} from "react-redux";
 import ActionButton from "../../comps/actionButton/actionButton";
-import {checkResponseForMessage, fetchCurrencyRate, fetchUser, updateUser} from "../../utils/store/asyncThunks";
+import {
+    checkCurrencyRateAndSetIfNeed,
+    checkResponseForMessage,
+    fetchCurrencyList,
+    fetchCurrencyRate,
+    fetchUser,
+    updateUser
+} from "../../utils/store/asyncThunks";
 import apiService from "../../utils/apiService";
 import {itemTypes} from "../../utils/itemTypes";
 import {setCurrentCurrencyRate} from "../../utils/store/actionCreators";
@@ -16,16 +23,20 @@ const UserPage = () => {
         products: '',
         dishes: ''
     });
-    const [currencyArray, setCurrencyArray] = useState(null);
+    // const [currencyArray, setCurrencyArray] = useState(null);
 
     const currentUser: Types.User = useSelector((state: Types.MainState) => {
         return state.user.currentUser;
     });
+
     const currentCurrencyRate: number = useSelector((state: Types.MainState) => {
         return state.user.currentCurrencyRate;
     });
+    const currenciesList: Types.Currency[] = useSelector((state: Types.MainState) => {
+        return state.user.currenciesList;
+    });
 
-    console.log('currentCurrencyRate', currentCurrencyRate)
+    console.log('currentCurrencyRate', currentCurrencyRate);
 
     const dispatch = useDispatch();
 
@@ -35,52 +46,24 @@ const UserPage = () => {
             newUser: localCurrentUser
         }));
     };
-    const currencyCode: string = useSelector((state: Types.MainState) => {
-        return state.user.currentUser.intakeData.currency.short_code;
-    });
-
-
-    const setCurrentRate = () => {
-
-        const isToday = (dateString: string): boolean => {
-            const date = new Date(dateString);
-            const todayDate = new Date();
-            return date.getFullYear() === todayDate.getFullYear()
-                && date.getMonth() === todayDate.getMonth()
-                && date.getDate() === todayDate.getDate();
-        };
-
-        const isCurrentStorageRateValid = (currencyRateLocalStorageObject: any): boolean => {
-            return isToday(currencyRateLocalStorageObject.date) && currencyRateLocalStorageObject.currencyCode === currencyCode;
-        };
-        const localStorageLabel = process.env.LOCALSTORAGE_RATE_LABEL || 'currentRate';
-        const currencyRateLocalStorageObject = JSON.parse(localStorage.getItem(localStorageLabel));
-
-        if (currencyRateLocalStorageObject && isCurrentStorageRateValid(currencyRateLocalStorageObject)) {
-            dispatch(setCurrentCurrencyRate(currencyRateLocalStorageObject.rate));
-        } else {
-            dispatch(fetchCurrencyRate(currencyCode));
-        }
-    };
 
     useEffect(() => {
-        apiService.getCurrenciesList().then((data) => {
-            setCurrencyArray(data);
-        }).catch((error) => {
-            checkResponseForMessage(error, dispatch);
-        })
+        if (!currenciesList.length) {
+            dispatch(fetchCurrencyList());
+        }
     }, []);
 
     useEffect(() => {
         setLocalCurrentUser((currentUser));
-        setCurrentRate();
     }, [currentUser]);
 
     useEffect(() => {
-        if (localCurrentUser?.intakeData?.currency.short_code) {
-            setCurrentRate();
+        if (localCurrentUser?.intakeData?.currency.short_code
+            && localCurrentUser?.intakeData?.currency.short_code !== currentUser.intakeData.currency.short_code) {
+            dispatch(checkCurrencyRateAndSetIfNeed(localCurrentUser?.intakeData?.currency.short_code));
         }
     }, [localCurrentUser?.intakeData?.currency]);
+
 
     if (!localCurrentUser) {
         return <div className="page user-page">
@@ -91,24 +74,6 @@ const UserPage = () => {
     const {tags, energyValue, currency} = intakeData;
 
     return <div className="page user-page">
-        {/*<ActionButton onClick={() => {*/}
-        {/*    apiService.getCurrenciesList().then(res => {*/}
-        {/*        console.log(res)*/}
-        {/*    })*/}
-        {/*}*/}
-        {/*} label={'getCurrenciesList'}/>*/}
-        {/*<ActionButton onClick={() => {*/}
-        {/*    apiService.getCurrencyRate({from: 'UZS', to: 'USD'}).then(res => {*/}
-        {/*        console.log(res)*/}
-        {/*    })*/}
-        {/*}*/}
-        {/*} label={'getCurrencyRate'}/>*/}
-        {/*<ActionButton onClick={() => {*/}
-        {/*    apiService.getCurrenciesListCurrent().then(res => {*/}
-        {/*        console.log(res)*/}
-        {/*    })*/}
-        {/*}*/}
-        {/*} label={'getCurrenciesListCurrent'}/>*/}
         <div className="intake_data">
             <div className="info-block">
                 <div className="info-title">Имя:</div>
@@ -119,25 +84,23 @@ const UserPage = () => {
                                   setLocalCurrentUser({...localCurrentUser, name: e.target.value})
                               }}/>
             </div>
-            {currencyArray && currencyArray.length > 0 && <div className="info-block">
+            {currenciesList && currenciesList.length > 0 && <div className="info-block">
                 <div className="info-title">Валюта</div>
                 <Form.Select
-                    defaultValue={intakeData.currency && currencyArray.findIndex((currencyObject: any) => {
+                    defaultValue={intakeData.currency && currenciesList.findIndex((currencyObject: any) => {
                         return currencyObject.short_code === intakeData.currency.short_code
                     })}
                     onChange={(event) => {
                         const value = event.target.value;
+                        // @ts-ignore
+                        const {name, symbol, short_code} = currenciesList[value];
                         setLocalCurrentUser({
                             ...localCurrentUser, intakeData: {
                                 ...localCurrentUser.intakeData,
-                                currency: {
-                                    short_code: currencyArray[value].short_code,
-                                    name: currencyArray[value].name,
-                                    symbol: currencyArray[value].symbol
-                                }
+                                currency: {name, symbol, short_code}
                             }
                         })
-                    }}>{currencyArray.map((currency: any, index: number) => {
+                    }}>{currenciesList.map((currency: any, index: number) => {
                     return <option key={index} value={index}>{currency.name + ' ' + currency.short_code}</option>
                 })}
                 </Form.Select>

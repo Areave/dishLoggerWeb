@@ -1,9 +1,11 @@
 import {
-    createAddDishAction, createAddMealAction,
-    createAddMessageAction, createAddProductAction, createSetDishAction, createSetDishesAction, createSetItemsLoadingAction, createSetMealAction,
-    createSetMealsAction, createSetProductAction, createSetProductsAction, setCurrentCurrencyRate,
+    createAddMessageAction,
+    createSetItemsLoadingAction,
+    setCurrenciesList,
+    setCurrentCurrencyRate,
     setIsAuthorizedAction,
-    setIsUserLoading, setIsUserStatLoading,
+    setIsUserLoading,
+    setIsUserStatLoading,
     setUserAction,
     setUserStatAction
 } from "./actionCreators";
@@ -44,8 +46,8 @@ export const updateUser = (userData: any) => {
         console.log('userData', userData);
         apiService.updateUserData(userData).then((response: Response) => {
             checkResponseForMessage(response, dispatch);
-            console.log('response', response);
-            // dispatch(setUserAction(response.user));
+            // console.log('response', response);
+            dispatch(setUserAction(response.user));
         }).catch((error) => {
             checkResponseForMessage(error, dispatch);
             dispatch(setIsAuthorizedAction(false));
@@ -90,12 +92,6 @@ export const fetchCurrencyRate = (from: string) => {
     return (dispatch: any) => {
         // dispatch(setIsUserStatLoading(true));
         apiService.getCurrencyRate(from).then((currencyRate) => {
-            const localStorageLabel = process.env.LOCALSTORAGE_RATE_LABEL || 'currentRate';
-            localStorage.setItem(localStorageLabel, JSON.stringify({
-                date: new Date,
-                rate: currencyRate.value,
-                currencyCode: from
-            }));
             // checkResponseForMessage(currencyRate, dispatch);
             dispatch(setCurrentCurrencyRate(currencyRate.value));
         }).catch((error) => {
@@ -105,19 +101,47 @@ export const fetchCurrencyRate = (from: string) => {
         })
     }
 };
-// export const fetchCurrencyList = ({from, to}: any) => {
-//     return (dispatch: any) => {
-//         // dispatch(setIsUserStatLoading(true));
-//         apiService.getCurrenciesList().then((currencyList) => {
-//             // checkResponseForMessage(currencyRate, dispatch);
-//             // dispatch(setCurrentCurrencyRate(currencyRate));
-//         }).catch((error) => {
-//             checkResponseForMessage(error, dispatch);
-//         }).finally(() => {
-//             // dispatch(setIsUserStatLoading(false));
-//         })
-//     }
-// };
+export const checkCurrencyRateAndSetIfNeed = (currencyCode: string) => {
+    return (dispatch: any) => {
+
+        if (!currencyCode) {
+            return;
+        }
+
+        const isToday = (dateString: string): boolean => {
+            const date = new Date(dateString);
+            const todayDate = new Date();
+            return date.getFullYear() === todayDate.getFullYear()
+                && date.getMonth() === todayDate.getMonth()
+                && date.getDate() === todayDate.getDate();
+        };
+
+        const isCurrentStorageRateValid = (currencyRateLocalStorageObject: any, code: string): boolean => {
+            return isToday(currencyRateLocalStorageObject.date) && currencyRateLocalStorageObject.currencyCode === code;
+        };
+        const localStorageLabel = process.env.LOCALSTORAGE_RATE_LABEL || 'currentRate';
+        const currencyRateLocalStorageObject = JSON.parse(localStorage.getItem(localStorageLabel));
+
+        if (currencyRateLocalStorageObject && isCurrentStorageRateValid(currencyRateLocalStorageObject, currencyCode)) {
+            dispatch(setCurrentCurrencyRate(currencyRateLocalStorageObject.rate));
+        } else {
+            dispatch(fetchCurrencyRate(currencyCode));
+        }
+    }
+};
+export const fetchCurrencyList = () => {
+    return (dispatch: any) => {
+        // dispatch(setIsUserStatLoading(true));
+        apiService.getCurrenciesList().then((currencyList) => {
+            // checkResponseForMessage(currencyRate, dispatch);
+            dispatch(setCurrenciesList(currencyList));
+        }).catch((error) => {
+            checkResponseForMessage(error, dispatch);
+        }).finally(() => {
+            // dispatch(setIsUserStatLoading(false));
+        })
+    }
+};
 export const addNewItem = (fetchFunction: any, setItemsAction: any, data: any) => {
 
     return (dispatch: any) => {

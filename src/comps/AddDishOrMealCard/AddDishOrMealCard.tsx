@@ -5,6 +5,7 @@ import {Form} from "react-bootstrap";
 import NewIngridient from "../NewIngridient/NewIngridient";
 import ActionButton from "../actionButton/actionButton";
 import {useSelector} from "react-redux";
+import {itemTypes} from "../../utils/itemTypes";
 
 const AddDishOrMealCard: React.FC<Types.AddDishOrMealCardProps> = ({editedItem, setEditedItem}: any) => {
 
@@ -14,6 +15,11 @@ const AddDishOrMealCard: React.FC<Types.AddDishOrMealCardProps> = ({editedItem, 
             products: state.items.products
         };
     });
+
+    const currentCurrencyRate: number = useSelector((state: Types.MainState) => {
+        return state.user.currentCurrencyRate;
+    });
+
 
     const getIngridientWithValues = (ingridient: any) => {
         const ingridientForSave: any = JSON.parse(JSON.stringify(ingridient));
@@ -87,6 +93,9 @@ const AddDishOrMealCard: React.FC<Types.AddDishOrMealCardProps> = ({editedItem, 
             itemData.energyValue.fats += fats;
             itemData.energyValue.carbohydrates += carbohydrates;
         });
+        if (editedItem.type === itemTypes.MEAL) {
+            itemData.priceUSD = itemData.price * currentCurrencyRate;
+        }
         return {...editedItem, ...itemData};
     };
 

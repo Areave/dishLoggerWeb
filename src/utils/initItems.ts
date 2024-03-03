@@ -51,6 +51,7 @@ export const initMealItem: Types.Meal = {
     ingridients: [{}],
     weight: 0,
     price: 0,
+    priceUSD: 0,
     energyValue: {
         calories: 0,
         proteines: 0,

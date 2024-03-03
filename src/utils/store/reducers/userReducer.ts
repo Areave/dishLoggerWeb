@@ -6,7 +6,8 @@ import {
     setUserAction,
     setUserStatAction,
     setIsUserStatLoading,
-    setCurrentCurrencyRate
+    setCurrentCurrencyRate,
+    setCurrenciesList
 } from "../actionCreators";
 
 const initialUserState: Types.UserState = {
@@ -52,7 +53,8 @@ const initialUserState: Types.UserState = {
     },
     isUserLoading: false,
     isUserStatLoading: false,
-    currentCurrencyRate: 0
+    currentCurrencyRate: 0,
+    currenciesList: []
 };
 
 export default createReducer(initialUserState, (builder) => {
@@ -73,5 +75,8 @@ export default createReducer(initialUserState, (builder) => {
     });
     builder.addCase(setCurrentCurrencyRate, (state, action) => {
         state.currentCurrencyRate = action.payload
+    });
+    builder.addCase(setCurrenciesList, (state, action) => {
+        state.currenciesList = action.payload
     });
 });

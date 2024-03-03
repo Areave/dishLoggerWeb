@@ -8,7 +8,14 @@ import {getPluralItemType, itemTypes} from "../../utils/itemTypes";
 import AddProductCard from "../AddProductCard/AddProductCard";
 import AddDishOrMealCard from "../AddDishOrMealCard/AddDishOrMealCard";
 
-export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({showModal, closeModal, setEditedItem, editedItem, itemType, addItem, updateExistingItem}) => {
+export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
+                                                                         showModal,
+                                                                         closeModal,
+                                                                         setEditedItem,
+                                                                         editedItem,
+                                                                         itemType,
+                                                                         addItem,
+                                                                         updateExistingItem}) => {
 
     const [inValidError, setInValidError] = useState(false);
 
