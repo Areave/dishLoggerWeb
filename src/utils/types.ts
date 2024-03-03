@@ -161,6 +161,15 @@ export namespace Types {
         carbohydrates: number
     }
 
+    export type PriceDifferenceObject = {
+        index: number,
+        ingridientProduct: Product,
+        priceDifference: {
+            newPrice: number,
+            oldPrice: number
+        }
+    };
+
     export type Ingridient = {
         ingridient: Product | Dish | null,
         type: string,
@@ -203,6 +212,8 @@ export namespace Types {
     export interface AddDishOrMealCardProps {
         editedItem: any,
         setEditedItem: (item: any) => void,
+        getIngridientWithValues: (ingridient: Ingridient) => Ingridient,
+        getEditedItemWithValues: (item: CommonEntitiesTypeWithIngridients, ingridientsArray: Ingridient[]) => CommonEntitiesTypeWithIngridients,
     }
     export interface DigitalValueItemProps {
         editedItem: any,
