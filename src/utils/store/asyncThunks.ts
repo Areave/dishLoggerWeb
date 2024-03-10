@@ -30,10 +30,10 @@ export const fetchUser = () => {
             checkResponseForMessage(response, dispatch);
             // dispatch(setIsAuthorizedAction(true));
             dispatch(setUserAction(response.user));
-            // dispatch(createSetMealsAction(response.user.meals));
-            // dispatch(createSetDishesAction(response.user.dishes));
-            // dispatch(createSetProductsAction(response.user.products));
-        }).catch((error) => {
+            // dispatch(createSetMealsAction(response.user.Meals));
+            // dispatch(createSetDishesAction(response.user.Dishes));
+            // dispatch(createSetProductsAction(response.user.Products));
+        }).catch((error: any) => {
             checkResponseForMessage(error, dispatch);
             dispatch(setIsAuthorizedAction(false));
         }).finally(() => {
@@ -44,6 +44,7 @@ export const fetchUser = () => {
 export const updateUser = (userData: any) => {
     return (dispatch: any) => {
         console.log('userData', userData);
+        // @ts-ignore
         apiService.updateUserData(userData).then((response: Response) => {
             checkResponseForMessage(response, dispatch);
             // console.log('response', response);
@@ -64,7 +65,7 @@ export const fetchLogin = (data: any) => {
             checkResponseForMessage(response, dispatch);
             dispatch(setIsAuthorizedAction(true));
             dispatch(setUserAction(response.user));
-            // dispatch(createSetMealsAction(response.user.meals));
+            // dispatch(createSetMealsAction(response.user.Meals));
         }).catch((error) => {
             checkResponseForMessage(error, dispatch);
             // dispatch(setIsAuthorizedAction(false));

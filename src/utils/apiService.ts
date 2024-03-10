@@ -1,8 +1,11 @@
 import axios from 'axios';
 import {dishesEndpoint, mealsEndpoint, productsEndpoint, statsEndpoint, usersEndpoint, currencyEndpoint} from "./endpoints";
 import {itemTypes} from "./itemTypes";
+import {responses} from "../assets/stub/responses";
 
 axios.defaults.withCredentials = true;
+
+const isStubMode = process.env.API_MODE === 'stub';
 
 // const dispatch = useDispatch();
 
@@ -29,8 +32,15 @@ const errorHandler = (error: any) => {
 };
 
 const apiGetRequest = (url: string) => {
+    if (isStubMode) {
+        return Promise.resolve(responses[url].data || responses.error);
+    }
     return new Promise((res, rej) => {
+            if (isStubMode) {
+        return Promise.resolve(responses[url] || responses.error);
+    }
         return res(axios.get(url).then((data: any) => {
+                console.log(url, JSON.stringify(data));
                 return Promise.resolve(data.data)
             }).catch(error => {
                 errorHandler(error);
@@ -39,16 +49,26 @@ const apiGetRequest = (url: string) => {
     });
 };
 const apiPostRequest = (url: string, data: any) => {
+        if (isStubMode) {
+        return Promise.resolve(responses[url].data || responses.error);
+    }
     return axios.post(url, data).then((data: any) => {
+        console.log(url, JSON.stringify(data));
         return Promise.resolve(data.data)
     }).catch(error => {
         errorHandler(error);
     })
 };
 const apiPutRequest = (url: string, data: any) => {
+        if (isStubMode) {
+        return Promise.resolve(responses[url].data || responses.error);
+    }
     // return new Promise((res, rej) => {
     // return res(setTimeout(() => {
-    return axios.put(url, data).then((data: any) => Promise.resolve(data.data)).catch(error => {
+    return axios.put(url, data).then((data: any) => {
+        console.log(url, JSON.stringify(data));
+        Promise.resolve(data.data)
+    }).catch(error => {
         errorHandler(error);
         // }).catch((error)=>{
         //     errorHandler(error);
@@ -57,7 +77,13 @@ const apiPutRequest = (url: string, data: any) => {
     })
 };
 const apiDeleteRequest = (url: string, id: string = '') => {
-    return axios.delete(url + '/' + id).then((data: any) => Promise.resolve(data.data)).catch(error => {
+        if (isStubMode) {
+        return Promise.resolve(responses[url].data || responses.error);
+    }
+    return axios.delete(url + '/' + id).then((data: any) => {
+        console.log(url, JSON.stringify(data));
+        Promise.resolve(data.data)
+    }).catch(error => {
         errorHandler(error);
     })
 };
@@ -167,7 +193,7 @@ const removeAllItems = () => {
     return apiDeleteRequest(url);
 };
 
-// products
+// Products
 const addProduct = (product: any) => {
     const url = productsEndpoint + 'add';
     return apiPostRequest(url, {product});
@@ -193,7 +219,7 @@ const removeAllProducts = () => {
     return apiDeleteRequest(url);
 };
 
-// dishes
+// Dishes
 const addDish = (dish: any) => {
     const url = dishesEndpoint + 'add';
     return apiPostRequest(url, {dish});
@@ -219,7 +245,7 @@ const removeAllDishes = () => {
     return apiDeleteRequest(url);
 };
 
-// meals
+// Meals
 const addMeal = (meal: any) => {
     const url = mealsEndpoint + 'add';
     return apiPostRequest(url, {meal});
