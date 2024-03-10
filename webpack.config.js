@@ -7,7 +7,8 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
     template: "./src/index.html",
-    filename: "./index.html"
+    filename: "./index.html",
+    favicon: "./src/favicon/favicon.ico"
 });
 
 const miniCss = new MiniCss({
@@ -115,7 +116,7 @@ module.exports = function (_, webpackEnv) {
 
     const getHostName = () => {
         if (webpackEnv.env.api_mode === 'stub') {
-            return './assets/stub/'
+            return ''
         } else if (webpackEnv.env.api_mode === 'home_server') {
             return 'http://127.0.0.1:4000/api/';
         } else {
