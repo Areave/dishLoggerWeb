@@ -34,7 +34,7 @@ const App: React.FC<any> = () => {
     }, []);
 
     useEffect(() => {
-        if (user.currentUser.login) {
+        if (user.currentUser?.login) {
             dispatch(setIsAuthorizedAction(true))}
         }, [user]);
 
