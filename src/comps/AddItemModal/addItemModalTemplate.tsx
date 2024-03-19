@@ -330,6 +330,13 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
                                     setShowAllert(false);
                                 }} label={'recalculate'}/>
                             </div>
+                            <div className="d-flex justify-content-end">
+                                <ActionButton onClick={(e) => {
+                                    setItemInvalidError('');
+                                    AddOrUpdateItem(e, editedItem);
+                                    setShowAllert(false);
+                                }} label={'keep as is'}/>
+                            </div>
                         </Alert>}
                         {!showAllert && <ActionButton onClick={(e) => {
                             AddOrUpdateItem(e, editedItem)
