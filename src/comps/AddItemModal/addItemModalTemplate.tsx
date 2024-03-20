@@ -156,7 +156,12 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
                     carbohydrates: +(ingridient.ingridient.energyValueForOneItem.carbohydrates * ingridient.amount).toFixed(2),
                 };
             } else {
-                const coeff = +ingridient.weight / 100;
+                let coeff;
+                if (itemType === itemTypes.PRODUCT) {
+                    coeff = +ingridient.weight / 100;
+                } else {
+                    coeff = +ingridient.weight / +ingridient.ingridient.weight;
+                }
                 ingridientForSave.price = +((ingridient.ingridient.price / ingridient.ingridient.weight)
                     * ingridient.weight).toFixed(2);
                 ingridientForSave.energyValue = {
