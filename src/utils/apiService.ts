@@ -36,11 +36,11 @@ const apiGetRequest = (url: string) => {
         return Promise.resolve(responses[url].data || responses.error);
     }
     return new Promise((res, rej) => {
-            if (isStubMode) {
-        return Promise.resolve(responses[url] || responses.error);
-    }
+        if (isStubMode) {
+            return Promise.resolve(responses[url] || responses.error);
+        }
         return res(axios.get(url).then((data: any) => {
-                console.log(url, JSON.stringify(data));
+                // console.log(url, JSON.stringify(data));
                 return Promise.resolve(data.data)
             }).catch(error => {
                 errorHandler(error);
@@ -49,25 +49,26 @@ const apiGetRequest = (url: string) => {
     });
 };
 const apiPostRequest = (url: string, data: any) => {
-        if (isStubMode) {
+    if (isStubMode) {
         return Promise.resolve(responses[url].data || responses.error);
     }
     return axios.post(url, data).then((data: any) => {
-        console.log(url, JSON.stringify(data));
+        // console.log(url, JSON.stringify(data));
         return Promise.resolve(data.data)
     }).catch(error => {
         errorHandler(error);
     })
 };
 const apiPutRequest = (url: string, data: any) => {
-        if (isStubMode) {
+    if (isStubMode) {
         return Promise.resolve(responses[url].data || responses.error);
     }
     // return new Promise((res, rej) => {
     // return res(setTimeout(() => {
     return axios.put(url, data).then((data: any) => {
-        console.log(url, JSON.stringify(data));
-        Promise.resolve(data.data)
+        // console.log(url, JSON.stringify(data));
+        console.log(url, data);
+        return Promise.resolve(data.data)
     }).catch(error => {
         errorHandler(error);
         // }).catch((error)=>{
@@ -77,12 +78,12 @@ const apiPutRequest = (url: string, data: any) => {
     })
 };
 const apiDeleteRequest = (url: string, id: string = '') => {
-        if (isStubMode) {
+    if (isStubMode) {
         return Promise.resolve(responses[url].data || responses.error);
     }
     return axios.delete(url + '/' + id).then((data: any) => {
-        console.log(url, JSON.stringify(data));
-        Promise.resolve(data.data)
+        // console.log(url, JSON.stringify(data));
+        return Promise.resolve(data.data)
     }).catch(error => {
         errorHandler(error);
     })

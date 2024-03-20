@@ -85,11 +85,16 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
         const getPriceForIngridientForAmountOrWeight = (ingridientProduct: Types.Product, amountOrWeight: number): number => {
             let priceForOneAmount;
             if (ingridientProduct.isThatPieceItem) {
-                priceForOneAmount = ingridientProduct.priceForAllItems / ingridientProduct.amount;
+                // ingridientForSave.price = +((ingridient.ingridient.priceForAllItems / ingridient.ingridient.amount)
+                //     * ingridient.amount).toFixed(2);
+
+                priceForOneAmount = +((ingridientProduct.priceForAllItems / ingridientProduct.amount) * amountOrWeight).toFixed(2);
             } else {
-                priceForOneAmount = ingridientProduct.price / ingridientProduct.weight;
+                priceForOneAmount = +((ingridientProduct.price / ingridientProduct.weight) * amountOrWeight).toFixed(2);
             }
-            return priceForOneAmount * amountOrWeight;
+            // @ts-ignore
+            // return +((priceForOneAmount * amountOrWeight).toFixed(2));
+            return priceForOneAmount;
         };
 
         itemIngridients.forEach((ingridient: Types.Ingridient, index: number) => {
@@ -110,7 +115,6 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
             if (!actualProduct) {
                 return;
             }
-            // @ts-ignore
             const newPrice = getPriceForIngridientForAmountOrWeight(actualProduct, ingridient.amount || ingridient.weight);
 
             if (oldPrice !== newPrice) {
@@ -183,7 +187,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
             if (ingridient.weight) {
                 const ingridientWeight = +ingridient.weight;
                 // @ts-ignore
-                if (ingridient.ingridient.cookingCoefficient) {
+                if (ingridient.ingridient?.cookingCoefficient) {
                     // @ts-ignore
                     ingridientWeight = ingridientWeight * ingridient.ingridient.cookingCoefficient
                 }
@@ -223,6 +227,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
 
         const itemInvalidError = getItemInvalidError(item);
 
+        // if (itemInvalidError && !skipRecalculate) {
         if (itemInvalidError) {
             setItemInvalidError(itemInvalidError);
             return;
