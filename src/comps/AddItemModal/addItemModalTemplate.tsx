@@ -60,7 +60,9 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
             const value = item[key];
 
             if ((!value && value !== 0 && typeof value !== 'boolean') || value === '') {
-                return 'fill all fields';
+                if (key !== 'description') {
+                    return 'fill all fields';
+                }
             }
             if (typeof value === 'function' || Array.isArray(value)) {
                 continue;
@@ -112,7 +114,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
                 return product._id === ingridientProduct._id;
             });
 
-            if (!actualProduct) {
+            if (!actualProduct || (!ingridient.amount && !ingridient.weight)) {
                 return;
             }
             const newPrice = getPriceForIngridientForAmountOrWeight(actualProduct, ingridient.amount || ingridient.weight);
@@ -284,8 +286,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
                                   onChange={(e: any) => {
                                       setEditedItem({...editedItem, name: e.target.value})
                                   }}/>
-                    <Form.Control isInvalid={!editedItem.description}
-                                  value={editedItem.description}
+                    <Form.Control value={editedItem.description}
                                   type="text"
                                   placeholder="description"
                                   onChange={(e: any) => {
