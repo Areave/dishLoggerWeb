@@ -132,6 +132,17 @@ const NewIngridient: React.FC<Types.NewIngridientProps> = ({
                         <div>{'* ' + ingridientObject.ingridient.cookingCoefficient + ' = ' + +(ingridientObject.ingridient.cookingCoefficient * ingridientObject.weight).toFixed(2)}</div>}
                     </div>
                 </div>}
+                {ingridientType === itemTypes.DISH && <Form.Check
+                    onChange={(e) => {
+                        if (e.target.checked) {
+                            setNewIngridient({...ingridientObject, weight: ingridientObject.ingridient.weight}, index);
+                        } else {
+                            setNewIngridient({...ingridientObject, weight: 0}, index);
+                        }
+                    }}
+                    inline
+                    label={'all'}
+                />}
                 {ingridientObject.hasOwnProperty('amount') && <div className="ingridient-amount-data amount">
                     <Form.Label>amount</Form.Label>
                     <Form.Control value={ingridientObject.amount} type="text" placeholder="amount"

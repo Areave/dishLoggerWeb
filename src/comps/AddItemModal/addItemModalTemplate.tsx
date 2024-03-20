@@ -157,7 +157,7 @@ export const ItemModalTemplate: React.FC<Types.AddItemModalProps> = ({
                 };
             } else {
                 let coeff;
-                if (itemType === itemTypes.PRODUCT) {
+                if (ingridient.type === itemTypes.PRODUCT) {
                     coeff = +ingridient.weight / 100;
                 } else {
                     coeff = +ingridient.weight / +ingridient.ingridient.weight;
